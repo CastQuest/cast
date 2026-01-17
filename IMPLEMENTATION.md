@@ -312,6 +312,8 @@ Main docs:
 - Input validation
 - Environment variable protection
 - Security best practices
+- **Up-to-date dependencies**: Next.js 14.2.35, LangChain 0.3.80
+- **All known vulnerabilities patched**
 
 ## 🛠️ Technology Stack
 

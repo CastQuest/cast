@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1] - 2024-01-17
+
+### Security
+
+- Updated Next.js from 14.1.0 to 14.2.35 to fix multiple security vulnerabilities:
+  - CVE: Denial of Service with Server Components (patched in 14.2.34-14.2.35)
+  - CVE: Authorization bypass vulnerability (patched in 14.2.15)
+  - CVE: Cache Poisoning (patched in 14.2.10)
+  - CVE: Server-Side Request Forgery in Server Actions (patched in 14.1.1)
+  - CVE: Authorization Bypass in Middleware (patched in 14.2.25)
+- Updated LangChain from 0.1.7 to 0.3.80 to fix serialization injection vulnerability (patched in 0.3.37-0.3.80)
+- Updated @langchain/openai from 0.0.12 to 0.3.14 for compatibility
+
 ## [3.0.0] - 2024-01-17
 
 ### Added
@@ -60,4 +73,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AWS infrastructure (EKS, RDS, ElastiCache)
 - Docker Compose for local development
 
+[3.0.1]: https://github.com/castquest/cast/releases/tag/v3.0.1
 [3.0.0]: https://github.com/castquest/cast/releases/tag/v3.0.0

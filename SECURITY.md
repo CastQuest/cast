@@ -6,6 +6,23 @@
 | ------- | ------------------ |
 | 3.0.x   | :white_check_mark: |
 
+## Recent Security Updates
+
+### Version 3.0.1 (2024-01-17)
+
+**Critical Security Fixes:**
+
+- **Next.js updated to 14.2.35** - Fixed multiple high-severity vulnerabilities:
+  - Denial of Service with Server Components (CVE affecting 13.3.0 - 14.2.34)
+  - Authorization bypass vulnerability (CVE affecting 9.5.5 - 14.2.14)
+  - Cache Poisoning (CVE affecting 14.0.0 - 14.2.9)
+  - Server-Side Request Forgery in Server Actions (CVE affecting 13.4.0 - 14.1.0)
+  - Authorization Bypass in Middleware (CVE affecting 14.0.0 - 14.2.24)
+
+- **LangChain updated to 0.3.80** - Fixed serialization injection vulnerability:
+  - Enables secret extraction (CVE affecting < 0.3.37)
+  - Updated @langchain/openai to 0.3.14 for compatibility
+
 ## Reporting a Vulnerability
 
 We take security seriously. If you discover a security vulnerability, please:
@@ -36,6 +53,7 @@ We will respond within 48 hours and work with you to address the issue.
 - HTTPS enforcement
 - XSS protection
 - CSRF tokens
+- **Up-to-date dependencies with security patches**
 
 ### Infrastructure
 
@@ -68,6 +86,16 @@ For developers:
 - Review all dependencies
 - Follow secure coding guidelines
 - Test thoroughly
+- **Keep dependencies updated with `pnpm update`**
+- **Monitor security advisories**
+
+## Dependency Security
+
+We actively monitor and update dependencies to address security vulnerabilities:
+- Automated security scanning
+- Regular dependency updates
+- Version pinning for stability
+- Security patches applied promptly
 
 ## Contact
 

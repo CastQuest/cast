@@ -13,8 +13,8 @@
   "dependencies": {
     "@castquest/sdk": "workspace:*",
     "openai": "^4.26.0",
-    "langchain": "^0.1.7",
-    "@langchain/openai": "^0.0.12",
+    "langchain": "^0.3.80",
+    "@langchain/openai": "^0.3.14",
     "axios": "^1.6.5",
     "ethers": "^6.10.0"
   },
