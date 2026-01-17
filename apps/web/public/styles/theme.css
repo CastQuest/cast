@@ -1,0 +1,8 @@
+/* CASTQUEST V3 theme — aura/fx/glow/neo-nix */
+:root {
+  --cq-bg: #020617;
+  --cq-card: rgba(15,23,42,0.85);
+  --cq-border: rgba(148,163,184,0.35);
+  --cq-accent: #22d3ee;
+  --cq-accent-soft: rgba(34,211,238,0.35);
+}

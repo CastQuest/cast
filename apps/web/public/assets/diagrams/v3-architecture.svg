@@ -1,0 +1,26 @@
+<svg viewBox='0 0 1200 900' xmlns='http://www.w3.org/2000/svg'>
+  <text x='600' y='60' text-anchor='middle' font-size='28' font-weight='bold'>
+    CASTQUEST V3 — AUTONOMOUS CREATIVE ECONOMY
+  </text>
+  <text x='600' y='145' text-anchor='middle' font-size='18'>
+    INTERFACE LAYER — Web, L3 UIs, Bots
+  </text>
+  <text x='600' y='245' text-anchor='middle' font-size='18'>
+    AI BUILDER LAYER — Code / Frame / Game / UI
+  </text>
+  <text x='600' y='345' text-anchor='middle' font-size='18'>
+    AGENT LAYER — Creation / Pricing / Auction / Curation / Fraud / Sync / UI / Portfolio / Social
+  </text>
+  <text x='600' y='445' text-anchor='middle' font-size='18'>
+    PROTOCOL LAYER — CAST / QUEST / MEDIA / FRAM / GAME / CODE / UserProfile / SubDAOs
+  </text>
+  <text x='600' y='545' text-anchor='middle' font-size='18'>
+    MULTI-CHAIN + L3 LAYER — Base / L2s / Solana / Creator L3s
+  </text>
+  <text x='600' y='645' text-anchor='middle' font-size='18'>
+    MARKETPLACE LAYER — Global / L3 / Solana / Sponsor
+  </text>
+  <text x='600' y='745' text-anchor='middle' font-size='18'>
+    GOVERNANCE + TREASURY LAYER — DAO / AI DAO / SubDAOs / Autonomous Treasury + Yield
+  </text>
+</svg>

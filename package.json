@@ -1,0 +1,19 @@
+{
+  "name": "castquest-frames",
+  "version": "3.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "bots/*",
+    "docs-site"
+  ],
+  "scripts": {
+    "dev:web": "next dev apps/web",
+    "build:web": "next build apps/web",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "docs:dev": "vite docs-site",
+    "orchestrate:v3": "pwsh ./infra/Orchestration.ps1"
+  }
+}

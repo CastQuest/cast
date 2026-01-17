@@ -1,0 +1,28 @@
+{
+  "pipeline": {
+    "web#dev": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "web#build": {
+      "dependsOn": [],
+      "outputs": ["apps/web/.next/**"]
+    },
+    "contracts#build": {
+      "dependsOn": [],
+      "outputs": ["packages/contracts/artifacts/**"]
+    },
+    "sdk#build": {
+      "dependsOn": [],
+      "outputs": ["packages/sdk/dist/**"]
+    },
+    "bots#build": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "docs-site#build": {
+      "dependsOn": [],
+      "outputs": ["docs-site/.vite/**"]
+    }
+  }
+}
