@@ -1,5 +1,4 @@
 import { CastQuestClient } from "@castquest/sdk";
-import { ethers } from "ethers";
 
 export interface AgentConfig {
   name: string;

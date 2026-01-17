@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Events, SlashCommandBuilder } from "discord.js";
+import { Client, GatewayIntentBits, Events } from "discord.js";
 import { CastQuestClient } from "@castquest/sdk";
 import * as dotenv from "dotenv";
 

@@ -1,4 +1,4 @@
-import { AgentBase, AgentConfig } from "./agent-base";
+import { AgentBase } from "./agent-base";
 import { CastQuestClient } from "@castquest/sdk";
 
 export class QuestAgent extends AgentBase {

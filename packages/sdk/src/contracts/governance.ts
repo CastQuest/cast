@@ -1,5 +1,4 @@
 import { ethers } from "ethers";
-import { Proposal } from "../utils/types";
 
 const GOVERNANCE_ABI = [
   "function propose(string memory title, string memory description, address[] memory targets, uint256[] memory values, bytes[] memory calldatas) public returns (uint256)",
