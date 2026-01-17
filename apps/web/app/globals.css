@@ -56,4 +56,13 @@
   body {
     @apply bg-background text-foreground;
   }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  @apply bg-slate-950 text-slate-100;
 }
