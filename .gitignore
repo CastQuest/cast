@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+*.lcov
+
+# Next.js
+.next/
+out/
+build
+dist/
+
+# Production
+*.log
+*.tsbuildinfo
+.turbo
+
+# Environment
+.env
+.env*.local
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Foundry
+cache/
+out/
+broadcast/
+artifacts/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Temporary
+tmp/
+temp/
+*.tmp

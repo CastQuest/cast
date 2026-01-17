@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: castquest
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  indexer:
+    build:
+      context: ../../packages/indexer
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: castquest
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      RPC_URL: ${RPC_URL}
+      CAST_ADDRESS: ${CAST_ADDRESS}
+      QUEST_ADDRESS: ${QUEST_ADDRESS}
+      MARKETPLACE_ADDRESS: ${MARKETPLACE_ADDRESS}
+      GOVERNANCE_ADDRESS: ${GOVERNANCE_ADDRESS}
+    depends_on:
+      - postgres
+      - redis
+
+  web:
+    build:
+      context: ../../apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_RPC_URL: ${RPC_URL}
+      NEXT_PUBLIC_CAST_ADDRESS: ${CAST_ADDRESS}
+    depends_on:
+      - indexer
+
+  docs:
+    build:
+      context: ../../docs-site
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+
+volumes:
+  postgres_data:
+  redis_data:

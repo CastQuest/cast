@@ -1,0 +1,26 @@
+{
+  "name": "@castquest/indexer",
+  "version": "3.0.0",
+  "description": "Blockchain indexer for CASTQUEST V3",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@castquest/sdk": "workspace:*",
+    "ethers": "^6.10.0",
+    "pg": "^8.11.3",
+    "redis": "^4.6.12",
+    "express": "^4.18.2",
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/express": "^4.17.21",
+    "@types/pg": "^8.10.9",
+    "typescript": "^5.3.3"
+  }
+}

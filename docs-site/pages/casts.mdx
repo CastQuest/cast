@@ -1,0 +1,56 @@
+# CASTs - Creative NFTs
+
+CASTs are ERC721 NFTs that represent creative assets in the CASTQUEST ecosystem.
+
+## Features
+
+- **Royalty Tracking** - Built-in royalty payments for creators
+- **Content Versioning** - Update content while maintaining provenance
+- **Multi-Chain** - Deploy across multiple blockchains
+- **Rich Metadata** - Comprehensive metadata support
+
+## Minting a CAST
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+
+const tokenId = await client.cast.mint(
+  recipientAddress,
+  "QmIPFSHash...",  // Content hash
+  1000,             // 10% royalty
+  "ipfs://metadata" // Metadata URI
+);
+```
+
+## Updating Content
+
+```typescript
+await client.cast.updateContentHash(tokenId, "QmNewHash...");
+```
+
+## Querying CASTs
+
+```typescript
+// Get all CASTs by creator
+const casts = await client.cast.getCastsByCreator(creatorAddress);
+
+// Get CAST metadata
+const metadata = await client.cast.getMetadata(tokenId);
+
+// Get royalty information
+const { receiver, amount } = await client.cast.getRoyaltyInfo(
+  tokenId,
+  salePrice
+);
+```
+
+## Smart Contract
+
+The CAST contract is deployed at:
+- Mainnet: `0x...`
+- Sepolia: `0x...`
+- Base: `0x...`
+
+[View on GitHub](https://github.com/castquest/cast/blob/main/packages/contracts/src/CAST.sol)

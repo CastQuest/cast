@@ -1,0 +1,34 @@
+# Infrastructure
+
+Docker and Kubernetes configurations for deploying CASTQUEST.
+
+## Docker Compose
+
+```bash
+cd infra/docker
+docker-compose up -d
+```
+
+## Kubernetes
+
+```bash
+cd infra/kubernetes
+kubectl apply -f .
+```
+
+## Terraform
+
+```bash
+cd infra/terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+## Components
+
+- Web application (Next.js)
+- Indexer service
+- PostgreSQL database
+- Redis cache
+- Bot services

@@ -1,0 +1,15 @@
+{
+  "name": "@castquest/contracts",
+  "version": "3.0.0",
+  "private": true,
+  "description": "CASTQUEST smart contracts",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "deploy": "forge script script/Deploy.s.sol:DeployScript --rpc-url $RPC_URL --broadcast",
+    "lint": "solhint 'src/**/*.sol'"
+  },
+  "devDependencies": {
+    "solhint": "^4.0.0"
+  }
+}

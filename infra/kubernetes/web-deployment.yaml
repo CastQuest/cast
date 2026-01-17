@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: castquest-web
+  namespace: castquest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: castquest-web
+  template:
+    metadata:
+      labels:
+        app: castquest-web
+    spec:
+      containers:
+      - name: web
+        image: castquest/web:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_RPC_URL
+          valueFrom:
+            configMapKeyRef:
+              name: castquest-config
+              key: rpc-url
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: castquest-web
+  namespace: castquest
+spec:
+  selector:
+    app: castquest-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer

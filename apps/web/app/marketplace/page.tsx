@@ -1,0 +1,23 @@
+import { MarketplaceGrid } from "@/components/marketplace-grid";
+import { MarketplaceFilters } from "@/components/marketplace-filters";
+
+export default function MarketplacePage() {
+  return (
+    <div className="container py-8">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold">Marketplace</h1>
+        <p className="text-muted-foreground mt-2">
+          Buy and sell NFTs on the CASTQUEST marketplace
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <aside className="md:col-span-1">
+          <MarketplaceFilters />
+        </aside>
+        <div className="md:col-span-3">
+          <MarketplaceGrid />
+        </div>
+      </div>
+    </div>
+  );
+}

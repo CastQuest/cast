@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: castquest-config
+  namespace: castquest
+data:
+  rpc-url: "https://mainnet.infura.io/v3/YOUR_KEY"
+  cast-address: "0x0000000000000000000000000000000000000000"
+  quest-address: "0x0000000000000000000000000000000000000000"
+  marketplace-address: "0x0000000000000000000000000000000000000000"
+  governance-address: "0x0000000000000000000000000000000000000000"
