@@ -1,0 +1,1733 @@
+﻿[
+    {
+        "section":  "admin-dashboard",
+        "items":  [
+                      {
+                          "title":  "Admin Dashboard",
+                          "slug":  "index",
+                          "path":  "admin-dashboard/index.mdx",
+                          "weight":  0,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard — Fee Controls",
+                          "slug":  "fee-controls",
+                          "path":  "admin-dashboard/fee-controls.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard — Overview Metrics",
+                          "slug":  "overview-metrics",
+                          "path":  "admin-dashboard/overview-metrics.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard — Permissions",
+                          "slug":  "permissions",
+                          "path":  "admin-dashboard/permissions.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard — Risk Management",
+                          "slug":  "risk-management",
+                          "path":  "admin-dashboard/risk-management.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard — System Status",
+                          "slug":  "system-status",
+                          "path":  "admin-dashboard/system-status.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard — Token Management",
+                          "slug":  "token-management",
+                          "path":  "admin-dashboard/token-management.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard Alerts",
+                          "slug":  "alerts",
+                          "path":  "admin-dashboard/alerts.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard Audit Logs",
+                          "slug":  "audit-logs",
+                          "path":  "admin-dashboard/audit-logs.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard Pause Protocol",
+                          "slug":  "pause-protocol",
+                          "path":  "admin-dashboard/pause-protocol.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard Protocol Fees",
+                          "slug":  "protocol-fees",
+                          "path":  "admin-dashboard/protocol-fees.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard Tvl And Volume",
+                          "slug":  "tvl-and-volume",
+                          "path":  "admin-dashboard/tvl-and-volume.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      },
+                      {
+                          "title":  "Admin Dashboard User Metrics",
+                          "slug":  "user-metrics",
+                          "path":  "admin-dashboard/user-metrics.mdx",
+                          "weight":  120,
+                          "section":  "admin-dashboard"
+                      }
+                  ]
+    },
+    {
+        "section":  "agents",
+        "items":  [
+                      {
+                          "title":  "Agents",
+                          "slug":  "index",
+                          "path":  "agents/index.mdx",
+                          "weight":  0,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Alerting Agents",
+                          "slug":  "alerting-agents",
+                          "path":  "agents/alerting-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Automation Agents",
+                          "slug":  "automation-agents",
+                          "path":  "agents/automation-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Backtesting Agents",
+                          "slug":  "backtesting-agents",
+                          "path":  "agents/backtesting-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Brain Engine Agents",
+                          "slug":  "brain-engine-agents",
+                          "path":  "agents/brain-engine-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Governance Agents",
+                          "slug":  "governance-agents",
+                          "path":  "agents/governance-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Market Making Agents",
+                          "slug":  "market-making-agents",
+                          "path":  "agents/market-making-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Monitoring Agents",
+                          "slug":  "monitoring-agents",
+                          "path":  "agents/monitoring-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Risk Agents",
+                          "slug":  "risk-agents",
+                          "path":  "agents/risk-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Simulation Agents",
+                          "slug":  "simulation-agents",
+                          "path":  "agents/simulation-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      },
+                      {
+                          "title":  "Agent Worker Agents",
+                          "slug":  "worker-agents",
+                          "path":  "agents/worker-agents.mdx",
+                          "weight":  40,
+                          "section":  "agents"
+                      }
+                  ]
+    },
+    {
+        "section":  "brain-engine",
+        "items":  [
+                      {
+                          "title":  "Brain Engine",
+                          "slug":  "index",
+                          "path":  "brain-engine/index.mdx",
+                          "weight":  0,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Architecture",
+                          "slug":  "architecture",
+                          "path":  "brain-engine/architecture.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Evaluation",
+                          "slug":  "evaluation",
+                          "path":  "brain-engine/evaluation.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Governance Hooks",
+                          "slug":  "governance-hooks",
+                          "path":  "brain-engine/governance-hooks.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Integration With Frames",
+                          "slug":  "integration-with-frames",
+                          "path":  "brain-engine/integration-with-frames.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Integration With Workers",
+                          "slug":  "integration-with-workers",
+                          "path":  "brain-engine/integration-with-workers.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Memory Model",
+                          "slug":  "memory-model",
+                          "path":  "brain-engine/memory-model.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Playbooks",
+                          "slug":  "playbooks",
+                          "path":  "brain-engine/playbooks.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Prompt Pipelines",
+                          "slug":  "prompt-pipelines",
+                          "path":  "brain-engine/prompt-pipelines.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Safety Rails",
+                          "slug":  "safety-rails",
+                          "path":  "brain-engine/safety-rails.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Simulation",
+                          "slug":  "simulation",
+                          "path":  "brain-engine/simulation.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      },
+                      {
+                          "title":  "Brain Engine Tooling",
+                          "slug":  "tooling",
+                          "path":  "brain-engine/tooling.mdx",
+                          "weight":  110,
+                          "section":  "brain-engine"
+                      }
+                  ]
+    },
+    {
+        "section":  "builders",
+        "items":  [
+                      {
+                          "title":  "Builders",
+                          "slug":  "index",
+                          "path":  "builders/index.mdx",
+                          "weight":  0,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Automation Builder",
+                          "slug":  "automation-builder",
+                          "path":  "builders/automation-builder.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Cloning Flows",
+                          "slug":  "cloning-flows",
+                          "path":  "builders/cloning-flows.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Collaboration",
+                          "slug":  "collaboration",
+                          "path":  "builders/collaboration.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Dashboard Builder",
+                          "slug":  "dashboard-builder",
+                          "path":  "builders/dashboard-builder.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Deployment Flows",
+                          "slug":  "deployment-flows",
+                          "path":  "builders/deployment-flows.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Template Library",
+                          "slug":  "template-library",
+                          "path":  "builders/template-library.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Testing Sandbox",
+                          "slug":  "testing-sandbox",
+                          "path":  "builders/testing-sandbox.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Builder Versioning",
+                          "slug":  "versioning",
+                          "path":  "builders/versioning.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Frame Builder Overview",
+                          "slug":  "frame-builder",
+                          "path":  "builders/frame-builder.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Mint Builder Overview",
+                          "slug":  "mint-builder",
+                          "path":  "builders/mint-builder.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Quest Builder Overview",
+                          "slug":  "quest-builder",
+                          "path":  "builders/quest-builder.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      },
+                      {
+                          "title":  "Worker Builder Overview",
+                          "slug":  "worker-builder",
+                          "path":  "builders/worker-builder.mdx",
+                          "weight":  60,
+                          "section":  "builders"
+                      }
+                  ]
+    },
+    {
+        "section":  "fees-and-treasury",
+        "items":  [
+                      {
+                          "title":  "Fees And Treasury",
+                          "slug":  "index",
+                          "path":  "fees-and-treasury/index.mdx",
+                          "weight":  0,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Buyback Policies",
+                          "slug":  "buyback-policies",
+                          "path":  "fees-and-treasury/buyback-policies.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Creator Revenue",
+                          "slug":  "creator-revenue",
+                          "path":  "fees-and-treasury/creator-revenue.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Fee Discounts",
+                          "slug":  "fee-discounts",
+                          "path":  "fees-and-treasury/fee-discounts.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Fee Routing",
+                          "slug":  "fee-routing",
+                          "path":  "fees-and-treasury/fee-routing.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Fee Types",
+                          "slug":  "fee-types",
+                          "path":  "fees-and-treasury/fee-types.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Protocol Revenue",
+                          "slug":  "protocol-revenue",
+                          "path":  "fees-and-treasury/protocol-revenue.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Rebates And Incentives",
+                          "slug":  "rebates-and-incentives",
+                          "path":  "fees-and-treasury/rebates-and-incentives.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Reporting",
+                          "slug":  "reporting",
+                          "path":  "fees-and-treasury/reporting.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Revenue Sharing",
+                          "slug":  "revenue-sharing",
+                          "path":  "fees-and-treasury/revenue-sharing.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      },
+                      {
+                          "title":  "Treasury Treasury Accounts",
+                          "slug":  "treasury-accounts",
+                          "path":  "fees-and-treasury/treasury-accounts.mdx",
+                          "weight":  150,
+                          "section":  "fees-and-treasury"
+                      }
+                  ]
+    },
+    {
+        "section":  "frames",
+        "items":  [
+                      {
+                          "title":  "Frames",
+                          "slug":  "index",
+                          "path":  "frames/index.mdx",
+                          "weight":  0,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Farcaster Integration",
+                          "slug":  "farcaster-integration",
+                          "path":  "frames/farcaster-integration.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Actions",
+                          "slug":  "frame-actions",
+                          "path":  "frames/frame-actions.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Governance",
+                          "slug":  "frame-governance",
+                          "path":  "frames/frame-governance.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Imports",
+                          "slug":  "frame-imports",
+                          "path":  "frames/frame-imports.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Lifecycle",
+                          "slug":  "frame-lifecycle",
+                          "path":  "frames/frame-lifecycle.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Metadata",
+                          "slug":  "frame-metadata",
+                          "path":  "frames/frame-metadata.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Mints",
+                          "slug":  "frame-mints",
+                          "path":  "frames/frame-mints.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Quests",
+                          "slug":  "frame-quests",
+                          "path":  "frames/frame-quests.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Risk",
+                          "slug":  "frame-risk",
+                          "path":  "frames/frame-risk.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Templates",
+                          "slug":  "frame-templates",
+                          "path":  "frames/frame-templates.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Types",
+                          "slug":  "frame-types",
+                          "path":  "frames/frame-types.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      },
+                      {
+                          "title":  "Frame Frame Workers",
+                          "slug":  "frame-workers",
+                          "path":  "frames/frame-workers.mdx",
+                          "weight":  70,
+                          "section":  "frames"
+                      }
+                  ]
+    },
+    {
+        "section":  "integrations",
+        "items":  [
+                      {
+                          "title":  "Integrations",
+                          "slug":  "index",
+                          "path":  "integrations/index.mdx",
+                          "weight":  0,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Ethereum Integration Guide",
+                          "slug":  "ethereum",
+                          "path":  "integrations/ethereum.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Farcaster Integration Guide",
+                          "slug":  "farcaster",
+                          "path":  "integrations/farcaster.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration Analytics",
+                          "slug":  "analytics",
+                          "path":  "integrations/analytics.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration External Oracles",
+                          "slug":  "external-oracles",
+                          "path":  "integrations/external-oracles.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration Indexers",
+                          "slug":  "indexers",
+                          "path":  "integrations/indexers.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration Layer2s",
+                          "slug":  "layer2s",
+                          "path":  "integrations/layer2s.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration Notification Systems",
+                          "slug":  "notification-systems",
+                          "path":  "integrations/notification-systems.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration Partner Protocols",
+                          "slug":  "partner-protocols",
+                          "path":  "integrations/partner-protocols.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Integration Wallets",
+                          "slug":  "wallets",
+                          "path":  "integrations/wallets.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      },
+                      {
+                          "title":  "Solana Integration Guide",
+                          "slug":  "solana",
+                          "path":  "integrations/solana.mdx",
+                          "weight":  180,
+                          "section":  "integrations"
+                      }
+                  ]
+    },
+    {
+        "section":  "l3",
+        "items":  [
+                      {
+                          "title":  "L3",
+                          "slug":  "index",
+                          "path":  "l3/index.mdx",
+                          "weight":  0,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Architecture",
+                          "slug":  "architecture",
+                          "path":  "l3/architecture.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Bridge Architecture",
+                          "slug":  "bridges",
+                          "path":  "l3/bridges.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Data Availability",
+                          "slug":  "data-availability",
+                          "path":  "l3/data-availability.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Gas Model",
+                          "slug":  "gas-model",
+                          "path":  "l3/gas-model.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Migration",
+                          "slug":  "migration",
+                          "path":  "l3/migration.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Monitoring",
+                          "slug":  "monitoring",
+                          "path":  "l3/monitoring.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Rollup Design",
+                          "slug":  "rollup-design",
+                          "path":  "l3/rollup-design.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Security",
+                          "slug":  "security",
+                          "path":  "l3/security.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Settlement",
+                          "slug":  "settlement",
+                          "path":  "l3/settlement.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      },
+                      {
+                          "title":  "L3 Upgrades",
+                          "slug":  "upgrades",
+                          "path":  "l3/upgrades.mdx",
+                          "weight":  170,
+                          "section":  "l3"
+                      }
+                  ]
+    },
+    {
+        "section":  "marketplace",
+        "items":  [
+                      {
+                          "title":  "Marketplace",
+                          "slug":  "index",
+                          "path":  "marketplace/index.mdx",
+                          "weight":  0,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Auctions",
+                          "slug":  "auctions",
+                          "path":  "marketplace/auctions.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Bundles",
+                          "slug":  "bundles",
+                          "path":  "marketplace/bundles.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Buyer Flows",
+                          "slug":  "buyer-flows",
+                          "path":  "marketplace/buyer-flows.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Creator Profiles",
+                          "slug":  "creator-profiles",
+                          "path":  "marketplace/creator-profiles.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Curation",
+                          "slug":  "curation",
+                          "path":  "marketplace/curation.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Dispute Resolution",
+                          "slug":  "dispute-resolution",
+                          "path":  "marketplace/dispute-resolution.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Fixed Price",
+                          "slug":  "fixed-price",
+                          "path":  "marketplace/fixed-price.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Listings",
+                          "slug":  "listings",
+                          "path":  "marketplace/listings.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Reputation",
+                          "slug":  "reputation",
+                          "path":  "marketplace/reputation.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Revenue Share",
+                          "slug":  "revenue-share",
+                          "path":  "marketplace/revenue-share.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Royalties",
+                          "slug":  "royalties",
+                          "path":  "marketplace/royalties.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      },
+                      {
+                          "title":  "Marketplace Settlement",
+                          "slug":  "settlement",
+                          "path":  "marketplace/settlement.mdx",
+                          "weight":  50,
+                          "section":  "marketplace"
+                      }
+                  ]
+    },
+    {
+        "section":  "mints",
+        "items":  [
+                      {
+                          "title":  "Mints",
+                          "slug":  "index",
+                          "path":  "mints/index.mdx",
+                          "weight":  0,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Automation",
+                          "slug":  "mint-automation",
+                          "path":  "mints/mint-automation.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Eligibility",
+                          "slug":  "mint-eligibility",
+                          "path":  "mints/mint-eligibility.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Failures",
+                          "slug":  "mint-failures",
+                          "path":  "mints/mint-failures.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Lifecycle",
+                          "slug":  "mint-lifecycle",
+                          "path":  "mints/mint-lifecycle.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Limits",
+                          "slug":  "mint-limits",
+                          "path":  "mints/mint-limits.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Metrics",
+                          "slug":  "mint-metrics",
+                          "path":  "mints/mint-metrics.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Pricing",
+                          "slug":  "mint-pricing",
+                          "path":  "mints/mint-pricing.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Recovery",
+                          "slug":  "mint-recovery",
+                          "path":  "mints/mint-recovery.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Templates",
+                          "slug":  "mint-templates",
+                          "path":  "mints/mint-templates.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      },
+                      {
+                          "title":  "Mint Mint Types",
+                          "slug":  "mint-types",
+                          "path":  "mints/mint-types.mdx",
+                          "weight":  90,
+                          "section":  "mints"
+                      }
+                  ]
+    },
+    {
+        "section":  "overview",
+        "items":  [
+                      {
+                          "title":  "Overview",
+                          "slug":  "index",
+                          "path":  "overview/index.mdx",
+                          "weight":  0,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Actors",
+                          "slug":  "actors",
+                          "path":  "overview/actors.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Data Model",
+                          "slug":  "data-model",
+                          "path":  "overview/data-model.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Governance Overview",
+                          "slug":  "governance-overview",
+                          "path":  "overview/governance-overview.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "L3 Overview",
+                          "slug":  "l3-overview",
+                          "path":  "overview/l3-overview.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Lifecycle",
+                          "slug":  "lifecycle",
+                          "path":  "overview/lifecycle.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Multi Chain Architecture",
+                          "slug":  "multi-chain-architecture",
+                          "path":  "overview/multi-chain-architecture.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Protocol Map",
+                          "slug":  "protocol-map",
+                          "path":  "overview/protocol-map.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Roadmap",
+                          "slug":  "roadmap",
+                          "path":  "overview/roadmap.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      },
+                      {
+                          "title":  "Security Model",
+                          "slug":  "security-model",
+                          "path":  "overview/security-model.mdx",
+                          "weight":  10,
+                          "section":  "overview"
+                      }
+                  ]
+    },
+    {
+        "section":  "protocol",
+        "items":  [
+                      {
+                          "title":  "Protocol",
+                          "slug":  "index",
+                          "path":  "protocol/index.mdx",
+                          "weight":  0,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Governance Engine Architecture",
+                          "slug":  "governance-engine",
+                          "path":  "protocol/governance-engine.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Automation Engine",
+                          "slug":  "automation-engine",
+                          "path":  "protocol/automation-engine.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Buyback Engine",
+                          "slug":  "buyback-engine",
+                          "path":  "protocol/buyback-engine.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Core Contracts",
+                          "slug":  "core-contracts",
+                          "path":  "protocol/core-contracts.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Emergency Controls",
+                          "slug":  "emergency-controls",
+                          "path":  "protocol/emergency-controls.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Event Bus",
+                          "slug":  "event-bus",
+                          "path":  "protocol/event-bus.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Execution Engine",
+                          "slug":  "execution-engine",
+                          "path":  "protocol/execution-engine.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Fee Router",
+                          "slug":  "fee-router",
+                          "path":  "protocol/fee-router.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Oracle Integration",
+                          "slug":  "oracle-integration",
+                          "path":  "protocol/oracle-integration.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Pause Resume",
+                          "slug":  "pause-resume",
+                          "path":  "protocol/pause-resume.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Treasury Architecture",
+                          "slug":  "treasury",
+                          "path":  "protocol/treasury.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Upgrade Strategy",
+                          "slug":  "upgrade-strategy",
+                          "path":  "protocol/upgrade-strategy.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Protocol Versioning",
+                          "slug":  "versioning",
+                          "path":  "protocol/versioning.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      },
+                      {
+                          "title":  "Risk Engine Architecture",
+                          "slug":  "risk-engine",
+                          "path":  "protocol/risk-engine.mdx",
+                          "weight":  20,
+                          "section":  "protocol"
+                      }
+                  ]
+    },
+    {
+        "section":  "quests",
+        "items":  [
+                      {
+                          "title":  "Quests",
+                          "slug":  "index",
+                          "path":  "quests/index.mdx",
+                          "weight":  0,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Abuse Prevention",
+                          "slug":  "quest-abuse-prevention",
+                          "path":  "quests/quest-abuse-prevention.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Automation",
+                          "slug":  "quest-automation",
+                          "path":  "quests/quest-automation.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Eligibility",
+                          "slug":  "quest-eligibility",
+                          "path":  "quests/quest-eligibility.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Failures",
+                          "slug":  "quest-failures",
+                          "path":  "quests/quest-failures.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Lifecycle",
+                          "slug":  "quest-lifecycle",
+                          "path":  "quests/quest-lifecycle.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Metrics",
+                          "slug":  "quest-metrics",
+                          "path":  "quests/quest-metrics.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Rewards",
+                          "slug":  "quest-rewards",
+                          "path":  "quests/quest-rewards.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Templates",
+                          "slug":  "quest-templates",
+                          "path":  "quests/quest-templates.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Types",
+                          "slug":  "quest-types",
+                          "path":  "quests/quest-types.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      },
+                      {
+                          "title":  "Quest Quest Verification",
+                          "slug":  "quest-verification",
+                          "path":  "quests/quest-verification.mdx",
+                          "weight":  80,
+                          "section":  "quests"
+                      }
+                  ]
+    },
+    {
+        "section":  "reference",
+        "items":  [
+                      {
+                          "title":  "Reference",
+                          "slug":  "index",
+                          "path":  "reference/index.mdx",
+                          "weight":  0,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Api Reference",
+                          "slug":  "api-reference",
+                          "path":  "reference/api-reference.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Data Schemas",
+                          "slug":  "data-schemas",
+                          "path":  "reference/data-schemas.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Deprecation Policy",
+                          "slug":  "deprecation-policy",
+                          "path":  "reference/deprecation-policy.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Error Codes",
+                          "slug":  "error-codes",
+                          "path":  "reference/error-codes.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Event Specs",
+                          "slug":  "event-specs",
+                          "path":  "reference/event-specs.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Glossary",
+                          "slug":  "glossary",
+                          "path":  "reference/glossary.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Migration Guides",
+                          "slug":  "migration-guides",
+                          "path":  "reference/migration-guides.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      },
+                      {
+                          "title":  "Rate Limits",
+                          "slug":  "rate-limits",
+                          "path":  "reference/rate-limits.mdx",
+                          "weight":  200,
+                          "section":  "reference"
+                      }
+                  ]
+    },
+    {
+        "section":  "risk-and-compliance",
+        "items":  [
+                      {
+                          "title":  "Risk And Compliance",
+                          "slug":  "index",
+                          "path":  "risk-and-compliance/index.mdx",
+                          "weight":  0,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Anomaly Detection",
+                          "slug":  "anomaly-detection",
+                          "path":  "risk-and-compliance/anomaly-detection.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Blacklists And Blocklists",
+                          "slug":  "blacklists-and-blocklists",
+                          "path":  "risk-and-compliance/blacklists-and-blocklists.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Circuit Breakers",
+                          "slug":  "circuit-breakers",
+                          "path":  "risk-and-compliance/circuit-breakers.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Incident Response",
+                          "slug":  "incident-response",
+                          "path":  "risk-and-compliance/incident-response.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Jurisdiction Flags",
+                          "slug":  "jurisdiction-flags",
+                          "path":  "risk-and-compliance/jurisdiction-flags.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Kyc Aml Integration",
+                          "slug":  "kyc-aml-integration",
+                          "path":  "risk-and-compliance/kyc-aml-integration.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Limits And Thresholds",
+                          "slug":  "limits-and-thresholds",
+                          "path":  "risk-and-compliance/limits-and-thresholds.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Post Mortems",
+                          "slug":  "post-mortems",
+                          "path":  "risk-and-compliance/post-mortems.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      },
+                      {
+                          "title":  "Risk Risk Categories",
+                          "slug":  "risk-categories",
+                          "path":  "risk-and-compliance/risk-categories.mdx",
+                          "weight":  140,
+                          "section":  "risk-and-compliance"
+                      }
+                  ]
+    },
+    {
+        "section":  "sdk",
+        "items":  [
+                      {
+                          "title":  "Sdk",
+                          "slug":  "index",
+                          "path":  "sdk/index.mdx",
+                          "weight":  0,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Admin Sdk",
+                          "slug":  "admin-sdk",
+                          "path":  "sdk/admin-sdk.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Auth",
+                          "slug":  "auth",
+                          "path":  "sdk/auth.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Cli Tools",
+                          "slug":  "cli-tools",
+                          "path":  "sdk/cli-tools.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Events",
+                          "slug":  "events",
+                          "path":  "sdk/events.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Frames Sdk",
+                          "slug":  "frames-sdk",
+                          "path":  "sdk/frames-sdk.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Mints Sdk",
+                          "slug":  "mints-sdk",
+                          "path":  "sdk/mints-sdk.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Python Examples",
+                          "slug":  "python-examples",
+                          "path":  "sdk/python-examples.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Quests Sdk",
+                          "slug":  "quests-sdk",
+                          "path":  "sdk/quests-sdk.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Testing",
+                          "slug":  "testing",
+                          "path":  "sdk/testing.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Typescript Examples",
+                          "slug":  "typescript-examples",
+                          "path":  "sdk/typescript-examples.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Webhooks",
+                          "slug":  "webhooks",
+                          "path":  "sdk/webhooks.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      },
+                      {
+                          "title":  "SDK Workers Sdk",
+                          "slug":  "workers-sdk",
+                          "path":  "sdk/workers-sdk.mdx",
+                          "weight":  160,
+                          "section":  "sdk"
+                      }
+                  ]
+    },
+    {
+        "section":  "seo-and-marketing",
+        "items":  [
+                      {
+                          "title":  "Seo And Marketing",
+                          "slug":  "index",
+                          "path":  "seo-and-marketing/index.mdx",
+                          "weight":  0,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Changelogs",
+                          "slug":  "changelogs",
+                          "path":  "seo-and-marketing/changelogs.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Content Strategy",
+                          "slug":  "content-strategy",
+                          "path":  "seo-and-marketing/content-strategy.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Deep Links",
+                          "slug":  "deep-links",
+                          "path":  "seo-and-marketing/deep-links.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Faq",
+                          "slug":  "faq",
+                          "path":  "seo-and-marketing/faq.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Glossary",
+                          "slug":  "glossary",
+                          "path":  "seo-and-marketing/glossary.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Landing Pages",
+                          "slug":  "landing-pages",
+                          "path":  "seo-and-marketing/landing-pages.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Public Docs Structure",
+                          "slug":  "public-docs-structure",
+                          "path":  "seo-and-marketing/public-docs-structure.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Release Notes",
+                          "slug":  "release-notes",
+                          "path":  "seo-and-marketing/release-notes.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      },
+                      {
+                          "title":  "Tracking And Analytics",
+                          "slug":  "tracking-and-analytics",
+                          "path":  "seo-and-marketing/tracking-and-analytics.mdx",
+                          "weight":  190,
+                          "section":  "seo-and-marketing"
+                      }
+                  ]
+    },
+    {
+        "section":  "tokens",
+        "items":  [
+                      {
+                          "title":  "Tokens",
+                          "slug":  "index",
+                          "path":  "tokens/index.mdx",
+                          "weight":  0,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Bridging Architecture",
+                          "slug":  "bridging",
+                          "path":  "tokens/bridging.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Buyback Loops",
+                          "slug":  "buyback-loops",
+                          "path":  "tokens/buyback-loops.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Cast Token",
+                          "slug":  "cast-token",
+                          "path":  "tokens/cast-token.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Emissions",
+                          "slug":  "emissions",
+                          "path":  "tokens/emissions.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Fee Tokens",
+                          "slug":  "fee-tokens",
+                          "path":  "tokens/fee-tokens.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Liquidity",
+                          "slug":  "liquidity",
+                          "path":  "tokens/liquidity.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Pricing Oracles",
+                          "slug":  "pricing-oracles",
+                          "path":  "tokens/pricing-oracles.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Profile Tokens",
+                          "slug":  "profile-tokens",
+                          "path":  "tokens/profile-tokens.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Quest Tokens",
+                          "slug":  "quest-tokens",
+                          "path":  "tokens/quest-tokens.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Reward Tokens",
+                          "slug":  "reward-tokens",
+                          "path":  "tokens/reward-tokens.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Supply Models",
+                          "slug":  "supply-models",
+                          "path":  "tokens/supply-models.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      },
+                      {
+                          "title":  "Token Vesting",
+                          "slug":  "vesting",
+                          "path":  "tokens/vesting.mdx",
+                          "weight":  30,
+                          "section":  "tokens"
+                      }
+                  ]
+    },
+    {
+        "section":  "users-and-access",
+        "items":  [
+                      {
+                          "title":  "Users And Access",
+                          "slug":  "index",
+                          "path":  "users-and-access/index.mdx",
+                          "weight":  0,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Abuse Prevention",
+                          "slug":  "abuse-prevention",
+                          "path":  "users-and-access/abuse-prevention.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Access Logs",
+                          "slug":  "access-logs",
+                          "path":  "users-and-access/access-logs.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Admin Roles",
+                          "slug":  "admin-roles",
+                          "path":  "users-and-access/admin-roles.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Api Keys",
+                          "slug":  "api-keys",
+                          "path":  "users-and-access/api-keys.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Builder Roles",
+                          "slug":  "builder-roles",
+                          "path":  "users-and-access/builder-roles.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Oauth And Sso",
+                          "slug":  "oauth-and-sso",
+                          "path":  "users-and-access/oauth-and-sso.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Permissions Model",
+                          "slug":  "permissions-model",
+                          "path":  "users-and-access/permissions-model.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Rate Limits",
+                          "slug":  "rate-limits",
+                          "path":  "users-and-access/rate-limits.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Roles",
+                          "slug":  "roles",
+                          "path":  "users-and-access/roles.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Session Security",
+                          "slug":  "session-security",
+                          "path":  "users-and-access/session-security.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      },
+                      {
+                          "title":  "Access Viewer Roles",
+                          "slug":  "viewer-roles",
+                          "path":  "users-and-access/viewer-roles.mdx",
+                          "weight":  130,
+                          "section":  "users-and-access"
+                      }
+                  ]
+    },
+    {
+        "section":  "workers",
+        "items":  [
+                      {
+                          "title":  "Workers",
+                          "slug":  "index",
+                          "path":  "workers/index.mdx",
+                          "weight":  0,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Failures",
+                          "slug":  "worker-failures",
+                          "path":  "workers/worker-failures.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Lifecycle",
+                          "slug":  "worker-lifecycle",
+                          "path":  "workers/worker-lifecycle.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Metrics",
+                          "slug":  "worker-metrics",
+                          "path":  "workers/worker-metrics.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Permissions",
+                          "slug":  "worker-permissions",
+                          "path":  "workers/worker-permissions.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Restarts",
+                          "slug":  "worker-restarts",
+                          "path":  "workers/worker-restarts.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Safety",
+                          "slug":  "worker-safety",
+                          "path":  "workers/worker-safety.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Sandbox",
+                          "slug":  "worker-sandbox",
+                          "path":  "workers/worker-sandbox.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Scaling",
+                          "slug":  "worker-scaling",
+                          "path":  "workers/worker-scaling.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Scheduling",
+                          "slug":  "worker-scheduling",
+                          "path":  "workers/worker-scheduling.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      },
+                      {
+                          "title":  "Worker Worker Types",
+                          "slug":  "worker-types",
+                          "path":  "workers/worker-types.mdx",
+                          "weight":  100,
+                          "section":  "workers"
+                      }
+                  ]
+    }
+]
