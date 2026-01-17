@@ -1,0 +1,142 @@
+# Quests
+
+The Quest system enables bounties, challenges, and missions with token rewards in the CASTQUEST ecosystem.
+
+## Overview
+
+Quests are on-chain tasks that reward participants with tokens upon completion. They support multiple types including bounties, challenges, missions, and tutorials.
+
+## Quest Types
+
+### Bounty
+Open tasks with specific deliverables and rewards. Anyone can participate and submit their work.
+
+### Challenge
+Competitive tasks where multiple participants compete for rewards. The best submission wins.
+
+### Mission
+Story-driven tasks that guide users through platform features.
+
+### Tutorial
+Educational quests that teach platform usage and best practices.
+
+## Creating a Quest
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+import { ethers } from "ethers";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+
+const questId = await client.quest.createQuest(
+  "Create Your First CAST",           // Title
+  "Mint a CAST NFT to get started",   // Description
+  0,                                   // Quest type (0 = Bounty)
+  ethers.parseEther("0.1"),           // Reward amount
+  Math.floor(Date.now() / 1000) + 86400, // Deadline (24 hours)
+  0n                                   // Required CAST ID (0 = none)
+);
+```
+
+## Joining a Quest
+
+```typescript
+await client.quest.joinQuest(questId);
+```
+
+## Completing a Quest
+
+Only the quest creator or admin can mark a quest as complete:
+
+```typescript
+await client.quest.completeQuest(questId, winnerAddress);
+```
+
+The reward is automatically transferred to the winner upon completion.
+
+## Querying Quests
+
+### Get Quests by User
+
+```typescript
+const questIds = await client.quest.getQuestsByUser(userAddress);
+```
+
+### Get Quest Details
+
+```typescript
+const quest = await client.quest.getQuest(questId);
+
+console.log(quest.title);
+console.log(quest.reward);
+console.log(quest.status);
+```
+
+## Quest Structure
+
+```typescript
+interface Quest {
+  id: bigint;
+  creator: string;
+  title: string;
+  description: string;
+  questType: number;
+  reward: bigint;
+  deadline: bigint;
+  status: number;
+}
+```
+
+## Status Codes
+
+- `0` - Active
+- `1` - Completed
+- `2` - Cancelled
+
+## Best Practices
+
+1. **Clear Requirements**: Provide detailed instructions for quest completion
+2. **Reasonable Deadlines**: Give participants enough time to complete tasks
+3. **Fair Rewards**: Set rewards proportional to task difficulty
+4. **Verification**: Implement clear completion criteria
+
+## Smart Contract
+
+The QUEST contract manages all quest operations on-chain.
+
+[View Contract Source](https://github.com/castquest/cast/blob/main/packages/contracts/src/QUEST.sol)
+
+## Events
+
+- `QuestCreated` - Emitted when a quest is created
+- `QuestJoined` - Emitted when someone joins a quest
+- `QuestCompleted` - Emitted when a quest is completed
+- `QuestCancelled` - Emitted when a quest is cancelled
+
+## Examples
+
+### Tutorial Quest
+
+```typescript
+const tutorialQuest = await client.quest.createQuest(
+  "Platform Introduction",
+  "Complete the onboarding tutorial",
+  3, // Tutorial type
+  ethers.parseEther("0.01"),
+  Date.now() / 1000 + 86400 * 7, // 1 week
+  0n
+);
+```
+
+### Challenge Quest
+
+```typescript
+const challengeQuest = await client.quest.createQuest(
+  "Art Competition",
+  "Submit your best digital artwork",
+  1, // Challenge type
+  ethers.parseEther("1.0"),
+  Date.now() / 1000 + 86400 * 30, // 30 days
+  0n
+);
+```

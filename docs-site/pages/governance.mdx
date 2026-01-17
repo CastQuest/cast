@@ -1,0 +1,204 @@
+# Governance
+
+CASTQUEST uses a decentralized governance system where token holders can create proposals, vote, and execute decisions.
+
+## Overview
+
+GovernanceV2 enables:
+- Proposal creation and voting
+- On-chain execution of passed proposals
+- Token-weighted voting
+- Quorum requirements
+- Timelock for execution
+
+## Creating a Proposal
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+
+const proposalId = await client.governance.propose(
+  "Increase Platform Fee",
+  "Proposal to increase platform fee from 2.5% to 3%",
+  [marketplaceAddress],           // Target contracts
+  [0n],                            // ETH values (0 for non-payable)
+  ["0x..."]                        // Encoded function calls
+);
+```
+
+## Voting on Proposals
+
+Vote with your governance tokens:
+
+```typescript
+// Vote types:
+// 0 = Against
+// 1 = For
+// 2 = Abstain
+
+await client.governance.castVote(proposalId, 1); // Vote For
+```
+
+Your voting power equals your token balance at proposal creation.
+
+## Executing Proposals
+
+After voting ends, if the proposal passed, anyone can execute it:
+
+```typescript
+await client.governance.executeProposal(proposalId);
+```
+
+## Proposal States
+
+```typescript
+enum ProposalState {
+  Pending = 0,
+  Active = 1,
+  Succeeded = 2,
+  Defeated = 3,
+  Executed = 4,
+  Cancelled = 5
+}
+```
+
+Check proposal state:
+
+```typescript
+const state = await client.governance.getProposalState(proposalId);
+```
+
+## Voting Requirements
+
+### Proposal Threshold
+Minimum tokens required to create a proposal (default: 1M tokens)
+
+### Voting Period
+Duration for voting (default: 50,400 blocks ≈ 1 week)
+
+### Quorum
+Minimum participation required (default: 4% of total supply)
+
+## Governance Token
+
+The SponsorToken (CQSP) is used for governance:
+- 1 token = 1 vote
+- Maximum supply: 1 billion tokens
+- Token holders can delegate voting power
+
+## Proposal Structure
+
+```typescript
+interface Proposal {
+  id: bigint;
+  proposer: string;
+  title: string;
+  description: string;
+  startBlock: bigint;
+  endBlock: bigint;
+  forVotes: bigint;
+  againstVotes: bigint;
+  state: number;
+}
+```
+
+## Smart Contract
+
+The GovernanceV2 contract manages all governance operations.
+
+[View Contract Source](https://github.com/castquest/cast/blob/main/packages/contracts/src/GovernanceV2.sol)
+
+## Events
+
+- `ProposalCreated` - Emitted when a proposal is created
+- `VoteCast` - Emitted when a vote is cast
+- `ProposalExecuted` - Emitted when a proposal is executed
+- `ProposalCancelled` - Emitted when a proposal is cancelled
+
+## SubDAOs
+
+CASTQUEST supports hierarchical governance through SubDAOs:
+
+```typescript
+// SubDAOs allow specialized governance for different areas
+// Each SubDAO can have its own:
+// - Member list
+// - Treasury
+// - Governance rules
+```
+
+## Security Features
+
+- **Timelock**: Delay between passing and execution
+- **Proposal Threshold**: Prevents spam proposals
+- **Quorum**: Ensures sufficient participation
+- **Vote Locking**: Votes locked during voting period
+
+## Best Practices
+
+1. **Detailed Proposals**: Write clear, comprehensive proposals
+2. **Community Discussion**: Discuss proposals before submitting
+3. **Test on Testnet**: Test proposal execution on testnet first
+4. **Monitor Quorum**: Ensure proposals meet quorum requirements
+
+## Example: Complete Governance Flow
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+import { ethers } from "ethers";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+
+// 1. Create proposal
+const proposalId = await client.governance.propose(
+  "Update Treasury Allocation",
+  "Allocate 10% of treasury to development fund",
+  [treasuryAddress],
+  [0n],
+  [encodedCalldata]
+);
+
+// 2. Vote on proposal
+await client.governance.castVote(proposalId, 1); // Vote For
+
+// 3. Check if you voted
+const hasVoted = await client.governance.hasVoted(proposalId, userAddress);
+
+// 4. Check proposal state
+const state = await client.governance.getProposalState(proposalId);
+
+// 5. Execute if passed
+if (state === 2) { // Succeeded
+  await client.governance.executeProposal(proposalId);
+}
+```
+
+## Proposal Templates
+
+### Treasury Allocation
+
+```typescript
+const data = treasuryContract.interface.encodeFunctionData(
+  "transfer",
+  [recipient, amount]
+);
+```
+
+### Parameter Update
+
+```typescript
+const data = marketplaceContract.interface.encodeFunctionData(
+  "updatePlatformFee",
+  [newFee]
+);
+```
+
+### Access Control
+
+```typescript
+const data = contract.interface.encodeFunctionData(
+  "grantRole",
+  [role, address]
+);
+```

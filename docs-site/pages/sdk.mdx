@@ -1,0 +1,456 @@
+# SDK Reference
+
+The CASTQUEST SDK provides TypeScript interfaces for all smart contracts with full type safety.
+
+## Installation
+
+```bash
+npm install @castquest/sdk ethers
+```
+
+## Quick Start
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+
+// Read-only access
+const client = CastQuestClient.connect("https://rpc-url", contractAddresses);
+
+// With signer for write operations
+const clientWithSigner = CastQuestClient.connectWithSigner(
+  "https://rpc-url",
+  "PRIVATE_KEY",
+  contractAddresses
+);
+```
+
+## Contract Addresses
+
+```typescript
+const addresses = {
+  cast: "0x...",
+  quest: "0x...",
+  media: "0x...",
+  fram: "0x...",
+  game: "0x...",
+  code: "0x...",
+  sponsorToken: "0x...",
+  governance: "0x...",
+  subDAOs: "0x...",
+  l3: "0x...",
+  marketplace: "0x...",
+  auctions: "0x...",
+  sponsorship: "0x..."
+};
+```
+
+## CASTClient
+
+### mint()
+
+Mint a new CAST NFT.
+
+```typescript
+mint(
+  to: string,
+  contentHash: string,
+  royaltyBps: number,
+  uri: string
+): Promise<bigint>
+```
+
+**Parameters:**
+- `to` - Recipient address
+- `contentHash` - IPFS hash of content
+- `royaltyBps` - Royalty in basis points (100 = 1%)
+- `uri` - Token metadata URI
+
+**Returns:** Token ID
+
+**Example:**
+```typescript
+const tokenId = await client.cast.mint(
+  "0x123...",
+  "QmIPFSHash...",
+  1000,
+  "ipfs://metadata"
+);
+```
+
+### getOwner()
+
+Get the owner of a token.
+
+```typescript
+getOwner(tokenId: bigint): Promise<string>
+```
+
+### getMetadata()
+
+Get complete token metadata.
+
+```typescript
+getMetadata(tokenId: bigint): Promise<Cast>
+```
+
+**Returns:**
+```typescript
+interface Cast {
+  tokenId: bigint;
+  creator: string;
+  createdAt: bigint;
+  royaltyBps: bigint;
+  contentHash: string;
+  isActive: boolean;
+}
+```
+
+### getCastsByCreator()
+
+Get all CASTs created by an address.
+
+```typescript
+getCastsByCreator(creator: string): Promise<bigint[]>
+```
+
+### updateContentHash()
+
+Update the content hash of a CAST.
+
+```typescript
+updateContentHash(tokenId: bigint, newContentHash: string): Promise<void>
+```
+
+### getRoyaltyInfo()
+
+Get royalty information for a sale.
+
+```typescript
+getRoyaltyInfo(
+  tokenId: bigint,
+  salePrice: bigint
+): Promise<{ receiver: string; amount: bigint }>
+```
+
+## QuestClient
+
+### createQuest()
+
+Create a new quest.
+
+```typescript
+createQuest(
+  title: string,
+  description: string,
+  questType: number,
+  reward: bigint,
+  deadline: bigint,
+  castIdRequired?: bigint
+): Promise<bigint>
+```
+
+### joinQuest()
+
+Join an existing quest.
+
+```typescript
+joinQuest(questId: bigint): Promise<void>
+```
+
+### completeQuest()
+
+Mark a quest as complete (creator/admin only).
+
+```typescript
+completeQuest(questId: bigint, winner: string): Promise<void>
+```
+
+### getQuestsByUser()
+
+Get all quests for a user.
+
+```typescript
+getQuestsByUser(user: string): Promise<bigint[]>
+```
+
+### getQuest()
+
+Get quest details.
+
+```typescript
+getQuest(questId: bigint): Promise<Quest>
+```
+
+**Returns:**
+```typescript
+interface Quest {
+  id: bigint;
+  creator: string;
+  title: string;
+  description: string;
+  questType: number;
+  reward: bigint;
+  deadline: bigint;
+  status: number;
+}
+```
+
+## MarketplaceClient
+
+### list()
+
+List an NFT for sale.
+
+```typescript
+list(
+  nftContract: string,
+  tokenId: bigint,
+  price: bigint
+): Promise<bigint>
+```
+
+### buy()
+
+Buy a listed NFT.
+
+```typescript
+buy(listingId: bigint, price: bigint): Promise<void>
+```
+
+### cancelListing()
+
+Cancel a listing.
+
+```typescript
+cancelListing(listingId: bigint): Promise<void>
+```
+
+### makeOffer()
+
+Make an offer on a listing.
+
+```typescript
+makeOffer(
+  listingId: bigint,
+  amount: bigint,
+  expiresAt: bigint
+): Promise<void>
+```
+
+### getListing()
+
+Get listing details.
+
+```typescript
+getListing(listingId: bigint): Promise<Listing>
+```
+
+**Returns:**
+```typescript
+interface Listing {
+  listingId: bigint;
+  seller: string;
+  nftContract: string;
+  tokenId: bigint;
+  price: bigint;
+  isActive: boolean;
+}
+```
+
+### getUserListings()
+
+Get all listings by a user.
+
+```typescript
+getUserListings(user: string): Promise<bigint[]>
+```
+
+## GovernanceClient
+
+### propose()
+
+Create a governance proposal.
+
+```typescript
+propose(
+  title: string,
+  description: string,
+  targets: string[],
+  values: bigint[],
+  calldatas: string[]
+): Promise<bigint>
+```
+
+### castVote()
+
+Vote on a proposal.
+
+```typescript
+castVote(proposalId: bigint, support: number): Promise<void>
+```
+
+**Support values:**
+- `0` - Against
+- `1` - For
+- `2` - Abstain
+
+### executeProposal()
+
+Execute a passed proposal.
+
+```typescript
+executeProposal(proposalId: bigint): Promise<void>
+```
+
+### getProposalState()
+
+Get proposal state.
+
+```typescript
+getProposalState(proposalId: bigint): Promise<number>
+```
+
+### hasVoted()
+
+Check if an address has voted.
+
+```typescript
+hasVoted(proposalId: bigint, voter: string): Promise<boolean>
+```
+
+## Type Definitions
+
+```typescript
+// All type definitions
+export interface Cast {
+  tokenId: bigint;
+  creator: string;
+  createdAt: bigint;
+  royaltyBps: bigint;
+  contentHash: string;
+  isActive: boolean;
+}
+
+export interface Quest {
+  id: bigint;
+  creator: string;
+  title: string;
+  description: string;
+  questType: number;
+  reward: bigint;
+  deadline: bigint;
+  status: number;
+}
+
+export interface Listing {
+  listingId: bigint;
+  seller: string;
+  nftContract: string;
+  tokenId: bigint;
+  price: bigint;
+  isActive: boolean;
+}
+
+export interface Proposal {
+  id: bigint;
+  proposer: string;
+  title: string;
+  description: string;
+  startBlock: bigint;
+  endBlock: bigint;
+  forVotes: bigint;
+  againstVotes: bigint;
+  state: number;
+}
+```
+
+## Error Handling
+
+```typescript
+try {
+  const tokenId = await client.cast.mint(...);
+} catch (error) {
+  if (error.code === 'INSUFFICIENT_FUNDS') {
+    console.error('Not enough ETH for gas');
+  }
+}
+```
+
+## Multi-Chain Support
+
+The SDK works with any EVM-compatible chain:
+
+```typescript
+// Ethereum Mainnet
+const mainnetClient = CastQuestClient.connect(
+  "https://mainnet.infura.io/v3/YOUR_KEY",
+  mainnetAddresses
+);
+
+// Base
+const baseClient = CastQuestClient.connect(
+  "https://mainnet.base.org",
+  baseAddresses
+);
+
+// Arbitrum
+const arbClient = CastQuestClient.connect(
+  "https://arb1.arbitrum.io/rpc",
+  arbAddresses
+);
+```
+
+## Browser Usage
+
+The SDK works in browsers with wallet connection:
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+import { BrowserProvider } from "ethers";
+
+// Connect to browser wallet
+const provider = new BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+
+// Create client with browser signer
+const client = new CastQuestClient({
+  provider,
+  signer,
+  contracts: addresses
+});
+```
+
+## Node.js Usage
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider(rpcUrl);
+const signer = new ethers.Wallet(privateKey, provider);
+
+const client = new CastQuestClient({
+  provider,
+  signer,
+  contracts: addresses
+});
+```
+
+## Package Structure
+
+```
+@castquest/sdk/
+├── src/
+│   ├── client.ts           # Main client class
+│   ├── contracts/
+│   │   ├── cast.ts        # CAST client
+│   │   ├── quest.ts       # Quest client
+│   │   ├── marketplace.ts # Marketplace client
+│   │   └── governance.ts  # Governance client
+│   └── utils/
+│       └── types.ts       # TypeScript definitions
+├── package.json
+└── README.md
+```
+
+[View Package Source](https://github.com/castquest/cast/tree/main/packages/sdk)

@@ -1,0 +1,162 @@
+# Marketplace
+
+The CASTQUEST Marketplace enables buying, selling, and trading of NFTs with support for listings, offers, and platform fees.
+
+## Overview
+
+The Marketplace is a decentralized trading platform where users can:
+- List NFTs for sale at fixed prices
+- Make offers on listed items
+- Buy NFTs instantly
+- Cancel listings
+
+## Listing an NFT
+
+Before listing, ensure your NFT is approved for the marketplace contract:
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+import { ethers } from "ethers";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+
+// List your CAST NFT
+const listingId = await client.marketplace.list(
+  castContractAddress,
+  tokenId,
+  ethers.parseEther("1.0") // Price in ETH
+);
+```
+
+## Buying an NFT
+
+```typescript
+// Get listing details first
+const listing = await client.marketplace.getListing(listingId);
+
+// Buy the NFT
+await client.marketplace.buy(listingId, listing.price);
+```
+
+## Making an Offer
+
+```typescript
+// Make an offer with expiration time
+const expiresAt = Math.floor(Date.now() / 1000) + 86400; // 24 hours
+
+await client.marketplace.makeOffer(
+  listingId,
+  ethers.parseEther("0.8"), // Offer amount
+  BigInt(expiresAt)
+);
+```
+
+## Canceling a Listing
+
+```typescript
+await client.marketplace.cancelListing(listingId);
+```
+
+## Querying Listings
+
+### Get Listing Details
+
+```typescript
+const listing = await client.marketplace.getListing(listingId);
+
+console.log(listing.seller);
+console.log(listing.price);
+console.log(listing.isActive);
+```
+
+### Get User Listings
+
+```typescript
+const listingIds = await client.marketplace.getUserListings(userAddress);
+```
+
+## Listing Structure
+
+```typescript
+interface Listing {
+  listingId: bigint;
+  seller: string;
+  nftContract: string;
+  tokenId: bigint;
+  price: bigint;
+  isActive: boolean;
+}
+```
+
+## Platform Fees
+
+The marketplace charges a small platform fee on each sale (default 2.5%). Fees are configurable by the admin.
+
+## Smart Contract
+
+The Marketplace contract handles all trading operations securely on-chain.
+
+[View Contract Source](https://github.com/castquest/cast/blob/main/packages/contracts/src/Marketplace.sol)
+
+## Events
+
+- `Listed` - Emitted when an NFT is listed
+- `Sold` - Emitted when an NFT is sold
+- `ListingCancelled` - Emitted when a listing is cancelled
+- `OfferMade` - Emitted when an offer is made
+- `OfferAccepted` - Emitted when an offer is accepted
+
+## Security Features
+
+- **ReentrancyGuard**: Prevents reentrancy attacks
+- **Access Control**: Only sellers can cancel their listings
+- **Price Validation**: Ensures prices are positive
+- **Approval Check**: Verifies NFT approval before listing
+
+## Best Practices
+
+1. **Approve First**: Always approve the marketplace contract before listing
+2. **Set Fair Prices**: Research market prices before listing
+3. **Check Offers**: Review offer amounts and expiration times
+4. **Cancel Promptly**: Cancel listings if you change your mind
+
+## Multi-Chain Support
+
+The marketplace operates on multiple chains:
+- Ethereum Mainnet
+- Base
+- Arbitrum
+- Sepolia (testnet)
+
+Each chain has its own marketplace contract instance.
+
+## Example: Complete Trading Flow
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+import { ethers } from "ethers";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+
+// 1. List an NFT
+const listingId = await client.marketplace.list(
+  castAddress,
+  tokenId,
+  ethers.parseEther("2.0")
+);
+
+// 2. Check listing
+const listing = await client.marketplace.getListing(listingId);
+console.log(`Listed for ${ethers.formatEther(listing.price)} ETH`);
+
+// 3. Another user makes an offer
+// (from different wallet)
+await client.marketplace.makeOffer(
+  listingId,
+  ethers.parseEther("1.8"),
+  BigInt(Date.now() / 1000 + 86400)
+);
+
+// 4. Or buy directly
+await client.marketplace.buy(listingId, listing.price);
+```

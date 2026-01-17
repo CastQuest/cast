@@ -1,0 +1,331 @@
+# AI Agents
+
+CASTQUEST includes autonomous AI agents that automate tasks and enhance user workflows.
+
+## Overview
+
+The agent framework provides:
+- **CASTAgent**: NFT portfolio management
+- **QuestAgent**: Quest recommendations
+- **MarketplaceAgent**: Trading automation
+- **ContentGenerator**: AI-powered content creation
+
+## Installation
+
+```bash
+npm install @castquest/agents
+```
+
+## CASTAgent
+
+Automates CAST NFT operations and portfolio analysis.
+
+### Setup
+
+```typescript
+import { CASTAgent } from "@castquest/agents";
+import { CastQuestClient } from "@castquest/sdk";
+
+const client = CastQuestClient.connectWithSigner(rpcUrl, privateKey, contracts);
+const agent = new CASTAgent(client, process.env.OPENAI_API_KEY);
+```
+
+### Capabilities
+
+#### Mint Automation
+
+```typescript
+const tokenId = await agent.execute("mint", {
+  to: recipientAddress,
+  contentHash: "QmIPFSHash...",
+  royaltyBps: 1000,
+  uri: "ipfs://metadata"
+});
+```
+
+#### Portfolio Analysis
+
+```typescript
+const analysis = await agent.execute("analyze", {
+  creator: creatorAddress
+});
+
+console.log(`Total CASTs: ${analysis.totalCasts}`);
+console.log(`Recommendations:`, analysis.recommendations);
+```
+
+#### Content Updates
+
+```typescript
+await agent.execute("update", {
+  tokenId: 1n,
+  contentHash: "QmNewHash..."
+});
+```
+
+## QuestAgent
+
+Provides quest recommendations and management.
+
+### Setup
+
+```typescript
+import { QuestAgent } from "@castquest/agents";
+
+const questAgent = new QuestAgent(client);
+```
+
+### Capabilities
+
+#### Create Quests
+
+```typescript
+const questId = await questAgent.execute("create", {
+  title: "Complete Tutorial",
+  description: "Finish onboarding",
+  questType: 3,
+  reward: ethers.parseEther("0.1"),
+  deadline: BigInt(Date.now() / 1000 + 86400)
+});
+```
+
+#### Get Recommendations
+
+```typescript
+const recommendations = await questAgent.execute("recommend", {
+  user: userAddress
+});
+
+console.log("Suggested quests:", recommendations.suggested);
+console.log("Is beginner:", recommendations.beginner);
+```
+
+#### Join Quests
+
+```typescript
+await questAgent.execute("join", {
+  questId: 1n
+});
+```
+
+## MarketplaceAgent
+
+Automates trading and provides market analysis.
+
+### Setup
+
+```typescript
+import { MarketplaceAgent } from "@castquest/agents";
+
+const marketAgent = new MarketplaceAgent(client);
+```
+
+### Capabilities
+
+#### Price Analysis
+
+```typescript
+const analysis = await marketAgent.execute("analyze-price", {
+  tokenId: 1n,
+  currentPrice: ethers.parseEther("1.0")
+});
+
+console.log("Suggested price:", analysis.suggestedPrice);
+console.log("Confidence:", analysis.confidence);
+```
+
+#### Automated Listing
+
+```typescript
+const listingId = await marketAgent.execute("list", {
+  nftContract: castAddress,
+  tokenId: 1n,
+  price: ethers.parseEther("1.5")
+});
+```
+
+#### Automated Buying
+
+```typescript
+await marketAgent.execute("buy", {
+  listingId: 1n,
+  price: ethers.parseEther("1.0")
+});
+```
+
+## ContentGenerator
+
+AI-powered content creation for NFTs.
+
+### Setup
+
+```typescript
+import { ContentGenerator } from "@castquest/agents";
+
+const contentGen = new ContentGenerator(client, process.env.OPENAI_API_KEY);
+```
+
+### Capabilities
+
+#### Generate Metadata
+
+```typescript
+const metadata = await contentGen.execute("generate-metadata", {
+  title: "Digital Artwork",
+  type: "Art"
+});
+
+console.log(metadata.name);
+console.log(metadata.description);
+console.log(metadata.attributes);
+```
+
+#### Generate Descriptions
+
+```typescript
+const description = await contentGen.execute("generate-description", {
+  title: "My NFT Collection",
+  context: "A series of abstract digital art"
+});
+```
+
+#### Suggest Tags
+
+```typescript
+const tags = await contentGen.execute("suggest-tags", {
+  title: "3D Model",
+  description: "High-quality 3D character model"
+});
+
+console.log("Tags:", tags); // ["3d", "art", "digital"]
+```
+
+## Agent Base Class
+
+All agents extend the `AgentBase` class:
+
+```typescript
+abstract class AgentBase {
+  protected client: CastQuestClient;
+  protected config: AgentConfig;
+  
+  abstract execute(task: string, params: any): Promise<any>;
+  
+  getCapabilities(): string[];
+  getName(): string;
+  getDescription(): string;
+}
+```
+
+## Configuration
+
+```typescript
+interface AgentConfig {
+  name: string;
+  description: string;
+  capabilities: string[];
+  apiKey?: string;
+}
+```
+
+## Error Handling
+
+```typescript
+try {
+  const result = await agent.execute("task", params);
+} catch (error) {
+  console.error("Agent error:", error.message);
+}
+```
+
+## Best Practices
+
+1. **API Keys**: Store API keys securely in environment variables
+2. **Rate Limits**: Be aware of API rate limits
+3. **Error Handling**: Always wrap agent calls in try-catch
+4. **Cost Monitoring**: Monitor AI API usage and costs
+5. **Testing**: Test agents on testnet before production use
+
+## Advanced Usage
+
+### Custom Agents
+
+Create your own agents by extending `AgentBase`:
+
+```typescript
+import { AgentBase, AgentConfig } from "@castquest/agents";
+
+class CustomAgent extends AgentBase {
+  constructor(client, apiKey) {
+    super(client, {
+      name: "Custom Agent",
+      description: "My custom automation",
+      capabilities: ["custom-task"],
+      apiKey
+    });
+  }
+
+  async execute(task, params) {
+    // Your custom logic here
+  }
+}
+```
+
+### Chaining Agents
+
+```typescript
+// Mint, then list on marketplace
+const tokenId = await castAgent.execute("mint", mintParams);
+await marketAgent.execute("list", {
+  nftContract: castAddress,
+  tokenId,
+  price: ethers.parseEther("1.0")
+});
+```
+
+## Examples
+
+### Complete Automation Flow
+
+```typescript
+import { CASTAgent, ContentGenerator, MarketplaceAgent } from "@castquest/agents";
+
+// 1. Generate content
+const metadata = await contentGen.execute("generate-metadata", {
+  title: "AI Artwork",
+  type: "Digital Art"
+});
+
+// 2. Mint CAST
+const tokenId = await castAgent.execute("mint", {
+  to: myAddress,
+  contentHash: "QmHash...",
+  royaltyBps: 1000,
+  uri: uploadedMetadataUri
+});
+
+// 3. Analyze pricing
+const analysis = await marketAgent.execute("analyze-price", {
+  tokenId,
+  currentPrice: ethers.parseEther("1.0")
+});
+
+// 4. List on marketplace
+await marketAgent.execute("list", {
+  nftContract: castAddress,
+  tokenId,
+  price: BigInt(analysis.suggestedPrice)
+});
+```
+
+## Package API
+
+```typescript
+export { AgentBase } from "./agent-base";
+export { CASTAgent } from "./cast-agent";
+export { QuestAgent } from "./quest-agent";
+export { MarketplaceAgent } from "./marketplace-agent";
+export { ContentGenerator } from "./content-generator";
+```
+
+[View Package Source](https://github.com/castquest/cast/tree/main/packages/agents)

@@ -1,0 +1,137 @@
+# Contract Addresses
+
+Smart contract addresses for all deployed networks.
+
+## Mainnet (Ethereum)
+
+| Contract | Address |
+|----------|---------|
+| CAST | `0x...` |
+| QUEST | `0x...` |
+| MEDIA | `0x...` |
+| FRAM | `0x...` |
+| GAME | `0x...` |
+| CODE | `0x...` |
+| SponsorToken | `0x...` |
+| GovernanceV2 | `0x...` |
+| SubDAOs | `0x...` |
+| L3 | `0x...` |
+| Marketplace | `0x...` |
+| Auctions | `0x...` |
+| Sponsorship | `0x...` |
+
+## Base
+
+| Contract | Address |
+|----------|---------|
+| CAST | `0x...` |
+| QUEST | `0x...` |
+| MEDIA | `0x...` |
+| FRAM | `0x...` |
+| GAME | `0x...` |
+| CODE | `0x...` |
+| SponsorToken | `0x...` |
+| GovernanceV2 | `0x...` |
+| SubDAOs | `0x...` |
+| L3 | `0x...` |
+| Marketplace | `0x...` |
+| Auctions | `0x...` |
+| Sponsorship | `0x...` |
+
+## Arbitrum
+
+| Contract | Address |
+|----------|---------|
+| CAST | `0x...` |
+| QUEST | `0x...` |
+| MEDIA | `0x...` |
+| FRAM | `0x...` |
+| GAME | `0x...` |
+| CODE | `0x...` |
+| SponsorToken | `0x...` |
+| GovernanceV2 | `0x...` |
+| SubDAOs | `0x...` |
+| L3 | `0x...` |
+| Marketplace | `0x...` |
+| Auctions | `0x...` |
+| Sponsorship | `0x...` |
+
+## Sepolia (Testnet)
+
+| Contract | Address |
+|----------|---------|
+| CAST | `0x...` |
+| QUEST | `0x...` |
+| MEDIA | `0x...` |
+| FRAM | `0x...` |
+| GAME | `0x...` |
+| CODE | `0x...` |
+| SponsorToken | `0x...` |
+| GovernanceV2 | `0x...` |
+| SubDAOs | `0x...` |
+| L3 | `0x...` |
+| Marketplace | `0x...` |
+| Auctions | `0x...` |
+| Sponsorship | `0x...` |
+
+## Usage in SDK
+
+```typescript
+import { CastQuestClient } from "@castquest/sdk";
+
+const mainnetAddresses = {
+  cast: "0x...",
+  quest: "0x...",
+  media: "0x...",
+  fram: "0x...",
+  game: "0x...",
+  code: "0x...",
+  sponsorToken: "0x...",
+  governance: "0x...",
+  subDAOs: "0x...",
+  l3: "0x...",
+  marketplace: "0x...",
+  auctions: "0x...",
+  sponsorship: "0x..."
+};
+
+const client = CastQuestClient.connect(
+  "https://mainnet.infura.io/v3/YOUR_KEY",
+  mainnetAddresses
+);
+```
+
+## Deployment
+
+Contracts are deployed using Foundry:
+
+```bash
+cd packages/contracts
+forge script script/Deploy.s.sol:DeployScript \
+  --rpc-url $RPC_URL \
+  --broadcast \
+  --verify
+```
+
+## Verification
+
+All contracts are verified on:
+- Etherscan (Ethereum)
+- Basescan (Base)
+- Arbiscan (Arbitrum)
+
+View source code and interact directly on block explorers.
+
+## Security
+
+All contracts have been:
+- ✅ Audited by [Auditor Name]
+- ✅ Tested with >95% coverage
+- ✅ Deployed with multisig ownership
+- ✅ Time-locked for parameter changes
+
+## Updates
+
+Contract addresses are updated on each deployment. Check this page for the latest addresses.
+
+Last updated: January 17, 2024
