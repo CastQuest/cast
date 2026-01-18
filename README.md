@@ -108,14 +108,15 @@ All documentation lives in the `docs-site/` directory and follows the CASTQUEST 
 - [Core Contracts](docs-site/protocol/core-contracts.mdx)
 - [Emergency Controls](docs-site/protocol/emergency-controls.mdx)
 - [Event Bus](docs-site/protocol/event-bus.mdx)
-- [Fees](docs-site/protocol/fees.mdx)
-- [Governance Lifecycle](docs-site/protocol/governance-lifecycle.mdx)
-- [L3 Factory](docs-site/protocol/l3-factory.mdx)
-- [Multi-chain Sync](docs-site/protocol/multi-chain-sync.mdx)
-- [Privilege Management](docs-site/protocol/privilege-management.mdx)
-- [Token Economics](docs-site/protocol/token-economics.mdx)
-- [Treasury Management](docs-site/protocol/treasury-management.mdx)
-- [Upgradability](docs-site/protocol/upgradability.mdx)
+- [Execution Engine](docs-site/protocol/execution-engine.mdx)
+- [Fee Router](docs-site/protocol/fee-router.mdx)
+- [Governance Engine](docs-site/protocol/governance-engine.mdx)
+- [Oracle Integration](docs-site/protocol/oracle-integration.mdx)
+- [Pause Resume](docs-site/protocol/pause-resume.mdx)
+- [Risk Engine](docs-site/protocol/risk-engine.mdx)
+- [Treasury](docs-site/protocol/treasury.mdx)
+- [Upgrade Strategy](docs-site/protocol/upgrade-strategy.mdx)
+- [Versioning](docs-site/protocol/versioning.mdx)
 
 ---
 
@@ -126,11 +127,12 @@ All documentation lives in the `docs-site/` directory and follows the CASTQUEST 
 - [CAST Token](docs-site/tokens/cast-token.mdx)
 - [Emissions](docs-site/tokens/emissions.mdx)
 - [Fee Tokens](docs-site/tokens/fee-tokens.mdx)
-- [Multi-chain Tokens](docs-site/tokens/multi-chain-tokens.mdx)
+- [Liquidity](docs-site/tokens/liquidity.mdx)
 - [Pricing Oracles](docs-site/tokens/pricing-oracles.mdx)
-- [Quest Token](docs-site/tokens/quest-token.mdx)
-- [Staking](docs-site/tokens/staking.mdx)
-- [Token Standards](docs-site/tokens/token-standards.mdx)
+- [Profile Tokens](docs-site/tokens/profile-tokens.mdx)
+- [Quest Tokens](docs-site/tokens/quest-tokens.mdx)
+- [Reward Tokens](docs-site/tokens/reward-tokens.mdx)
+- [Supply Models](docs-site/tokens/supply-models.mdx)
 - [Vesting](docs-site/tokens/vesting.mdx)
 
 ---
@@ -162,8 +164,8 @@ All documentation lives in the `docs-site/` directory and follows the CASTQUEST 
 - [Listings](docs-site/marketplace/listings.mdx)
 - [Reputation](docs-site/marketplace/reputation.mdx)
 - [Revenue Share](docs-site/marketplace/revenue-share.mdx)
-- [Search and Discovery](docs-site/marketplace/search-and-discovery.mdx)
-- [Seller Flows](docs-site/marketplace/seller-flows.mdx)
+- [Royalties](docs-site/marketplace/royalties.mdx)
+- [Settlement](docs-site/marketplace/settlement.mdx)
 
 ---
 
