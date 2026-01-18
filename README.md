@@ -1,3 +1,73 @@
+## 📚 Documentation
+
+All documentation lives in the `docs-site/` directory.
+
+### Top-level
+
+- [Docs Index](docs-site/index.md)
+- [Sidebar Config](docs-site/sidebar.json)
+
+### Overview
+
+- `docs-site/overview/` — high-level protocol, architecture, migrations, glossary, FAQ
+
+### Protocol
+
+- `docs-site/protocol/` — constitution, governance, multi-chain, L3, SubDAOs, MC, etc.
+
+### Tokens
+
+- `docs-site/tokens/` — CAST, QUEST, MEDIA, FRAM, GAME, CODE, SponsorToken
+
+### Agents
+
+- `docs-site/agents/` — Creation, Frame, Game, Pricing, Auction, Curation, Fraud, Sync, UI, Portfolio, Social Automation
+
+### Marketplace
+
+- `docs-site/marketplace/` — global marketplace, auctions, cross-chain, Solana, sponsor marketplace
+
+### L3
+
+- `docs-site/l3/` — RollupFactory, L3Bridge, L3 governance, L3 marketplace
+
+### SDK
+
+- `docs-site/sdk/` — wallet, media, fram, game, code, marketplace, agents, l3, bridge, governance, profile
+
+### Admin Dashboard
+
+- `docs-site/admin-dashboard/` — audit logs, system health, agent monitoring
+
+### Fees & Treasury
+
+- `docs-site/fees-and-treasury/` — fees, buybacks, treasury, yield
+
+### Frames
+
+- `docs-site/frames/` — Farcaster frames, FRAM flows
+
+### Integrations
+
+- `docs-site/integrations/` — GitHub, Vercel, Netlify, Render, Telegram, Discord, Reddit, X, auth
+
+### SEO & Marketing
+
+- `docs-site/seo-and-marketing/` — SEO engine, geo engine, sitemap, campaigns
+
+### Users & Access
+
+- `docs-site/users-and-access/` — roles, permissions, auth, access control
+
+### Brain Engine / Workers / Quests / Mints / Reference / Risk
+
+- `docs-site/brain-engine/`
+- `docs-site/workers/`
+- `docs-site/quests/`
+- `docs-site/mints/`
+- `docs-site/reference/`
+- `docs-site/risk-and-compliance/`
+
 # CASTQUEST V3 — Autonomous Creative Economy  
 **First Public Stable Release (V1 + V2 + V3 Unified)**
 
@@ -17,123 +87,123 @@ All documentation lives in the `docs-site/` directory and follows the CASTQUEST 
 ---
 
 # **Overview**
-- [What is CASTQUEST?](docs-site/overview/what-is-castquest.md)
-- [Architecture](docs-site/overview/architecture.md)
-- [V1 → V2 Migration](docs-site/overview/v1-to-v2-migration.md)
-- [V2 → V3 Migration](docs-site/overview/v2-to-v3-migration.md)
-- [Tokenomics](docs-site/overview/tokenomics.md)
-- [Glossary](docs-site/overview/glossary.md)
-- [FAQ](docs-site/overview/faq.md)
+- [What is CASTQUEST?](docs-site/overview/what-is-castquest.mdx)
+- [Architecture](docs-site/overview/architecture.mdx)
+- [V1 → V2 Migration](docs-site/overview/v1-to-v2-migration.mdx)
+- [V2 → V3 Migration](docs-site/overview/v2-to-v3-migration.mdx)
+- [Tokenomics](docs-site/overview/tokenomics.mdx)
+- [Glossary](docs-site/overview/glossary.mdx)
+- [FAQ](docs-site/overview/faq.mdx)
 
 ---
 
 # **Protocol**
-- [Protocol Constitution](docs-site/protocol/constitution.md)
-- [AI DAO Constitution](docs-site/protocol/ai-dao-constitution.md)
-- [Governance](docs-site/protocol/governance.md)
-- [Treasury](docs-site/protocol/treasury.md)
-- [Buybacks](docs-site/protocol/buybacks.md)
-- [Fees](docs-site/protocol/fees.md)
-- [MC Calculation](docs-site/protocol/mc-calculation.md)
-- [Multi-chain](docs-site/protocol/multi-chain.md)
-- [Solana Integration](docs-site/protocol/solana-integration.md)
-- [L3 Chains](docs-site/protocol/l3-chains.md)
-- [SubDAOs](docs-site/protocol/subdaos.md)
+- [Protocol Constitution](docs-site/protocol/constitution.mdx)
+- [AI DAO Constitution](docs-site/protocol/ai-dao-constitution.mdx)
+- [Governance](docs-site/protocol/governance.mdx)
+- [Treasury](docs-site/protocol/treasury.mdx)
+- [Buybacks](docs-site/protocol/buybacks.mdx)
+- [Fees](docs-site/protocol/fees.mdx)
+- [MC Calculation](docs-site/protocol/mc-calculation.mdx)
+- [Multi-chain](docs-site/protocol/multi-chain.mdx)
+- [Solana Integration](docs-site/protocol/solana-integration.mdx)
+- [L3 Chains](docs-site/protocol/l3-chains.mdx)
+- [SubDAOs](docs-site/protocol/subdaos.mdx)
 
 ---
 
 # **Tokens**
-- [CAST](docs-site/tokens/cast.md)
-- [QUEST](docs-site/tokens/quest.md)
-- [MEDIA](docs-site/tokens/media.md)
-- [FRAM](docs-site/tokens/fram.md)
-- [GAME](docs-site/tokens/game.md)
-- [CODE](docs-site/tokens/code.md)
-- [SponsorToken](docs-site/tokens/sponsor-token.md)
+- [CAST](docs-site/tokens/cast.mdx)
+- [QUEST](docs-site/tokens/quest.mdx)
+- [MEDIA](docs-site/tokens/media.mdx)
+- [FRAM](docs-site/tokens/fram.mdx)
+- [GAME](docs-site/tokens/game.mdx)
+- [CODE](docs-site/tokens/code.mdx)
+- [SponsorToken](docs-site/tokens/sponsor-token.mdx)
 
 ---
 
 # **Agents**
-- [Agent Overview](docs-site/agents/agent-overview.md)
-- [Creation Agent](docs-site/agents/creation-agent.md)
-- [Frame Agent](docs-site/agents/frame-agent.md)
-- [Game Agent](docs-site/agents/game-agent.md)
-- [Pricing Agent](docs-site/agents/pricing-agent.md)
-- [Auction Agent](docs-site/agents/auction-agent.md)
-- [Curation Agent](docs-site/agents/curation-agent.md)
-- [Fraud Agent](docs-site/agents/fraud-agent.md)
-- [Sync Agent](docs-site/agents/sync-agent.md)
-- [UI Agent](docs-site/agents/ui-agent.md)
-- [Portfolio Agent](docs-site/agents/portfolio-agent.md)
-- [Social Automation Agent](docs-site/agents/social-automation-agent.md)
+- [Agent Overview](docs-site/agents/agent-overview.mdx)
+- [Creation Agent](docs-site/agents/creation-agent.mdx)
+- [Frame Agent](docs-site/agents/frame-agent.mdx)
+- [Game Agent](docs-site/agents/game-agent.mdx)
+- [Pricing Agent](docs-site/agents/pricing-agent.mdx)
+- [Auction Agent](docs-site/agents/auction-agent.mdx)
+- [Curation Agent](docs-site/agents/curation-agent.mdx)
+- [Fraud Agent](docs-site/agents/fraud-agent.mdx)
+- [Sync Agent](docs-site/agents/sync-agent.mdx)
+- [UI Agent](docs-site/agents/ui-agent.mdx)
+- [Portfolio Agent](docs-site/agents/portfolio-agent.mdx)
+- [Social Automation Agent](docs-site/agents/social-automation-agent.mdx)
 
 ---
 
 # **Marketplace**
-- [Marketplace Overview](docs-site/marketplace/marketplace-overview.md)
-- [Listings](docs-site/marketplace/listings.md)
-- [Auctions](docs-site/marketplace/auctions.md)
-- [Cross-chain Marketplace](docs-site/marketplace/cross-chain-marketplace.md)
-- [Solana Marketplace](docs-site/marketplace/solana-marketplace.md)
-- [Sponsor Marketplace](docs-site/marketplace/sponsor-marketplace.md)
-- [Marketplace Flows](docs-site/marketplace/marketplace-flows.md)
+- [Marketplace Overview](docs-site/marketplace/marketplace-overview.mdx)
+- [Listings](docs-site/marketplace/listings.mdx)
+- [Auctions](docs-site/marketplace/auctions.mdx)
+- [Cross-chain Marketplace](docs-site/marketplace/cross-chain-marketplace.mdx)
+- [Solana Marketplace](docs-site/marketplace/solana-marketplace.mdx)
+- [Sponsor Marketplace](docs-site/marketplace/sponsor-marketplace.mdx)
+- [Marketplace Flows](docs-site/marketplace/marketplace-flows.mdx)
 
 ---
 
 # **Builders**
-- [AI Code Builder](docs-site/builders/ai-code-builder.md)
-- [AI Frame Builder](docs-site/builders/ai-frame-builder.md)
-- [AI Game Builder](docs-site/builders/ai-game-builder.md)
-- [AI UI Builder](docs-site/builders/ai-ui-builder.md)
-- [Builder Flows](docs-site/builders/builder-flows.md)
+- [AI Code Builder](docs-site/builders/ai-code-builder.mdx)
+- [AI Frame Builder](docs-site/builders/ai-frame-builder.mdx)
+- [AI Game Builder](docs-site/builders/ai-game-builder.mdx)
+- [AI UI Builder](docs-site/builders/ai-ui-builder.mdx)
+- [Builder Flows](docs-site/builders/builder-flows.mdx)
 
 ---
 
 # **SDK**
-- [SDK Reference](docs-site/sdk/sdk-reference.md)
-- [Wallet](docs-site/sdk/wallet.md)
-- [Media](docs-site/sdk/media.md)
-- [FRAM](docs-site/sdk/fram.md)
-- [Game](docs-site/sdk/game.md)
-- [Code](docs-site/sdk/code.md)
-- [Marketplace](docs-site/sdk/marketplace.md)
-- [Agents](docs-site/sdk/agents.md)
-- [L3](docs-site/sdk/l3.md)
-- [Bridge](docs-site/sdk/bridge.md)
-- [Governance](docs-site/sdk/governance.md)
-- [Profile](docs-site/sdk/profile.md)
+- [SDK Reference](docs-site/sdk/sdk-reference.mdx)
+- [Wallet](docs-site/sdk/wallet.mdx)
+- [Media](docs-site/sdk/media.mdx)
+- [FRAM](docs-site/sdk/fram.mdx)
+- [Game](docs-site/sdk/game.mdx)
+- [Code](docs-site/sdk/code.mdx)
+- [Marketplace](docs-site/sdk/marketplace.mdx)
+- [Agents](docs-site/sdk/agents.mdx)
+- [L3](docs-site/sdk/l3.mdx)
+- [Bridge](docs-site/sdk/bridge.mdx)
+- [Governance](docs-site/sdk/governance.mdx)
+- [Profile](docs-site/sdk/profile.mdx)
 
 ---
 
 # **L3**
-- [L3 Overview](docs-site/l3/l3-overview.md)
-- [L3 Deployment Guide](docs-site/l3/l3-deployment-guide.md)
-- [RollupFactory](docs-site/l3/rollup-factory.md)
-- [L3 Bridge](docs-site/l3/l3-bridge.md)
-- [L3 Marketplace](docs-site/l3/l3-marketplace.md)
-- [L3 Governance](docs-site/l3/l3-governance.md)
+- [L3 Overview](docs-site/l3/l3-overview.mdx)
+- [L3 Deployment Guide](docs-site/l3/l3-deployment-guide.mdx)
+- [RollupFactory](docs-site/l3/rollup-factory.mdx)
+- [L3 Bridge](docs-site/l3/l3-bridge.mdx)
+- [L3 Marketplace](docs-site/l3/l3-marketplace.mdx)
+- [L3 Governance](docs-site/l3/l3-governance.mdx)
 
 ---
 
 # **Integrations**
-- [GitHub](docs-site/integrations/github.md)
-- [Vercel](docs-site/integrations/vercel.md)
-- [Netlify](docs-site/integrations/netlify.md)
-- [Render](docs-site/integrations/render.md)
-- [Telegram](docs-site/integrations/telegram.md)
-- [Discord](docs-site/integrations/discord.md)
-- [Reddit](docs-site/integrations/reddit.md)
-- [X (Twitter)](docs-site/integrations/x.md)
-- [Google Login](docs-site/integrations/google-login.md)
-- [Facebook Login](docs-site/integrations/facebook-login.md)
-- [Wallet Login](docs-site/integrations/wallet-login.md)
+- [GitHub](docs-site/integrations/github.mdx)
+- [Vercel](docs-site/integrations/vercel.mdx)
+- [Netlify](docs-site/integrations/netlify.mdx)
+- [Render](docs-site/integrations/render.mdx)
+- [Telegram](docs-site/integrations/telegram.mdx)
+- [Discord](docs-site/integrations/discord.mdx)
+- [Reddit](docs-site/integrations/reddit.mdx)
+- [X (Twitter)](docs-site/integrations/x.mdx)
+- [Google Login](docs-site/integrations/google-login.mdx)
+- [Facebook Login](docs-site/integrations/facebook-login.mdx)
+- [Wallet Login](docs-site/integrations/wallet-login.mdx)
 
 ---
 
 # **SEO**
-- [SEO Engine](docs-site/seo/seo-engine.md)
-- [Geo Engine](docs-site/seo/geo-engine.md)
-- [Sitemap](docs-site/seo/sitemap.md)
+- [SEO Engine](docs-site/seo/seo-engine.mdx)
+- [Geo Engine](docs-site/seo/geo-engine.mdx)
+- [Sitemap](docs-site/seo/sitemap.mdx)
 
 ---
 
@@ -168,6 +238,8 @@ bots/*             → Farcaster, Reddit, X, Discord, Telegram
 docs-site/         → Full V3 documentation
 infra/             → Deployment + orchestration
 
+Code
+
 ---
 
 # 🛠 Dev Quickstart
@@ -176,8 +248,6 @@ infra/             → Deployment + orchestration
 pnpm install
 pnpm dev:web
 pnpm docs:dev
-
-
 🌐 Deployment
 Testnet: Base Sepolia
 
