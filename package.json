@@ -2,6 +2,11 @@
   "name": "castquest-frames",
   "version": "3.0.0",
   "private": true,
+  "engines": {
+    "node": ">=18.18.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
   "workspaces": [
     "apps/*",
     "packages/*",
@@ -10,10 +15,31 @@
   ],
   "scripts": {
     "dev:web": "next dev apps/web",
-    "build:web": "next build apps/web",
+    "dev:docs": "pnpm --filter @castquest/docs-site dev",
+    "build": "turbo build",
+    "build:protocol": "pnpm --filter @castquest/contracts build && pnpm --filter @castquest/contracts test",
+    "build:sdk": "pnpm --filter @castquest/sdk lint && pnpm --filter @castquest/sdk typecheck && pnpm --filter @castquest/sdk test && pnpm --filter @castquest/sdk build",
+    "build:web": "pnpm --filter @castquest/web lint && pnpm --filter @castquest/web typecheck && pnpm --filter @castquest/web build",
+    "build:dashboard": "pnpm --filter @castquest/web build",
+    "build:infra": "pnpm run validate:docker && pnpm run validate:k8s",
+    "build:docs": "pnpm --filter @castquest/docs-site build",
+    "build:indexer": "pnpm --filter @castquest/indexer build",
+    "build:agents": "pnpm --filter @castquest/agents build",
     "lint": "turbo lint",
     "test": "turbo test",
-    "docs:dev": "vite docs-site",
+    "test:all": "turbo lint test typecheck",
+    "typecheck": "turbo typecheck",
+    "security:scan": "pnpm audit --audit-level=high && pnpm run security:eslint",
+    "security:eslint": "eslint --ext .ts,.tsx,.js,.jsx --max-warnings 0 --config .eslintrc.security.json .",
+    "validate:docker": "docker compose -f infra/docker-compose.yml config > /dev/null && echo 'Docker compose valid'",
+    "validate:k8s": "node infra/scripts/validate-k8s.js",
+    "validate:terraform": "cd infra/terraform && terraform fmt -check && terraform validate",
+    "clean": "turbo clean && rm -rf node_modules .turbo",
     "orchestrate:v3": "pwsh ./infra/Orchestration.ps1"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "turbo": "^1.11.2",
+    "typescript": "^5.3.3"
   }
 }

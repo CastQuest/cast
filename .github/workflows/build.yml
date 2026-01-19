@@ -1,0 +1,195 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to build for'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  build-web:
+    name: Build Web Application
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web application
+        run: pnpm run build:web
+        env:
+          NODE_ENV: production
+
+      - name: Export static site (optional)
+        run: cd apps/web && npx next export || echo "Export skipped"
+        continue-on-error: true
+
+      - name: Upload web build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: |
+            apps/web/.next
+            apps/web/out
+          retention-days: 7
+
+  build-sdk:
+    name: Build SDK
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build SDK
+        run: pnpm run build:sdk
+
+      - name: Upload SDK artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sdk-dist
+          path: packages/sdk/dist
+          retention-days: 7
+
+  build-contracts:
+    name: Build Smart Contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build contracts
+        run: pnpm run build:protocol
+
+      - name: Upload contract artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: contract-artifacts
+          path: |
+            packages/contracts/artifacts
+            packages/contracts/typechain-types
+          retention-days: 30
+
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build documentation
+        run: pnpm run build:docs
+
+      - name: Upload docs artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs-build
+          path: |
+            docs-site/dist
+            docs-site/.vite
+          retention-days: 7
+
+  build-docker:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push web image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./infra/docker/Dockerfile.web
+          push: false
+          tags: ghcr.io/${{ github.repository }}/web:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push indexer image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./infra/docker/Dockerfile.indexer
+          push: false
+          tags: ghcr.io/${{ github.repository }}/indexer:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

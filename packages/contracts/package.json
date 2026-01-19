@@ -1,0 +1,32 @@
+{
+  "name": "@castquest/contracts",
+  "version": "3.0.0",
+  "description": "CASTQUEST V3 Smart Contracts",
+  "private": true,
+  "scripts": {
+    "build": "hardhat compile",
+    "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "deploy:localhost": "hardhat run scripts/deploy.ts --network localhost",
+    "deploy:base": "hardhat run scripts/deploy.ts --network base",
+    "deploy:mainnet": "hardhat run scripts/deploy.ts --network mainnet",
+    "lint": "solhint 'contracts/**/*.sol'",
+    "typecheck": "tsc --noEmit",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@openzeppelin/contracts": "^5.0.1",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/node": "^20.10.0",
+    "ethers": "^6.9.0",
+    "hardhat": "^2.19.4",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solhint": "^4.0.0",
+    "solidity-coverage": "^0.8.5",
+    "typechain": "^8.3.2",
+    "typescript": "^5.3.3"
+  }
+}
