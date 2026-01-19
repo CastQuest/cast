@@ -1,6 +1,6 @@
 # CastQuest Documentation Validation Report
 
-**Generated:** 2026-01-19T08:55:48.898Z  
+**Generated:** 2026-01-19T08:58:13.067Z  
 **Repository:** CastQuest/cast  
 **Purpose:** Non-blocking validation and audit of documentation completeness and accuracy
 
@@ -13,11 +13,11 @@ This report provides a comprehensive audit of the CastQuest monorepo documentati
 ### Coverage Statistics
 
 - **Total Features Inventoried:** 55
-- **Fully Documented:** 5
+- **Fully Documented:** 12
 - **Partially Documented:** 17
-- **Missing Documentation:** 33
-- **Documentation Pages Analyzed:** 235
-- **Completeness Issues Found:** 234
+- **Missing Documentation:** 26
+- **Documentation Pages Analyzed:** 241
+- **Completeness Issues Found:** 236
 - **Consistency Issues Found:** 0
 
 ---
@@ -131,19 +131,19 @@ This report provides a comprehensive audit of the CastQuest monorepo documentati
 | Contract: MediaToken | `packages/contracts/core/` | NONE | **MISSING** |
 | Contract: QuestToken | `packages/contracts/core/` | builders/quest-builder.mdx, frames/frame-quests.mdx... | **FULL** |
 | Contract: UserProfile | `packages/contracts/core/` | NONE | **MISSING** |
-| Contract: BuybackRouter | `packages/contracts/economy/` | NONE | **MISSING** |
-| Contract: FeeManager | `packages/contracts/economy/` | NONE | **MISSING** |
+| Contract: BuybackRouter | `packages/contracts/economy/` | [ROOT]/RELEASE.md | **FULL** |
+| Contract: FeeManager | `packages/contracts/economy/` | [ROOT]/RELEASE.md | **FULL** |
 | Contract: RevenueRouter | `packages/contracts/economy/` | NONE | **MISSING** |
-| Contract: SponsorToken | `packages/contracts/economy/` | NONE | **MISSING** |
+| Contract: SponsorToken | `packages/contracts/economy/` | [ROOT]/README.md, [ROOT]/CHANGELOG.md... | **FULL** |
 | Contract: AIDaoConstitution | `packages/contracts/governance/` | NONE | **MISSING** |
 | Contract: AgentRegistry | `packages/contracts/governance/` | NONE | **MISSING** |
-| Contract: GovernanceV2 | `packages/contracts/governance/` | NONE | **MISSING** |
+| Contract: GovernanceV2 | `packages/contracts/governance/` | [ROOT]/CHANGELOG.md, [ROOT]/RELEASE.md | **FULL** |
 | Contract: SubDAOFactory | `packages/contracts/governance/` | NONE | **MISSING** |
-| Contract: L3Bridge | `packages/contracts/l3/` | NONE | **MISSING** |
-| Contract: RollupFactory | `packages/contracts/l3/` | NONE | **MISSING** |
+| Contract: L3Bridge | `packages/contracts/l3/` | [ROOT]/README.md, [ROOT]/CHANGELOG.md... | **FULL** |
+| Contract: RollupFactory | `packages/contracts/l3/` | [ROOT]/README.md, [ROOT]/CHANGELOG.md... | **FULL** |
 | Contract: AuctionHouse | `packages/contracts/marketplace/` | NONE | **MISSING** |
 | Contract: Marketplace | `packages/contracts/marketplace/` | admin-dashboard/alerts.mdx, admin-dashboard/audit-logs.mdx... | **FULL** |
-| Contract: SponsorMarketplace | `packages/contracts/marketplace/` | NONE | **MISSING** |
+| Contract: SponsorMarketplace | `packages/contracts/marketplace/` | [ROOT]/RELEASE.md | **FULL** |
 | Contract: FarcasterFrameRegistry | `packages/contracts/social/` | NONE | **MISSING** |
 | Contract: SocialAutomationConfig | `packages/contracts/social/` | NONE | **MISSING** |
 | SDK: agents | `/packages/sdk/agents.ts` | sdk/admin-sdk.mdx, sdk/auth.mdx... | **PARTIAL** |
@@ -184,7 +184,7 @@ This report provides a comprehensive audit of the CastQuest monorepo documentati
 
 ## 3. Documentation Completeness Analysis
 
-Found 234 documentation pages with missing sections:
+Found 236 documentation pages with missing sections:
 
 ### admin-dashboard/alerts.mdx
 - **Severity:** HIGH
@@ -267,7 +267,7 @@ Found 234 documentation pages with missing sections:
 - **Missing Sections:** Setup/Installation, Environment Variables, Usage/Runtime, Deployment, Security
 
 
-_... and 214 more pages with missing sections._
+_... and 216 more pages with missing sections._
 
 ---
 
@@ -281,20 +281,20 @@ _... and 214 more pages with missing sections._
 
 ### BLOCKER Priority
 
-❌ **Production Build Steps**: MISSING
-❌ **CI/CD Pipeline Documentation**: MISSING
-⚠️ **Infrastructure Deployment**: PARTIAL (3 mentions)
+✅ **Production Build Steps**: ADEQUATE (8 mentions)
+✅ **CI/CD Pipeline Documentation**: ADEQUATE (31 mentions)
+✅ **Infrastructure Deployment**: ADEQUATE (154 mentions)
 
 ### IMPORTANT Priority
 
-⚠️ **Secret Management**: PARTIAL (2 mentions)
-✅ **Monitoring & Alerting**: ADEQUATE (476 mentions)
-✅ **Upgrade/Migration Guide**: ADEQUATE (254 mentions)
-⚠️ **Disaster Recovery**: PARTIAL (2 mentions)
+✅ **Secret Management**: ADEQUATE (15 mentions)
+✅ **Monitoring & Alerting**: ADEQUATE (485 mentions)
+✅ **Upgrade/Migration Guide**: ADEQUATE (273 mentions)
+✅ **Disaster Recovery**: ADEQUATE (20 mentions)
 
 ### OPTIONAL Priority
 
-⚠️ **Performance Tuning**: PARTIAL (5 mentions)
+✅ **Performance Tuning**: ADEQUATE (15 mentions)
 
 ---
 
@@ -316,21 +316,9 @@ The following documentation pages or sections are recommended:
   - Source: `packages/contracts/core/`
   - Suggested location: `docs-site/protocol/contract-userprofile.mdx`
 
-- [ ] **Contract: BuybackRouter**
-  - Source: `packages/contracts/economy/`
-  - Suggested location: `docs-site/protocol/contract-buybackrouter.mdx`
-
-- [ ] **Contract: FeeManager**
-  - Source: `packages/contracts/economy/`
-  - Suggested location: `docs-site/protocol/contract-feemanager.mdx`
-
 - [ ] **Contract: RevenueRouter**
   - Source: `packages/contracts/economy/`
   - Suggested location: `docs-site/protocol/contract-revenuerouter.mdx`
-
-- [ ] **Contract: SponsorToken**
-  - Source: `packages/contracts/economy/`
-  - Suggested location: `docs-site/protocol/contract-sponsortoken.mdx`
 
 - [ ] **Contract: AIDaoConstitution**
   - Source: `packages/contracts/governance/`
@@ -340,29 +328,13 @@ The following documentation pages or sections are recommended:
   - Source: `packages/contracts/governance/`
   - Suggested location: `docs-site/protocol/contract-agentregistry.mdx`
 
-- [ ] **Contract: GovernanceV2**
-  - Source: `packages/contracts/governance/`
-  - Suggested location: `docs-site/protocol/contract-governancev2.mdx`
-
 - [ ] **Contract: SubDAOFactory**
   - Source: `packages/contracts/governance/`
   - Suggested location: `docs-site/protocol/contract-subdaofactory.mdx`
 
-- [ ] **Contract: L3Bridge**
-  - Source: `packages/contracts/l3/`
-  - Suggested location: `docs-site/protocol/contract-l3bridge.mdx`
-
-- [ ] **Contract: RollupFactory**
-  - Source: `packages/contracts/l3/`
-  - Suggested location: `docs-site/protocol/contract-rollupfactory.mdx`
-
 - [ ] **Contract: AuctionHouse**
   - Source: `packages/contracts/marketplace/`
   - Suggested location: `docs-site/protocol/contract-auctionhouse.mdx`
-
-- [ ] **Contract: SponsorMarketplace**
-  - Source: `packages/contracts/marketplace/`
-  - Suggested location: `docs-site/protocol/contract-sponsormarketplace.mdx`
 
 - [ ] **Contract: FarcasterFrameRegistry**
   - Source: `packages/contracts/social/`
@@ -424,6 +396,18 @@ The following documentation pages or sections are recommended:
   - Source: `/packages/agents/PricingAgent.ts`
   - Suggested location: `docs-site/agents/agent-pricingagent.mdx`
 
+- [ ] **Agent: SocialAutomationAgent**
+  - Source: `/packages/agents/SocialAutomationAgent.ts`
+  - Suggested location: `docs-site/agents/agent-socialautomationagent.mdx`
+
+- [ ] **Agent: SyncAgent**
+  - Source: `/packages/agents/SyncAgent.ts`
+  - Suggested location: `docs-site/agents/agent-syncagent.mdx`
+
+- [ ] **Agent: UiAgent**
+  - Source: `/packages/agents/UiAgent.ts`
+  - Suggested location: `docs-site/agents/agent-uiagent.mdx`
+
 ### Existing Documentation Needing Completion
 
 - [ ] **admin-dashboard/alerts.mdx**
@@ -478,19 +462,19 @@ The following documentation pages or sections are recommended:
 
 ### High Priority
 
-1. **Document missing features** - 33 features lack documentation
+1. **Document missing features** - 26 features lack documentation
 2. **Fix consistency issues** - 0 inconsistencies found
-3. **Complete production readiness docs** - Address 3 blocker items
+3. **Complete production readiness docs** - Address 0 blocker items
 
 ### Medium Priority
 
-1. **Fill in missing sections** - 234 docs need completion
-2. **Enhance important production docs** - 2 items need attention
+1. **Fill in missing sections** - 236 docs need completion
+2. **Enhance important production docs** - 0 items need attention
 3. **Create migration guides** - If not present
 
 ### Low Priority
 
-1. **Add optional production docs** - 1 items
+1. **Add optional production docs** - 0 items
 2. **Improve cross-references** - Link related documentation
 3. **Add code examples** - Especially for SDK modules
 
@@ -511,9 +495,9 @@ The following documentation pages or sections are recommended:
 - **Script:** `scripts/validate-docs.js`
 - **Repository Root:** `/home/runner/work/cast/cast`
 - **Documentation Root:** `/home/runner/work/cast/cast/docs-site`
-- **Analysis Date:** 1/19/2026, 8:55:48 AM
+- **Analysis Date:** 1/19/2026, 8:58:13 AM
 - **Total Features Analyzed:** 55
-- **Total Docs Analyzed:** 235
+- **Total Docs Analyzed:** 241
 
 ---
 

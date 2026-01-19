@@ -273,11 +273,36 @@ function inventoryWorkflows() {
  */
 function findDocumentationFiles() {
   const mdFiles = findFiles(DOCS_SITE, /\.mdx?$/);
-  return mdFiles.map(f => ({
+  
+  // Also include root-level documentation files
+  const rootDocs = [
+    'README.md',
+    'BUILD_DEPLOY.md',
+    'DEPLOYMENT_GUIDE.md',
+    'IMPLEMENTATION_SUMMARY.md',
+    'CHANGELOG.md',
+    'RELEASE.md',
+  ];
+  
+  const docs = mdFiles.map(f => ({
     path: f,
     relativePath: f.replace(DOCS_SITE + '/', ''),
     content: readFile(f),
   }));
+  
+  // Add root docs
+  rootDocs.forEach(doc => {
+    const fullPath = path.join(REPO_ROOT, doc);
+    if (fileExists(fullPath)) {
+      docs.push({
+        path: fullPath,
+        relativePath: `[ROOT]/${doc}`,
+        content: readFile(fullPath),
+      });
+    }
+  });
+  
+  return docs;
 }
 
 /**
