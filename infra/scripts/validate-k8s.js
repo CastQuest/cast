@@ -4,7 +4,6 @@
  * Validates all K8s manifests for syntax and best practices
  */
 
-const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 

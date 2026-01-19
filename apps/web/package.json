@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'No tests yet' && exit 0"
+    "test": "echo 'Tests will be added in future updates' && exit 0"
   },
   "dependencies": {
     "next": "14.0.0",

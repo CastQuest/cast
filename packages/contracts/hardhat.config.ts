@@ -21,7 +21,7 @@ const config: HardhatUserConfig = {
     },
     base: {
       url: process.env.RPC_URL_BASE || "https://mainnet.base.org",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY && process.env.PRIVATE_KEY.match(/^0x[a-fA-F0-9]{64}$/) ? [process.env.PRIVATE_KEY] : [],
       chainId: 8453,
     },
     mainnet: {
@@ -46,7 +46,7 @@ const config: HardhatUserConfig = {
     },
   },
   paths: {
-    sources: "./",
+    sources: "./contracts",
     tests: "./test",
     cache: "./cache",
     artifacts: "./artifacts",

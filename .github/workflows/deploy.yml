@@ -67,6 +67,11 @@ jobs:
           cd infra/terraform
           terraform apply -auto-approve tfplan
 
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f infra/k8s/${{ inputs.environment }}/
@@ -141,18 +146,41 @@ jobs:
         run: pnpm --filter @castquest/contracts build
 
       - name: Deploy to Base
+        id: deploy_base
         if: inputs.environment == 'production'
-        run: pnpm --filter @castquest/contracts deploy:base
+        run: |
+          set -e
+          OUTPUT=$(pnpm --filter @castquest/contracts deploy:base 2>&1 | tee /dev/stderr)
+          # Extract contract addresses from output
+          CAST_TOKEN=$(echo "$OUTPUT" | grep -oP 'CastToken.*?0x[a-fA-F0-9]{40}' | grep -oP '0x[a-fA-F0-9]{40}' | head -n 1 || echo "")
+          QUEST_TOKEN=$(echo "$OUTPUT" | grep -oP 'QuestToken.*?0x[a-fA-F0-9]{40}' | grep -oP '0x[a-fA-F0-9]{40}' | head -n 1 || echo "")
+          MARKETPLACE=$(echo "$OUTPUT" | grep -oP 'Marketplace.*?0x[a-fA-F0-9]{40}' | grep -oP '0x[a-fA-F0-9]{40}' | head -n 1 || echo "")
+          
+          echo "cast_token_address=$CAST_TOKEN" >> "$GITHUB_OUTPUT"
+          echo "quest_token_address=$QUEST_TOKEN" >> "$GITHUB_OUTPUT"
+          echo "marketplace_address=$MARKETPLACE" >> "$GITHUB_OUTPUT"
         env:
           PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
           RPC_URL_BASE: ${{ secrets.RPC_URL_BASE }}
 
       - name: Verify contracts
+        if: inputs.environment == 'production' && steps.deploy_base.outputs.cast_token_address != ''
         run: |
           cd packages/contracts
-          npx hardhat verify --network base $CONTRACT_ADDRESS
+          if [ -n "$CAST_TOKEN" ]; then
+            npx hardhat verify --network base "$CAST_TOKEN" || true
+          fi
+          if [ -n "$QUEST_TOKEN" ]; then
+            npx hardhat verify --network base "$QUEST_TOKEN" || true
+          fi
+          if [ -n "$MARKETPLACE" ]; then
+            npx hardhat verify --network base "$MARKETPLACE" || true
+          fi
         env:
           BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
+          CAST_TOKEN: ${{ steps.deploy_base.outputs.cast_token_address }}
+          QUEST_TOKEN: ${{ steps.deploy_base.outputs.quest_token_address }}
+          MARKETPLACE: ${{ steps.deploy_base.outputs.marketplace_address }}
         continue-on-error: true
 
   deploy-docs:

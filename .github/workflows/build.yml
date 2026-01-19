@@ -42,17 +42,11 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Export static site (optional)
-        run: cd apps/web && npx next export || echo "Export skipped"
-        continue-on-error: true
-
       - name: Upload web build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: web-build
-          path: |
-            apps/web/.next
-            apps/web/out
+          path: apps/web/.next
           retention-days: 7
 
   build-sdk:

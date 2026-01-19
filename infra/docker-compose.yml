@@ -47,7 +47,7 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_USER=castquest
-      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_PASSWORD=CHANGE_THIS_PASSWORD
       - POSTGRES_DB=castquest_prod
     volumes:
       - postgres_data:/var/lib/postgresql/data

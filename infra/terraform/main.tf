@@ -196,7 +196,7 @@ resource "aws_iam_role" "github_actions" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
+          Federated = aws_iam_openid_connect_provider.github.arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
@@ -217,6 +217,94 @@ resource "aws_iam_role" "github_actions" {
 }
 
 data "aws_caller_identity" "current" {}
+
+# GitHub OIDC Provider
+resource "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = [
+    "6938fd4d98bab03faadb97b34396831e3780aea1",
+    "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
+  ]
+
+  tags = {
+    Name = "GitHub Actions OIDC Provider"
+  }
+}
+
+# IAM Policy for GitHub Actions
+resource "aws_iam_role_policy" "github_actions_deploy" {
+  name = "${var.project_name}-github-actions-deploy"
+  role = aws_iam_role.github_actions.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowECRAuth"
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowECRPush"
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:CompleteLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+        Resource = [
+          aws_ecr_repository.web.arn,
+          aws_ecr_repository.indexer.arn
+        ]
+      },
+      {
+        Sid    = "AllowS3Deploy"
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:PutObjectAcl",
+          "s3:DeleteObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          aws_s3_bucket.assets.arn,
+          "${aws_s3_bucket.assets.arn}/*"
+        ]
+      },
+      {
+        Sid    = "AllowCloudFrontInvalidation"
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateInvalidation",
+          "cloudfront:GetInvalidation"
+        ]
+        Resource = aws_cloudfront_distribution.cdn.arn
+      },
+      {
+        Sid    = "AllowSecretsAccess"
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+        Resource = aws_secretsmanager_secret.app_secrets.arn
+      }
+    ]
+  })
+}
 
 # Outputs
 output "s3_bucket_name" {

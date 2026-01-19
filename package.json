@@ -31,7 +31,7 @@
     "typecheck": "turbo typecheck",
     "security:scan": "pnpm audit --audit-level=high && pnpm run security:eslint",
     "security:eslint": "eslint --ext .ts,.tsx,.js,.jsx --max-warnings 0 --config .eslintrc.security.json .",
-    "validate:docker": "docker compose -f infra/docker-compose.yml config > /dev/null && echo 'Docker compose valid'",
+    "validate:docker": "docker compose -f infra/docker-compose.yml config > /dev/null",
     "validate:k8s": "node infra/scripts/validate-k8s.js",
     "validate:terraform": "cd infra/terraform && terraform fmt -check && terraform validate",
     "clean": "turbo clean && rm -rf node_modules .turbo",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "eslint": "^8.55.0",
+    "eslint-plugin-security": "^2.1.0",
     "turbo": "^1.11.2",
     "typescript": "^5.3.3"
   }
