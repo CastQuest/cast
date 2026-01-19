@@ -1,0 +1,262 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      component:
+        description: 'Component to deploy'
+        required: true
+        type: choice
+        options:
+          - all
+          - web
+          - contracts
+          - docs
+          - infra
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-infra:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+    if: inputs.component == 'infra' || inputs.component == 'all'
+    environment:
+      name: ${{ inputs.environment }}
+      url: https://${{ inputs.environment }}.castquest.io
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Terraform Init
+        run: |
+          cd infra/terraform
+          terraform init
+
+      - name: Terraform Plan
+        run: |
+          cd infra/terraform
+          terraform plan -out=tfplan
+        env:
+          TF_VAR_environment: ${{ inputs.environment }}
+
+      - name: Terraform Apply
+        if: github.event.inputs.environment == 'production'
+        run: |
+          cd infra/terraform
+          terraform apply -auto-approve tfplan
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f infra/k8s/${{ inputs.environment }}/
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
+  deploy-web:
+    name: Deploy Web Application
+    runs-on: ubuntu-latest
+    if: inputs.component == 'web' || inputs.component == 'all'
+    needs: [deploy-infra]
+    environment:
+      name: ${{ inputs.environment }}
+      url: https://${{ inputs.environment == 'production' && 'castquest.io' || 'staging.castquest.io' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web application
+        run: pnpm run build:web
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_ENV: ${{ inputs.environment }}
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ inputs.environment == 'production' && '--prod' || '' }}
+
+  deploy-contracts:
+    name: Deploy Smart Contracts
+    runs-on: ubuntu-latest
+    if: inputs.component == 'contracts'
+    environment:
+      name: ${{ inputs.environment }}-contracts
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile contracts
+        run: pnpm --filter @castquest/contracts build
+
+      - name: Deploy to Base
+        id: deploy_base
+        if: inputs.environment == 'production'
+        run: |
+          set -e
+          OUTPUT=$(pnpm --filter @castquest/contracts deploy:base 2>&1 | tee /dev/stderr)
+          # Extract contract addresses from output
+          CAST_TOKEN=$(echo "$OUTPUT" | grep -oP 'CastToken.*?0x[a-fA-F0-9]{40}' | grep -oP '0x[a-fA-F0-9]{40}' | head -n 1 || echo "")
+          QUEST_TOKEN=$(echo "$OUTPUT" | grep -oP 'QuestToken.*?0x[a-fA-F0-9]{40}' | grep -oP '0x[a-fA-F0-9]{40}' | head -n 1 || echo "")
+          MARKETPLACE=$(echo "$OUTPUT" | grep -oP 'Marketplace.*?0x[a-fA-F0-9]{40}' | grep -oP '0x[a-fA-F0-9]{40}' | head -n 1 || echo "")
+          
+          echo "cast_token_address=$CAST_TOKEN" >> "$GITHUB_OUTPUT"
+          echo "quest_token_address=$QUEST_TOKEN" >> "$GITHUB_OUTPUT"
+          echo "marketplace_address=$MARKETPLACE" >> "$GITHUB_OUTPUT"
+        env:
+          PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          RPC_URL_BASE: ${{ secrets.RPC_URL_BASE }}
+
+      - name: Verify contracts
+        if: inputs.environment == 'production' && steps.deploy_base.outputs.cast_token_address != ''
+        run: |
+          cd packages/contracts
+          if [ -n "$CAST_TOKEN" ]; then
+            npx hardhat verify --network base "$CAST_TOKEN" || true
+          fi
+          if [ -n "$QUEST_TOKEN" ]; then
+            npx hardhat verify --network base "$QUEST_TOKEN" || true
+          fi
+          if [ -n "$MARKETPLACE" ]; then
+            npx hardhat verify --network base "$MARKETPLACE" || true
+          fi
+        env:
+          BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
+          CAST_TOKEN: ${{ steps.deploy_base.outputs.cast_token_address }}
+          QUEST_TOKEN: ${{ steps.deploy_base.outputs.quest_token_address }}
+          MARKETPLACE: ${{ steps.deploy_base.outputs.marketplace_address }}
+        continue-on-error: true
+
+  deploy-docs:
+    name: Deploy Documentation
+    runs-on: ubuntu-latest
+    if: inputs.component == 'docs' || inputs.component == 'all'
+    environment:
+      name: ${{ inputs.environment }}-docs
+      url: https://docs.castquest.io
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build documentation
+        run: pnpm run build:docs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-site/dist
+          cname: docs.castquest.io
+
+  publish-sdk:
+    name: Publish SDK
+    runs-on: ubuntu-latest
+    if: inputs.component == 'all' && inputs.environment == 'production'
+    environment:
+      name: npm-registry
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build SDK
+        run: pnpm run build:sdk
+
+      - name: Publish to npm (dry run)
+        run: |
+          cd packages/sdk
+          npm publish --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Uncomment when ready to publish
+      # - name: Publish to npm
+      #   run: |
+      #     cd packages/sdk
+      #     npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

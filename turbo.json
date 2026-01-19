@@ -1,28 +1,57 @@
 {
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
   "pipeline": {
-    "web#dev": {
-      "dependsOn": [],
-      "outputs": []
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "artifacts/**",
+        ".vite/**"
+      ]
     },
     "web#build": {
-      "dependsOn": [],
-      "outputs": ["apps/web/.next/**"]
+      "dependsOn": ["^build"],
+      "outputs": ["apps/web/.next/**", "!apps/web/.next/cache/**"]
     },
     "contracts#build": {
       "dependsOn": [],
-      "outputs": ["packages/contracts/artifacts/**"]
+      "outputs": ["packages/contracts/artifacts/**", "packages/contracts/typechain-types/**"]
     },
     "sdk#build": {
-      "dependsOn": [],
+      "dependsOn": ["^build"],
       "outputs": ["packages/sdk/dist/**"]
     },
-    "bots#build": {
+    "indexer#build": {
       "dependsOn": [],
-      "outputs": []
+      "outputs": ["packages/indexer/dist/**"]
+    },
+    "agents#build": {
+      "dependsOn": [],
+      "outputs": ["packages/agents/dist/**"]
     },
     "docs-site#build": {
       "dependsOn": [],
-      "outputs": ["docs-site/.vite/**"]
+      "outputs": ["docs-site/dist/**", "docs-site/.vite/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
     }
   }
 }

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'Tests will be added in future updates' && exit 0"
   },
   "dependencies": {
     "next": "14.0.0",
@@ -14,6 +16,11 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.0.0",
+    "eslint": "^8.55.0",
+    "eslint-config-next": "14.0.0"
   }
 }

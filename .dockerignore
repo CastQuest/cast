@@ -1,0 +1,62 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+out
+dist
+build
+*.tsbuildinfo
+
+# Artifacts
+packages/contracts/artifacts
+packages/contracts/cache
+packages/contracts/typechain
+packages/sdk/dist
+docs-site/.vite
+docs-site/dist
+
+# Testing
+coverage
+.nyc_output
+
+# Environment files
+.env
+.env*.local
+.env.production
+.env.staging
+
+# Logs
+logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+docs-site
+
+# CI/CD
+.turbo
+
+# Backup
+backup
+
+# Scripts that aren't needed in container
+*.ps1
