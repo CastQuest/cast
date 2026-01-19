@@ -1,6 +1,6 @@
 # CastQuest Documentation Validation Report
 
-**Generated:** 2026-01-19T08:58:13.067Z  
+**Generated:** 2026-01-19T08:59:43.919Z  
 **Repository:** CastQuest/cast  
 **Purpose:** Non-blocking validation and audit of documentation completeness and accuracy
 
@@ -495,7 +495,7 @@ The following documentation pages or sections are recommended:
 - **Script:** `scripts/validate-docs.js`
 - **Repository Root:** `/home/runner/work/cast/cast`
 - **Documentation Root:** `/home/runner/work/cast/cast/docs-site`
-- **Analysis Date:** 1/19/2026, 8:58:13 AM
+- **Analysis Date:** 1/19/2026, 8:59:43 AM
 - **Total Features Analyzed:** 55
 - **Total Docs Analyzed:** 241
 
