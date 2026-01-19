@@ -186,36 +186,6 @@ resource "aws_ecr_repository" "indexer" {
   }
 }
 
-# IAM Role for OIDC (GitHub Actions)
-resource "aws_iam_role" "github_actions" {
-  name = "${var.project_name}-github-actions"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = aws_iam_openid_connect_provider.github.arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          }
-          StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:CastQuest/cast:*"
-          }
-        }
-      }
-    ]
-  })
-
-  tags = {
-    Name = "GitHub Actions Role"
-  }
-}
-
 data "aws_caller_identity" "current" {}
 
 # GitHub OIDC Provider
@@ -234,76 +204,6 @@ resource "aws_iam_openid_connect_provider" "github" {
   tags = {
     Name = "GitHub Actions OIDC Provider"
   }
-}
-
-# IAM Policy for GitHub Actions
-resource "aws_iam_role_policy" "github_actions_deploy" {
-  name = "${var.project_name}-github-actions-deploy"
-  role = aws_iam_role.github_actions.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowECRAuth"
-        Effect = "Allow"
-        Action = [
-          "ecr:GetAuthorizationToken"
-        ]
-        Resource = "*"
-      },
-      {
-        Sid    = "AllowECRPush"
-        Effect = "Allow"
-        Action = [
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:CompleteLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:InitiateLayerUpload",
-          "ecr:PutImage",
-          "ecr:BatchGetImage",
-          "ecr:GetDownloadUrlForLayer"
-        ]
-        Resource = [
-          aws_ecr_repository.web.arn,
-          aws_ecr_repository.indexer.arn
-        ]
-      },
-      {
-        Sid    = "AllowS3Deploy"
-        Effect = "Allow"
-        Action = [
-          "s3:PutObject",
-          "s3:PutObjectAcl",
-          "s3:DeleteObject",
-          "s3:GetObject",
-          "s3:ListBucket"
-        ]
-        Resource = [
-          aws_s3_bucket.assets.arn,
-          "${aws_s3_bucket.assets.arn}/*"
-        ]
-      },
-      {
-        Sid    = "AllowCloudFrontInvalidation"
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation"
-        ]
-        Resource = aws_cloudfront_distribution.cdn.arn
-      },
-      {
-        Sid    = "AllowSecretsAccess"
-        Effect = "Allow"
-        Action = [
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret"
-        ]
-        Resource = aws_secretsmanager_secret.app_secrets.arn
-      }
-    ]
-  })
 }
 
 # Outputs
