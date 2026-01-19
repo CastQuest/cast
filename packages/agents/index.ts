@@ -6,6 +6,8 @@ export async function startAgents() {
   // Agent implementation will be added here
 }
 
-if (require.main === module) {
+// Only run if this is the main module
+const isMainModule = require.main === module;
+if (isMainModule) {
   startAgents().catch(console.error);
 }

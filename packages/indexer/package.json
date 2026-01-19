@@ -2,7 +2,6 @@
   "name": "@castquest/indexer",
   "version": "3.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch --tsconfig tsconfig.json .",
