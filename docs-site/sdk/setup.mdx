@@ -1,0 +1,273 @@
+---
+title: "SDK Setup & Installation"
+section: "sdk"
+slug: "setup"
+tags: ["sdk", "setup", "installation"]
+weight: 1
+navOrder: 1
+---
+
+# SDK Setup & Installation
+
+> CASTQUEST V3 — SDK Setup Guide
+
+## Overview
+
+The CASTQUEST SDK (`@castquest/sdk`) is a TypeScript/JavaScript library for interacting with the CASTQUEST V3 protocol. It provides a unified interface for wallet operations, marketplace interactions, frame management, and more.
+
+**Code Path:** `packages/sdk/`
+
+## Prerequisites
+
+Before installing the SDK, ensure you have:
+
+- **Node.js**: >= 18.18.0 (check with `node --version`)
+- **Package Manager**: npm, yarn, or pnpm
+- **TypeScript**: >= 5.3.3 (for TypeScript projects)
+
+## Installation
+
+### Using npm
+
+```bash
+npm install @castquest/sdk
+```
+
+### Using pnpm
+
+```bash
+pnpm add @castquest/sdk
+```
+
+### Using yarn
+
+```bash
+yarn add @castquest/sdk
+```
+
+## Environment Variables
+
+The SDK requires the following environment variables for full functionality:
+
+### Required
+
+- **`CASTQUEST_API_KEY`**: API key for authenticated requests
+  - Obtain from: https://app.castquest.io/settings/api-keys
+  - Example: `cq_live_1234567890abcdef`
+
+- **`CASTQUEST_NETWORK`**: Target network for SDK operations
+  - Options: `mainnet`, `testnet`, `local`
+  - Default: `mainnet`
+
+### Optional
+
+- **`CASTQUEST_RPC_URL`**: Custom RPC endpoint
+  - Overrides default network RPC
+  - Example: `https://mainnet.base.org`
+
+- **`CASTQUEST_CHAIN_ID`**: Custom chain ID
+  - Default: 8453 (Base mainnet)
+  - Testnet: 84532 (Base Sepolia)
+
+### Example `.env` file
+
+```bash
+# Required
+CASTQUEST_API_KEY=cq_live_1234567890abcdef
+CASTQUEST_NETWORK=mainnet
+
+# Optional
+CASTQUEST_RPC_URL=https://mainnet.base.org
+CASTQUEST_CHAIN_ID=8453
+```
+
+## Basic Setup
+
+### TypeScript Setup
+
+```typescript
+import { CastQuestSDK } from '@castquest/sdk';
+
+const sdk = new CastQuestSDK({
+  apiKey: process.env.CASTQUEST_API_KEY,
+  network: process.env.CASTQUEST_NETWORK as 'mainnet' | 'testnet',
+  chainId: parseInt(process.env.CASTQUEST_CHAIN_ID || '8453'),
+});
+
+// Initialize modules
+const { wallet, marketplace, agents } = sdk;
+```
+
+### JavaScript Setup
+
+```javascript
+const { CastQuestSDK } = require('@castquest/sdk');
+
+const sdk = new CastQuestSDK({
+  apiKey: process.env.CASTQUEST_API_KEY,
+  network: process.env.CASTQUEST_NETWORK || 'mainnet',
+});
+
+// Use SDK modules
+sdk.wallet.getBalance(address).then(console.log);
+```
+
+## Available Modules
+
+The SDK exports the following modules (see `packages/sdk/index.ts`):
+
+- **`wallet`**: Wallet operations and balance management
+- **`media`**: Media token operations
+- **`fram`**: Frame token and Farcaster integration
+- **`game`**: Game token and mechanics
+- **`code`**: Code token and builder operations
+- **`marketplace`**: Marketplace listings and transactions
+- **`agents`**: AI agent interactions
+- **`l3`**: Layer 3 operations
+- **`bridge`**: Cross-chain bridging
+- **`governance`**: Governance and voting
+- **`profile`**: User profile management
+
+## Build & Development
+
+### Building the SDK
+
+```bash
+# From repository root
+pnpm --filter @castquest/sdk build
+
+# From packages/sdk directory
+pnpm run build
+```
+
+**Build Output:** `packages/sdk/dist/`
+- `index.js` - CommonJS bundle
+- `index.mjs` - ES Module bundle
+- `index.d.ts` - TypeScript declarations
+
+### Running Tests
+
+```bash
+# From repository root
+pnpm --filter @castquest/sdk test
+
+# From packages/sdk directory
+pnpm run test
+```
+
+### Type Checking
+
+```bash
+pnpm --filter @castquest/sdk typecheck
+```
+
+### Development Mode
+
+Watch mode for automatic rebuilds:
+
+```bash
+pnpm --filter @castquest/sdk dev
+```
+
+## Deployment
+
+### Publishing to npm
+
+The SDK is published to npm as `@castquest/sdk`:
+
+```bash
+# Ensure you're logged in
+npm login
+
+# Publish (from packages/sdk)
+npm publish --access public
+```
+
+**Version Management:**
+- Follow semantic versioning (semver)
+- Update version in `package.json` before publishing
+- Tag releases in git: `git tag v3.0.0`
+
+### CDN Usage
+
+The SDK can be used via CDN for quick prototyping:
+
+```html
+<script type="module">
+  import { CastQuestSDK } from 'https://cdn.jsdelivr.net/npm/@castquest/sdk@3/+esm';
+  
+  const sdk = new CastQuestSDK({ network: 'mainnet' });
+</script>
+```
+
+## Security Best Practices
+
+### API Key Management
+
+- **Never commit API keys** to version control
+- Use environment variables or secure vaults
+- Rotate keys regularly (every 90 days recommended)
+- Use different keys for dev/staging/production
+
+### Rate Limiting
+
+The SDK implements automatic rate limiting:
+- Default: 100 requests per minute
+- Authenticated: 1000 requests per minute
+- Exceeding limits returns 429 status code
+
+### Error Handling
+
+Always wrap SDK calls in try-catch blocks:
+
+```typescript
+try {
+  const balance = await sdk.wallet.getBalance(address);
+  console.log('Balance:', balance);
+} catch (error) {
+  if (error.code === 'RATE_LIMIT_EXCEEDED') {
+    // Handle rate limit
+  } else if (error.code === 'INVALID_API_KEY') {
+    // Handle auth error
+  }
+  console.error('SDK Error:', error.message);
+}
+```
+
+### Secure Communication
+
+- All API calls use HTTPS
+- TLS 1.2+ required
+- Certificate pinning available for mobile apps
+
+## Troubleshooting
+
+### Common Issues
+
+**"Invalid API key" error:**
+- Verify `CASTQUEST_API_KEY` is set correctly
+- Check key hasn't expired
+- Ensure key has required permissions
+
+**"Network not supported" error:**
+- Verify `CASTQUEST_NETWORK` value
+- Check chain ID matches network
+- Confirm RPC endpoint is accessible
+
+**Build failures:**
+- Clear node_modules: `rm -rf node_modules && pnpm install`
+- Ensure TypeScript version >= 5.3.3
+- Check for conflicting dependencies
+
+## Next Steps
+
+- [API Reference](/sdk/api-reference) - Complete SDK method documentation
+- [TypeScript Examples](/sdk/typescript-examples) - Code examples
+- [Authentication](/sdk/auth) - Authentication patterns
+- [Testing Guide](/sdk/testing) - Testing SDK integrations
+
+## Support
+
+- **GitHub Issues**: https://github.com/CastQuest/cast/issues
+- **Documentation**: https://docs.castquest.io/sdk
+- **Discord**: https://discord.gg/castquest

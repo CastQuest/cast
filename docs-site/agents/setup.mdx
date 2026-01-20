@@ -1,0 +1,424 @@
+---
+title: "Agents Setup & Configuration"
+section: "agents"
+slug: "setup"
+tags: ["agents", "setup", "ai"]
+weight: 1
+navOrder: 1
+---
+
+# Agents Setup & Configuration
+
+> CASTQUEST V3 — AI Agents Setup Guide
+
+## Overview
+
+The CASTQUEST Agents service (`@castquest/agents`) provides autonomous AI agents that perform various protocol operations including pricing, curation, fraud detection, and social automation.
+
+**Code Path:** `packages/agents/`
+
+## Prerequisites
+
+Before setting up the agents service:
+
+- **Node.js**: >= 18.18.0
+- **TypeScript**: >= 5.3.3
+- **OpenAI API Access**: For AI capabilities
+- **Database**: PostgreSQL for agent state
+- **Redis**: For job queuing and caching
+
+## Installation
+
+### From Repository Root
+
+```bash
+# Install all dependencies
+pnpm install
+
+# Build agents package
+pnpm --filter @castquest/agents build
+```
+
+### From Agents Directory
+
+```bash
+cd packages/agents
+pnpm install
+pnpm run build
+```
+
+## Environment Variables
+
+### Required Variables
+
+Configure these environment variables for agents to function:
+
+#### AI Service API Keys
+
+- **`OPENAI_API_KEY`**: OpenAI API key for GPT models
+  - Obtain from: https://platform.openai.com/api-keys
+  - Example: `sk-proj-...`
+  - Used by: All agents for language processing
+
+- **`ANTHROPIC_API_KEY`**: Anthropic Claude API key
+  - Obtain from: https://console.anthropic.com/
+  - Example: `sk-ant-...`
+  - Used by: CreationAgent, CurationAgent
+
+- **`REPLICATE_API_KEY`**: Replicate API key for image generation
+  - Obtain from: https://replicate.com/account/api-tokens
+  - Example: `r8_...`
+  - Used by: GameAgent, FrameAgent
+
+#### Database Configuration
+
+- **`DATABASE_URL`**: PostgreSQL connection string
+  - Format: `postgresql://user:password@host:5432/database`
+  - Example: `postgresql://castquest:secret@localhost:5432/castquest`
+  - Used for: Agent state, job history, results storage
+
+- **`REDIS_URL`**: Redis connection string
+  - Format: `redis://host:port`
+  - Example: `redis://localhost:6379`
+  - Used for: Job queue, caching, rate limiting
+
+#### Network Configuration
+
+- **`BASE_RPC_URL`**: Base network RPC endpoint
+  - Example: `https://mainnet.base.org`
+  - Required for: On-chain data access
+
+- **`ETHEREUM_RPC_URL`**: Ethereum mainnet RPC endpoint
+  - Example: `https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY`
+  - Optional: For cross-chain operations
+
+### Optional Variables
+
+- **`AGENTS_PORT`**: HTTP port for agents API (default: 3001)
+- **`AGENTS_LOG_LEVEL`**: Logging level (default: 'info')
+  - Options: 'debug', 'info', 'warn', 'error'
+- **`AGENTS_CONCURRENCY`**: Max concurrent agent executions (default: 5)
+- **`AGENTS_TIMEOUT`**: Agent execution timeout in ms (default: 300000)
+
+### Example `.env` file
+
+```bash
+# AI Service Keys
+OPENAI_API_KEY=sk-proj-1234567890abcdef
+ANTHROPIC_API_KEY=sk-ant-1234567890abcdef
+REPLICATE_API_KEY=r8_1234567890abcdef
+
+# Database
+DATABASE_URL=postgresql://castquest:password@localhost:5432/castquest
+REDIS_URL=redis://localhost:6379
+
+# Network
+BASE_RPC_URL=https://mainnet.base.org
+ETHEREUM_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY
+
+# Optional
+AGENTS_PORT=3001
+AGENTS_LOG_LEVEL=info
+AGENTS_CONCURRENCY=5
+AGENTS_TIMEOUT=300000
+```
+
+## Agent Types
+
+The following agents are available (see `packages/agents/index.ts`):
+
+### 1. **CreationAgent** (`packages/agents/CreationAgent.ts`)
+   - Generates creative content (text, images)
+   - Validates content quality
+   - Applies protocol guidelines
+
+### 2. **PricingAgent** (`packages/agents/PricingAgent.ts`)
+   - Dynamic pricing for marketplace items
+   - Market analysis and trends
+   - Price recommendations
+
+### 3. **CurationAgent** (`packages/agents/CurationAgent.ts`)
+   - Content discovery and ranking
+   - Quality assessment
+   - Trend identification
+
+### 4. **FraudAgent** (`packages/agents/FraudAgent.ts`)
+   - Detects fraudulent activity
+   - Pattern analysis
+   - Risk scoring
+
+### 5. **AuctionAgent** (`packages/agents/AuctionAgent.ts`)
+   - Automated bidding strategies
+   - Auction monitoring
+   - Price optimization
+
+### 6. **FrameAgent** (`packages/agents/FrameAgent.ts`)
+   - Farcaster frame generation
+   - Frame validation
+   - Metadata optimization
+
+### 7. **GameAgent** (`packages/agents/GameAgent.ts`)
+   - Game asset generation
+   - Balance testing
+   - Gameplay optimization
+
+### 8. **SyncAgent** (`packages/agents/SyncAgent.ts`)
+   - Cross-chain synchronization
+   - State consistency checks
+   - Data reconciliation
+
+### 9. **UiAgent** (`packages/agents/UiAgent.ts`)
+   - UI component generation
+   - Layout optimization
+   - Accessibility checks
+
+### 10. **PortfolioAgent** (`packages/agents/PortfolioAgent.ts`)
+   - Portfolio analysis
+   - Investment recommendations
+   - Risk assessment
+
+### 11. **SocialAutomationAgent** (`packages/agents/SocialAutomationAgent.ts`)
+   - Social media posting
+   - Engagement tracking
+   - Community management
+
+## Build & Development
+
+### Building
+
+```bash
+# From repository root
+pnpm --filter @castquest/agents build
+
+# From agents directory
+pnpm run build
+```
+
+**Build Output:** `packages/agents/dist/` (TypeScript compiled to JavaScript)
+
+### Running in Development
+
+```bash
+# Watch mode with auto-reload
+pnpm --filter @castquest/agents dev
+
+# Or from agents directory
+pnpm run dev
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+pnpm --filter @castquest/agents test
+
+# Watch mode
+pnpm --filter @castquest/agents test:watch
+```
+
+### Type Checking
+
+```bash
+pnpm --filter @castquest/agents typecheck
+```
+
+## Deployment
+
+### Docker Deployment
+
+Agents can be deployed using Docker:
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY packages/agents/package.json ./
+COPY packages/agents/dist ./dist
+
+RUN npm install --production
+
+EXPOSE 3001
+
+CMD ["node", "dist/index.js"]
+```
+
+Build and run:
+
+```bash
+docker build -t castquest-agents -f infra/docker/Dockerfile.agents .
+docker run -p 3001:3001 --env-file .env castquest-agents
+```
+
+### Kubernetes Deployment
+
+Deploy to Kubernetes using provided manifests:
+
+```bash
+# Apply staging deployment
+kubectl apply -f infra/k8s/staging/agents-deployment.yaml
+
+# Apply production deployment
+kubectl apply -f infra/k8s/production/agents-deployment.yaml
+```
+
+### Process Management
+
+For production deployment without containers:
+
+```bash
+# Using PM2
+pm2 start packages/agents/dist/index.js --name castquest-agents
+
+# Using systemd
+sudo systemctl start castquest-agents
+```
+
+## Security
+
+### API Key Security
+
+- **Never commit API keys** to version control
+- Use secrets management (AWS Secrets Manager, HashiCorp Vault)
+- Rotate keys every 90 days
+- Monitor API usage for anomalies
+
+### Rate Limiting
+
+AI service providers have rate limits:
+- OpenAI: 3,500 requests/min (varies by tier)
+- Anthropic: 1,000 requests/min
+- Replicate: 500 requests/min
+
+The agents service implements:
+- Request queuing with Redis
+- Exponential backoff on rate limit errors
+- Fair distribution across agent types
+
+### Input Validation
+
+All agent inputs are validated:
+- Content length limits
+- Sanitization of user input
+- Schema validation
+- Timeout enforcement
+
+### Secrets Management
+
+Example using AWS Secrets Manager:
+
+```typescript
+import { SecretsManager } from 'aws-sdk';
+
+const secretsManager = new SecretsManager();
+const secret = await secretsManager.getSecretValue({
+  SecretId: 'castquest/agents/api-keys'
+}).promise();
+
+const apiKeys = JSON.parse(secret.SecretString);
+```
+
+### Network Security
+
+- All API calls use HTTPS/TLS
+- Validate SSL certificates
+- Use VPC endpoints for AWS services
+- Implement firewall rules (allow only necessary ports)
+
+## Monitoring & Observability
+
+### Health Checks
+
+Agents expose health check endpoints:
+
+```bash
+curl http://localhost:3001/health
+```
+
+Response:
+```json
+{
+  "status": "healthy",
+  "agents": {
+    "creation": "running",
+    "pricing": "running",
+    "fraud": "running"
+  },
+  "dependencies": {
+    "database": "connected",
+    "redis": "connected",
+    "openai": "accessible"
+  }
+}
+```
+
+### Metrics
+
+Key metrics to monitor:
+- Agent execution time (p50, p95, p99)
+- Success/failure rates per agent type
+- API rate limit hits
+- Queue depth
+- Database connection pool usage
+
+### Logging
+
+Configure structured logging:
+
+```typescript
+import { createLogger } from './logger';
+
+const logger = createLogger({
+  level: process.env.AGENTS_LOG_LEVEL || 'info',
+  service: 'agents'
+});
+
+logger.info('Agent started', { agentType: 'pricing', jobId: '123' });
+```
+
+### Alerts
+
+Set up alerts for:
+- Agent failures (> 5% error rate)
+- API rate limit errors
+- Database connection failures
+- High queue depth (> 1000 jobs)
+- Slow execution times (> 2x baseline)
+
+## Troubleshooting
+
+### Common Issues
+
+**"OpenAI API key invalid"**
+- Verify `OPENAI_API_KEY` is set correctly
+- Check key hasn't been revoked
+- Test with: `curl https://api.openai.com/v1/models -H "Authorization: Bearer $OPENAI_API_KEY"`
+
+**"Database connection failed"**
+- Verify `DATABASE_URL` format
+- Check PostgreSQL is running
+- Ensure firewall allows connection
+- Test with: `psql $DATABASE_URL`
+
+**"Redis connection timeout"**
+- Verify `REDIS_URL` is correct
+- Check Redis is running: `redis-cli ping`
+- Ensure network connectivity
+
+**Agent execution timeout**
+- Increase `AGENTS_TIMEOUT` value
+- Check AI service latency
+- Review agent logic for inefficiencies
+
+## Next Steps
+
+- [Agent Architecture](/agents/architecture) - Deep dive into agent design
+- [Agent API Reference](/agents/api-reference) - API documentation
+- [Custom Agents](/agents/custom) - Creating custom agents
+- [Agent Monitoring](/agents/monitoring) - Production monitoring guide
+
+## Support
+
+- **GitHub Issues**: https://github.com/CastQuest/cast/issues
+- **Documentation**: https://docs.castquest.io/agents
+- **Discord**: https://discord.gg/castquest

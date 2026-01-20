@@ -1,60 +1,262 @@
-﻿---
-
-title: "Sdk"
+---
+title: "SDK Overview"
 section: "sdk"
 slug: "index"
-
-tags: ["sdk"]
+tags: ["sdk", "overview"]
 weight: 0
 navOrder: 0
 ---
 
-# Sdk
+# CASTQUEST V3 SDK
 
-> CASTQUEST V3 — sdk /  $args[0].Value.ToUpper() dk
+> TypeScript/JavaScript SDK for CASTQUEST V3 Protocol Integration
 
 ## Purpose
 
-Describe the purpose of this page in the CASTQUEST V3 protocol, including how it connects to:
-- Multi-chain protocol flows
-- Tokenized profiles and marketplace
-- Frames, quests, mints, and workers
-- Governance, buyback, and risk controls
+The CASTQUEST SDK provides a unified interface for developers to interact with the CASTQUEST V3 protocol. It enables:
+
+- **Multi-chain Operations**: Seamless interaction with Base, Ethereum, and L3 networks
+- **Tokenized Profiles**: Profile creation, management, and reputation tracking
+- **Marketplace Integration**: Listing, buying, and selling digital assets
+- **Frames & Quests**: Farcaster frame integration and quest management
+- **AI Agents**: Autonomous agent interactions and revenue participation
+- **Governance**: Voting, proposals, and DAO operations
+
+**Code Path:** `packages/sdk/`
 
 ## Architecture
 
-Explain the core architecture for this topic:
-- Key contracts, agents, or services
-- Data flows and state transitions
-- Integration points (Farcaster, L3, external chains)
+### Core Components
 
-## Flows
+The SDK is organized into modular packages (see `packages/sdk/index.ts`):
 
-Describe the primary flows:
-- Actors
-- Inputs
-- Outputs
-- Failure modes and safeguards
+```
+@castquest/sdk
+├── wallet       (packages/sdk/wallet.ts)
+├── media        (packages/sdk/media.ts)
+├── fram         (packages/sdk/fram.ts)
+├── game         (packages/sdk/game.ts)
+├── code         (packages/sdk/code.ts)
+├── marketplace  (packages/sdk/marketplace.ts)
+├── agents       (packages/sdk/agents.ts)
+├── l3           (packages/sdk/l3.ts)
+├── bridge       (packages/sdk/bridge.ts)
+├── governance   (packages/sdk/governance.ts)
+└── profile      (packages/sdk/profile.ts)
+```
+
+### Technology Stack
+
+- **Language**: TypeScript 5.3+
+- **Build Tool**: tsup (fast TypeScript bundler)
+- **Testing**: Vitest
+- **Web3 Libraries**: ethers v6, viem
+- **Output Formats**: ESM, CommonJS, TypeScript declarations
+
+### Integration Points
+
+1. **Blockchain Networks**
+   - Base mainnet (Chain ID: 8453)
+   - Base Sepolia testnet (Chain ID: 84532)
+   - Ethereum mainnet (Chain ID: 1)
+   - CASTQUEST L3 (custom rollup)
+
+2. **External Services**
+   - Farcaster API for frame integration
+   - IPFS for metadata storage
+   - The Graph for indexing
+
+3. **Protocol Contracts**
+   - Deployed contracts on Base (see `packages/contracts/`)
+   - Multi-chain bridge contracts
+   - Governance contracts
+
+## Key Flows
+
+### 1. SDK Initialization
+
+**Actors**: Developer, End User
+**Inputs**: API key, network configuration
+**Outputs**: Initialized SDK instance
+
+```typescript
+const sdk = new CastQuestSDK({
+  apiKey: process.env.CASTQUEST_API_KEY,
+  network: 'mainnet',
+  chainId: 8453
+});
+```
+
+**Failure Modes**:
+- Invalid API key → Returns authentication error
+- Network unavailable → Retries with exponential backoff
+- Invalid chain ID → Falls back to default (Base mainnet)
+
+### 2. Marketplace Interaction
+
+**Actors**: Buyer, Seller, Marketplace Contract
+**Inputs**: Listing data, payment tokens
+**Outputs**: Transaction hash, ownership transfer
+
+```typescript
+// List item
+const listingId = await sdk.marketplace.createListing({
+  tokenId: '123',
+  price: '1000000000000000000', // 1 ETH in wei
+  duration: 86400 // 24 hours
+});
+
+// Purchase item
+const tx = await sdk.marketplace.purchase(listingId);
+```
+
+**Safeguards**:
+- Price validation (min/max limits)
+- Balance checks before transaction
+- Gas estimation with safety margin
+- Transaction timeout (30 seconds)
+
+### 3. Profile Management
+
+**Actors**: User, Profile Contract
+**Inputs**: Profile data, credentials
+**Outputs**: Profile NFT, reputation score
+
+```typescript
+const profile = await sdk.profile.create({
+  username: 'creator123',
+  bio: 'Digital artist',
+  avatar: 'ipfs://...'
+});
+```
+
+## Build & Runtime
+
+### Build Commands
+
+```bash
+# Build SDK (from repo root)
+pnpm --filter @castquest/sdk build
+
+# Lint
+pnpm --filter @castquest/sdk lint
+
+# Type check
+pnpm --filter @castquest/sdk typecheck
+
+# Test
+pnpm --filter @castquest/sdk test
+```
+
+### Bundle Configuration
+
+Build configuration in `packages/sdk/tsup.config.ts`:
+- Entry point: `index.ts`
+- Output formats: ESM, CJS
+- Source maps: Enabled in development
+- Tree shaking: Enabled
+- Minification: Production only
+
+### Runtime Requirements
+
+- Node.js >= 18.18.0
+- Modern browser with ES2020 support
+- Web3 provider (MetaMask, WalletConnect, etc.)
+
+## Deployment
+
+### NPM Publishing
+
+```bash
+cd packages/sdk
+npm version patch|minor|major
+npm publish --access public
+```
+
+### Version Strategy
+
+- **Major**: Breaking API changes
+- **Minor**: New features, backward compatible
+- **Patch**: Bug fixes, security patches
+
+### Release Checklist
+
+1. Update version in `package.json`
+2. Update CHANGELOG.md
+3. Run full test suite: `pnpm test:all`
+4. Build production bundle: `pnpm build`
+5. Publish to npm: `npm publish`
+6. Tag release: `git tag v3.0.x`
+7. Create GitHub release with notes
+
+## Security
+
+### API Key Security
+
+- **Storage**: Never hardcode keys; use environment variables
+- **Rotation**: Rotate keys every 90 days
+- **Permissions**: Use least-privilege keys for specific operations
+- **Monitoring**: Track API key usage for anomalies
+
+### Transaction Security
+
+- **Signature Verification**: All transactions require wallet signature
+- **Gas Limits**: Automatic gas estimation with 20% safety buffer
+- **Nonce Management**: SDK handles nonce tracking to prevent replay attacks
+- **Timeout Protection**: 30-second timeout on pending transactions
+
+### Dependency Security
+
+```bash
+# Run security audit
+pnpm audit --audit-level=high
+
+# Check for vulnerabilities
+pnpm --filter @castquest/sdk run security:scan
+```
+
+### Secure Coding Practices
+
+- Input validation on all public methods
+- Sanitization of user-provided data
+- No eval() or dynamic code execution
+- Rate limiting on API calls
 
 ## Metrics & Observability
 
-List the key metrics, dashboards, and alerts relevant to this topic.
+### Key Metrics
 
-## Implementation Notes
+- API request latency (p50, p95, p99)
+- Transaction success rate
+- Error rates by type
+- Active SDK instances
 
-Add implementation details, edge cases, and migration notes.
+### Error Tracking
+
+SDK errors include structured data:
+```typescript
+{
+  code: 'RATE_LIMIT_EXCEEDED',
+  message: 'Rate limit exceeded',
+  statusCode: 429,
+  retryAfter: 60
+}
+```
+
+### Logging
+
+Enable debug logging:
+```typescript
+const sdk = new CastQuestSDK({
+  debug: true,
+  logLevel: 'verbose'
+});
+```
 
 ## Next Steps
 
-Link to:
-- Related protocol pages
-- Builder guides
-- SDK references
-- Admin dashboard views
-
-
-
-
-## Diagram
-
-Describe or embed the key architecture or flow diagram for this topic here.
+- [Setup & Installation](/sdk/setup) - Get started with the SDK
+- [Authentication](/sdk/auth) - API key and wallet authentication
+- [TypeScript Examples](/sdk/typescript-examples) - Code examples
+- [Testing Guide](/sdk/testing) - Testing SDK integrations
+- [API Reference](/sdk/api-reference) - Complete method documentation
