@@ -1,0 +1,552 @@
+---
+title: "Smart Contracts Setup & Deployment"
+section: "protocol"
+slug: "contracts-setup"
+tags: ["contracts", "deployment", "blockchain"]
+weight: 10
+navOrder: 10
+---
+
+# Smart Contracts Setup & Deployment
+
+> CASTQUEST V3 — Smart Contract Development & Deployment Guide
+
+## Overview
+
+The CASTQUEST smart contracts (`@castquest/contracts`) implement the core protocol logic on EVM-compatible blockchains. The contracts are organized into modules for core functionality, economy, governance, L3, marketplace, and social features.
+
+**Code Path:** `packages/contracts/`
+
+## Contract Structure
+
+### Contract Modules
+
+The contracts are organized by functionality (see `packages/contracts/`):
+
+```
+packages/contracts/
+├── core/           - Core protocol contracts
+├── economy/        - Token economics & treasury
+├── governance/     - DAO governance contracts
+├── l3/             - Layer 3 contracts
+├── marketplace/    - Marketplace & trading
+├── social/         - Social features (frames, profiles)
+├── scripts/        - Deployment scripts
+└── test/           - Contract tests
+```
+
+### Key Contracts
+
+**Core:**
+- `CastToken.sol` - CAST governance token
+- `QuestToken.sol` - QUEST reward token
+- `ProfileNFT.sol` - Tokenized user profiles
+
+**Economy:**
+- `Treasury.sol` - Protocol treasury
+- `BuybackEngine.sol` - Token buyback mechanism
+- `FeeCollector.sol` - Fee collection and distribution
+
+**Governance:**
+- `CastDAO.sol` - Main DAO governance
+- `Timelock.sol` - Governance timelock
+- `GovernorBravo.sol` - Voting implementation
+
+**Marketplace:**
+- `Marketplace.sol` - Core marketplace logic
+- `Auction.sol` - Auction mechanism
+- `Royalties.sol` - Royalty distribution
+
+## Prerequisites
+
+- **Node.js**: >= 18.18.0
+- **Hardhat**: Installed via package dependencies
+- **TypeScript**: >= 5.3.3
+- **Solidity**: 0.8.20+ (configured in hardhat.config.ts)
+- **Wallet**: Private key for deployment
+
+## Installation
+
+### From Repository Root
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build contracts
+pnpm --filter @castquest/contracts build
+```
+
+### From Contracts Directory
+
+```bash
+cd packages/contracts
+pnpm install
+pnpm run build
+```
+
+## Environment Variables
+
+### Required for Deployment
+
+#### Deployer Configuration
+
+- **`DEPLOYER_PRIVATE_KEY`**: Private key for contract deployment
+  - Format: 64-character hex string (without 0x prefix)
+  - Example: `abcdef1234567890...` (keep secret!)
+  - Security: NEVER commit to git, use secrets manager
+  - Ensure sufficient ETH/gas tokens for deployment
+
+#### RPC Endpoints
+
+- **`BASE_RPC_URL`**: Base network RPC endpoint
+  - Example: `https://mainnet.base.org`
+  - Required for: Base mainnet deployment
+  - Alternative: `https://base-mainnet.g.alchemy.com/v2/YOUR-KEY`
+
+- **`BASE_SEPOLIA_RPC_URL`**: Base Sepolia testnet RPC
+  - Example: `https://sepolia.base.org`
+  - Required for: Testnet deployment
+  - Get testnet ETH: https://sepoliafaucet.com/
+
+- **`ETHEREUM_RPC_URL`**: Ethereum mainnet RPC endpoint
+  - Example: `https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY`
+  - Required for: Ethereum deployment
+  - Providers: Alchemy, Infura, QuickNode
+
+#### Block Explorer API Keys
+
+- **`BASESCAN_API_KEY`**: Basescan API key
+  - Obtain from: https://basescan.org/myapikey
+  - Required for: Contract verification on Base
+  - Example: `ABC123DEF456GHI789`
+
+- **`ETHERSCAN_API_KEY`**: Etherscan API key
+  - Obtain from: https://etherscan.io/myapikey
+  - Required for: Contract verification on Ethereum
+  - Example: `XYZ789ABC123DEF456`
+
+### Optional Variables
+
+- **`GAS_REPORTER_ENABLED`**: Enable gas reporting in tests (default: false)
+- **`COINMARKETCAP_API_KEY`**: For USD gas cost estimates
+- **`HARDHAT_NETWORK`**: Network to use (default: hardhat)
+
+### Example `.env` file
+
+```bash
+# CRITICAL: NEVER commit this file to git
+# Add .env to .gitignore
+
+# Deployer (KEEP SECRET!)
+DEPLOYER_PRIVATE_KEY=your_64_char_private_key_here
+
+# RPC Endpoints
+BASE_RPC_URL=https://mainnet.base.org
+BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
+ETHEREUM_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY
+
+# Block Explorers
+BASESCAN_API_KEY=YOUR_BASESCAN_API_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
+
+# Optional
+GAS_REPORTER_ENABLED=false
+COINMARKETCAP_API_KEY=your_cmc_api_key
+```
+
+## Build & Compilation
+
+### Compile Contracts
+
+```bash
+# From repository root
+pnpm --filter @castquest/contracts build
+
+# From contracts directory
+pnpm run build
+
+# Clean and rebuild
+pnpm run clean && pnpm run build
+```
+
+**Build Output:**
+- `artifacts/` - Compiled contract artifacts (ABI, bytecode)
+- `typechain-types/` - TypeScript types for contracts
+- `cache/` - Hardhat cache (can be deleted)
+
+### Compilation Options
+
+Configured in `packages/contracts/hardhat.config.ts`:
+- Solidity version: 0.8.20
+- Optimizer: Enabled (200 runs for mainnet)
+- EVM version: paris
+- Metadata: Full source code included
+
+## Testing
+
+### Run Tests
+
+```bash
+# Run all tests
+pnpm --filter @castquest/contracts test
+
+# Run specific test file
+pnpm run test test/CastToken.test.ts
+
+# Run with gas reporting
+GAS_REPORTER_ENABLED=true pnpm run test
+
+# Run with coverage
+pnpm run test:coverage
+```
+
+### Test Coverage
+
+Generate coverage report:
+
+```bash
+pnpm --filter @castquest/contracts test:coverage
+```
+
+View report: `packages/contracts/coverage/index.html`
+
+### Test Networks
+
+Hardhat provides built-in networks:
+- `hardhat` - Local ephemeral network
+- `localhost` - Persistent local network (requires `npx hardhat node`)
+
+## Deployment
+
+### Pre-Deployment Checklist
+
+Before deploying to mainnet:
+
+- [ ] All tests passing
+- [ ] Security audit completed
+- [ ] Gas optimization verified
+- [ ] Deployment script tested on testnet
+- [ ] Environment variables configured
+- [ ] Deployer wallet funded with sufficient ETH
+- [ ] Multisig setup for contract ownership
+- [ ] Emergency pause mechanism tested
+
+### Deploy to Localhost
+
+For local development:
+
+```bash
+# Terminal 1: Start local node
+npx hardhat node
+
+# Terminal 2: Deploy contracts
+pnpm --filter @castquest/contracts deploy:localhost
+```
+
+### Deploy to Base Testnet
+
+Test deployment on Base Sepolia:
+
+```bash
+pnpm --filter @castquest/contracts deploy:base-testnet
+
+# Or explicitly
+npx hardhat run scripts/deploy.ts --network baseSepolia
+```
+
+Verify deployment:
+```bash
+npx hardhat verify --network baseSepolia CONTRACT_ADDRESS "Constructor Arg 1" "Constructor Arg 2"
+```
+
+### Deploy to Base Mainnet
+
+**WARNING: Mainnet deployment is irreversible. Double-check everything.**
+
+```bash
+# Deploy to Base mainnet
+pnpm --filter @castquest/contracts deploy:base
+
+# Or explicitly
+npx hardhat run scripts/deploy.ts --network base
+```
+
+### Deploy to Ethereum Mainnet
+
+```bash
+# Deploy to Ethereum
+pnpm --filter @castquest/contracts deploy:mainnet
+
+# Or explicitly
+npx hardhat run scripts/deploy.ts --network mainnet
+```
+
+### Deployment Script
+
+The deployment script (`packages/contracts/scripts/deploy.ts`) performs:
+
+1. Validation of deployer account
+2. Network confirmation
+3. Gas price estimation
+4. Contract deployment in order
+5. Contract verification on block explorer
+6. Output of deployed addresses
+7. Save deployment manifest to `deployments/{network}.json`
+
+### Multi-Chain Deployment
+
+For cross-chain deployment:
+
+```bash
+# Deploy to all networks
+./packages/contracts/scripts/deploy-multichain.sh
+
+# Deploys to:
+# - Base mainnet
+# - Ethereum mainnet
+# - Arbitrum (optional)
+# - Optimism (optional)
+```
+
+### Contract Verification
+
+Verify contracts on block explorers:
+
+```bash
+# Verify on Basescan
+npx hardhat verify --network base \
+  CONTRACT_ADDRESS \
+  "Constructor Arg 1" \
+  "Constructor Arg 2"
+
+# Verify on Etherscan
+npx hardhat verify --network mainnet \
+  CONTRACT_ADDRESS \
+  "Constructor Arg 1"
+```
+
+### Post-Deployment
+
+After deployment:
+
+1. **Transfer Ownership**: Transfer contract ownership to multisig
+   ```bash
+   npx hardhat run scripts/transfer-ownership.ts --network base
+   ```
+
+2. **Initialize Contracts**: Call initialization functions
+   ```bash
+   npx hardhat run scripts/initialize.ts --network base
+   ```
+
+3. **Update Frontend**: Update contract addresses in web app config
+
+4. **Update Indexer**: Configure indexer with new contract addresses
+
+5. **Announce**: Publish deployment addresses
+
+## Security
+
+### Private Key Security
+
+**CRITICAL SECURITY PRACTICES:**
+
+- **NEVER hardcode** private keys in code
+- **NEVER commit** `.env` files to git
+- Use **hardware wallets** (Ledger, Trezor) for mainnet
+- Use **multisig wallets** for contract ownership
+- Rotate keys after deployment
+- Use **different keys** for testnet and mainnet
+
+### Using Hardware Wallet
+
+For maximum security, deploy using hardware wallet:
+
+```typescript
+// hardhat.config.ts
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomiclabs/hardhat-ledger";
+
+const config: HardhatUserConfig = {
+  networks: {
+    base: {
+      url: process.env.BASE_RPC_URL,
+      ledgerAccounts: [0] // Use first account on Ledger
+    }
+  }
+};
+```
+
+### Multisig Ownership
+
+Transfer ownership to multisig after deployment:
+
+```typescript
+// Transfer ownership to Gnosis Safe
+await contract.transferOwnership(GNOSIS_SAFE_ADDRESS);
+```
+
+Recommended multisig configuration:
+- 3-of-5 for testnet
+- 5-of-7 for mainnet
+- Include team members and advisors
+
+### Emergency Procedures
+
+Implement emergency pause:
+
+```solidity
+// In contract
+function pause() external onlyOwner {
+    _pause();
+}
+
+function unpause() external onlyOwner {
+    _unpause();
+}
+```
+
+Emergency contacts:
+- Primary: security@castquest.io
+- Backup: PagerDuty alerts
+
+### Audit Requirements
+
+Before mainnet deployment:
+
+1. **Internal Review**: Code review by 2+ engineers
+2. **Automated Analysis**: Slither, Mythril, MythX
+3. **External Audit**: Professional audit firm
+4. **Bug Bounty**: Launch bug bounty program (Immunefi)
+
+### Automated Security Checks
+
+Run security checks:
+
+```bash
+# Solhint linting
+pnpm run lint
+
+# Slither static analysis
+slither packages/contracts
+
+# Mythril analysis
+myth analyze packages/contracts/core/CastToken.sol
+```
+
+### Gas Optimization
+
+Optimize gas costs:
+
+```bash
+# Generate gas report
+GAS_REPORTER_ENABLED=true pnpm run test
+
+# View gas costs
+cat gas-report.txt
+```
+
+Target gas costs:
+- Token transfer: < 50k gas
+- NFT mint: < 100k gas
+- Marketplace listing: < 150k gas
+
+## Monitoring
+
+### On-Chain Monitoring
+
+Monitor deployed contracts:
+
+- **Block Explorer**: https://basescan.org/address/CONTRACT_ADDRESS
+- **Etherscan**: https://etherscan.io/address/CONTRACT_ADDRESS
+- **OpenZeppelin Defender**: Automated monitoring and alerts
+
+### Events
+
+All contracts emit events for important actions:
+
+```solidity
+event Transfer(address indexed from, address indexed to, uint256 value);
+event Approval(address indexed owner, address indexed spender, uint256 value);
+event Paused(address account);
+```
+
+Monitor events via:
+- Indexer service (see Indexer Setup)
+- The Graph subgraph
+- Alchemy/Infura webhooks
+
+### Alerts
+
+Set up alerts for:
+- Large transfers (> $100k)
+- Ownership changes
+- Pause/unpause events
+- Failed transactions
+- Unusual gas consumption
+
+## Upgradeability
+
+CASTQUEST contracts use proxy patterns for upgradeability:
+
+### Transparent Proxy Pattern
+
+```typescript
+// Deploy implementation
+const Implementation = await ethers.getContractFactory("CastToken");
+const implementation = await Implementation.deploy();
+
+// Deploy proxy
+const TransparentUpgradeableProxy = await ethers.getContractFactory("TransparentUpgradeableProxy");
+const proxy = await TransparentUpgradeableProxy.deploy(
+  implementation.address,
+  proxyAdmin.address,
+  initData
+);
+```
+
+### Upgrade Process
+
+1. Deploy new implementation
+2. Test on testnet
+3. Security audit of changes
+4. Propose upgrade to DAO
+5. Execute upgrade via timelock
+
+## Troubleshooting
+
+### Common Issues
+
+**"Insufficient funds for gas"**
+- Ensure deployer has enough ETH
+- Check gas price: `await ethers.provider.getGasPrice()`
+- Fund wallet: https://bridge.base.org/
+
+**"Nonce too low"**
+- Reset account nonce: `npx hardhat clean`
+- Or manually: `--nonce X`
+
+**"Contract verification failed"**
+- Ensure exact compiler settings match
+- Include all constructor arguments
+- Wait 1-2 minutes after deployment
+- Try `--force` flag
+
+**"Transaction underpriced"**
+- Increase gas price in hardhat.config.ts
+- Wait for network congestion to clear
+
+## Next Steps
+
+- [Protocol Architecture](/protocol/architecture) - Contract architecture
+- [Governance](/protocol/governance) - DAO governance
+- [Token Economics](/tokens/) - Token details
+- [API Reference](/reference/api-reference) - Contract ABIs
+
+## Support
+
+- **Security Issues**: security@castquest.io (DO NOT disclose publicly)
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io/protocol
+- **Discord**: https://discord.gg/castquest
