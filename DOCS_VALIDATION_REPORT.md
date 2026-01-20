@@ -1,6 +1,6 @@
 # Documentation Validation Report
 
-Generated: 2026-01-20T05:59:19.142Z
+Generated: 2026-01-20T06:02:25.416Z
 
 This report identifies documentation gaps across the CastQuest repository.
 Each feature should have complete documentation covering:
@@ -14,15 +14,15 @@ Each feature should have complete documentation covering:
 ## Summary
 
 - ✅ Complete: 0
-- ⚠️ Partial: 0
-- ❌ Incomplete: 9
+- ⚠️ Partial: 3
+- ❌ Incomplete: 6
 - 🚫 Missing: 0
 
 ## Feature Details
 
-### ❌ SDK
+### ⚠️ SDK
 
-**Status:** INCOMPLETE
+**Status:** PARTIAL
 
 **Code Path:** `packages/sdk/`
 
@@ -43,7 +43,7 @@ Each feature should have complete documentation covering:
 - ✅ environment variables: COMPLETE
 - ✅ build: COMPLETE
 - ✅ deployment: COMPLETE
-- ❌ security: MISSING
+- ⚠️ security: PARTIAL
 
 ### ❌ Agents
 
@@ -150,9 +150,9 @@ Each feature should have complete documentation covering:
 - ❌ deployment: MISSING
 - ✅ security: COMPLETE
 
-### ❌ Frames
+### ⚠️ Frames
 
-**Status:** INCOMPLETE
+**Status:** PARTIAL
 
 **Code Path:** `apps/web/`
 
@@ -170,8 +170,8 @@ Each feature should have complete documentation covering:
 - ✅ setup: COMPLETE
 - ⚠️ environment variables: PARTIAL
 - ✅ build: COMPLETE
-- ❌ deployment: MISSING
-- ❌ security: MISSING
+- ✅ deployment: COMPLETE
+- ✅ security: COMPLETE
 
 ### ❌ Quests
 
@@ -189,12 +189,12 @@ Each feature should have complete documentation covering:
 - ✅ setup: COMPLETE
 - ✅ environment variables: COMPLETE
 - ✅ build: COMPLETE
-- ❌ deployment: MISSING
+- ✅ deployment: COMPLETE
 - ❌ security: MISSING
 
-### ❌ Mints
+### ⚠️ Mints
 
-**Status:** INCOMPLETE
+**Status:** PARTIAL
 
 **Code Path:** `apps/web/`
 
@@ -209,7 +209,7 @@ Each feature should have complete documentation covering:
 - ⚠️ environment variables: PARTIAL
 - ✅ build: COMPLETE
 - ✅ deployment: COMPLETE
-- ❌ security: MISSING
+- ✅ security: COMPLETE
 
 ### ❌ Marketplace
 
