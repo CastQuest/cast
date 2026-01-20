@@ -109,15 +109,11 @@ function hasSectionContent(content, sectionKeywords) {
   
   // Check for section headers
   for (const keyword of sectionKeywords) {
-    const patterns = [
-      new RegExp(`#+\\s*${keyword}`, 'i'),
-      new RegExp(`##\\s*${keyword}`, 'i'),
-      new RegExp(`###\\s*${keyword}`, 'i')
-    ];
+    // Match headers with any number of # characters
+    const pattern = new RegExp(`#+\\s*${keyword}`, 'i');
     
-    for (const pattern of patterns) {
-      const match = pattern.exec(content);
-      if (match) {
+    const match = pattern.exec(content);
+    if (match) {
         // Check if section has actual content (not just template text)
         const afterSection = content.substring(match.index + match[0].length);
         const nextSection = afterSection.indexOf('\n##');
