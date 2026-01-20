@@ -116,23 +116,22 @@ function hasSectionContent(content, sectionKeywords) {
     ];
     
     for (const pattern of patterns) {
-      if (pattern.test(content)) {
+      const match = pattern.exec(content);
+      if (match) {
         // Check if section has actual content (not just template text)
-        const match = pattern.exec(content);
-        if (match) {
-          const afterSection = content.substring(match.index + match[0].length);
-          const nextSection = afterSection.indexOf('\n##');
-          const sectionContent = nextSection > -1 
-            ? afterSection.substring(0, nextSection)
-            : afterSection;
-          
-          // Check if it's not just placeholder text
-          if (!sectionContent.includes('Describe the') && 
-              !sectionContent.includes('Explain the') &&
-              !sectionContent.includes('Add implementation') &&
-              !sectionContent.includes('$args') &&
-              sectionContent.trim().length > 50) {
-            return 'COMPLETE';
+        const afterSection = content.substring(match.index + match[0].length);
+        const nextSection = afterSection.indexOf('\n##');
+        const sectionContent = nextSection > -1 
+          ? afterSection.substring(0, nextSection)
+          : afterSection;
+        
+        // Check if it's not just placeholder text
+        if (!sectionContent.includes('Describe the') && 
+            !sectionContent.includes('Explain the') &&
+            !sectionContent.includes('Add implementation') &&
+            !sectionContent.includes('$args') &&
+            sectionContent.trim().length > 50) {
+          return 'COMPLETE';
           } else if (sectionContent.trim().length > 10) {
             return 'PARTIAL';
           }
