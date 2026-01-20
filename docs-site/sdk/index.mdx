@@ -222,6 +222,56 @@ pnpm --filter @castquest/sdk run security:scan
 - No eval() or dynamic code execution
 - Rate limiting on API calls
 
+## Security
+
+### API Key Security
+
+- **Storage**: Never hardcode keys; use environment variables
+- **Rotation**: Rotate keys every 90 days
+- **Permissions**: Use least-privilege keys for specific operations
+- **Monitoring**: Track API key usage for anomalies
+
+### Transaction Security
+
+- **Signature Verification**: All transactions require wallet signature
+- **Gas Limits**: Automatic gas estimation with 20% safety buffer
+- **Nonce Management**: SDK handles nonce tracking to prevent replay attacks
+- **Timeout Protection**: 30-second timeout on pending transactions
+
+### Dependency Security
+
+```bash
+# Run security audit
+pnpm audit --audit-level=high
+
+# Check for vulnerabilities
+pnpm --filter @castquest/sdk run security:scan
+```
+
+### Secure Coding Practices
+
+- Input validation on all public methods
+- Sanitization of user-provided data
+- No eval() or dynamic code execution
+- Rate limiting on API calls
+
+### Data Privacy
+
+- No logging of private keys or sensitive data
+- Encryption of data at rest and in transit
+- GDPR-compliant data handling
+- User consent for data collection
+
+### Best Practices
+
+- **Never share private keys**: Use hardware wallets for production
+- **Verify contracts**: Always verify contract addresses before interactions
+- **Test on testnets**: Test all integrations on testnets first
+- **Monitor transactions**: Track all SDK transactions in production
+- **Rate limit calls**: Implement client-side rate limiting
+- **Handle errors**: Gracefully handle all error conditions
+- **Keep updated**: Regularly update SDK to latest version
+
 ## Metrics & Observability
 
 ### Key Metrics

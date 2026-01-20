@@ -1,0 +1,316 @@
+---
+title: "Marketplace Setup & Configuration"
+section: "marketplace"
+slug: "setup"
+tags: ["marketplace", "trading", "setup"]
+weight: 1
+navOrder: 1
+---
+
+# Marketplace Setup & Configuration
+
+> CASTQUEST V3 — Marketplace Configuration Guide
+
+## Overview
+
+The CASTQUEST marketplace enables users to list, buy, sell, and auction digital assets including NFTs, tokens, and other protocol items. It supports multi-chain trading, royalties, and complex auction mechanisms.
+
+**Code Path:** `apps/web/app/marketplace/` (part of web application)
+
+## Architecture
+
+### Marketplace Components
+
+- **Listing Engine**: Create and manage listings
+- **Order Matching**: Match buyers and sellers
+- **Auction System**: Dutch and English auctions
+- **Royalty Distribution**: Automatic royalty payments
+- **Cross-chain Trading**: Bridge and settlement
+
+### Trading Types
+
+- **Fixed Price**: Simple buy now listings
+- **Auctions**: Time-based bidding
+- **Offers**: Make offers on listed items
+- **Bundles**: Multi-item packages
+- **Cross-chain**: Trade across different chains
+
+## Prerequisites
+
+- Web application setup (see Web App Setup)
+- Marketplace contracts deployed
+- Database configured (for orders and listings)
+- Indexer running (for order book)
+
+## Environment Variables
+
+Marketplace uses web app environment variables plus:
+
+### Contract Addresses
+
+- **`NEXT_PUBLIC_MARKETPLACE_ADDRESS`**: Main marketplace contract
+- **`NEXT_PUBLIC_AUCTION_HOUSE_ADDRESS`**: Auction contract
+- **`NEXT_PUBLIC_ROYALTY_REGISTRY_ADDRESS`**: Royalty registry
+
+### Configuration
+
+- **`MARKETPLACE_FEE_BPS`**: Marketplace fee in basis points (default: 250 = 2.5%)
+- **`MIN_BID_INCREMENT_BPS`**: Minimum bid increment (default: 500 = 5%)
+
+## Setup Steps
+
+### 1. Deploy Marketplace Contracts
+
+Deploy marketplace smart contracts:
+
+```bash
+# Deploy marketplace contracts
+pnpm --filter @castquest/contracts deploy:base
+
+# Verify deployment
+npx hardhat verify --network base CONTRACT_ADDRESS
+```
+
+### 2. Configure Royalties
+
+Set up royalty registry:
+
+```typescript
+// Configure default royalty
+await royaltyRegistry.setDefaultRoyalty(
+  treasuryAddress,
+  250 // 2.5%
+);
+
+// Set collection-specific royalty
+await royaltyRegistry.setRoyaltyForCollection(
+  nftAddress,
+  creatorAddress,
+  500 // 5%
+);
+```
+
+### 3. Initialize Marketplace
+
+Configure marketplace settings:
+
+```bash
+# Set marketplace fee
+pnpm run marketplace:set-fee --fee 250
+
+# Set minimum listing duration
+pnpm run marketplace:set-min-duration --duration 3600
+
+# Set payment tokens
+pnpm run marketplace:add-payment-token --token 0x...
+```
+
+## Build & Development
+
+Marketplace is part of the web application:
+
+```bash
+# Development
+pnpm --filter @castquest/web dev
+
+# Build
+pnpm --filter @castquest/web build
+
+# Test marketplace routes
+curl http://localhost:3000/api/marketplace
+```
+
+## Deployment
+
+### Marketplace Configuration
+
+Deploy marketplace by:
+
+1. **Deploy Contracts**: Deploy marketplace contracts to chain
+2. **Configure Settings**: Set fees, payment tokens, durations
+3. **Initialize Indexer**: Start indexing marketplace events
+4. **Launch Frontend**: Deploy web application with marketplace
+
+### Payment Tokens
+
+Configure accepted payment tokens:
+
+```bash
+# Add payment token
+pnpm run marketplace:add-token \
+  --address 0x... \
+  --symbol ETH \
+  --decimals 18
+
+# Add stablecoin
+pnpm run marketplace:add-token \
+  --address 0x... \
+  --symbol USDC \
+  --decimals 6
+```
+
+## Security
+
+### Trading Security
+
+- **Order Validation**: Verify all order parameters
+- **Signature Verification**: Validate cryptographic signatures
+- **Balance Checks**: Ensure sufficient balance before trade
+- **Reentrancy Protection**: Prevent reentrancy attacks
+- **Front-running Prevention**: Use commit-reveal for auctions
+
+### Payment Security
+
+- **Escrow**: Hold payments in secure contract
+- **Atomic Swaps**: Execute trades atomically
+- **Refund Mechanism**: Handle failed trades
+- **Fee Validation**: Verify fee calculations
+
+### Access Control
+
+- **Authorization**: Role-based access control
+- **Ownership Verification**: Verify asset ownership
+- **Blacklist**: Block malicious actors
+- **Circuit Breakers**: Emergency pause mechanism
+
+### Access Control
+
+- **Authorization**: Role-based access control
+- **Ownership Verification**: Verify asset ownership
+- **Blacklist**: Block malicious actors
+- **Circuit Breakers**: Emergency pause mechanism
+
+### Marketplace Security Checklist
+
+Before launching:
+
+- [ ] Smart contracts audited by professional firm
+- [ ] All functions have reentrancy protection
+- [ ] Fee calculations verified
+- [ ] Royalty distribution tested
+- [ ] Payment token whitelist configured
+- [ ] Emergency pause mechanism tested
+- [ ] Admin multisig configured
+- [ ] Rate limiting implemented
+- [ ] Signature verification working
+- [ ] Monitoring and alerts configured
+
+### Ongoing Security
+
+Maintain security post-launch:
+
+- **Regular audits**: Annual security audits
+- **Bug bounty**: Active bug bounty program
+- **Monitoring**: 24/7 security monitoring
+- **Incident response**: Documented response procedures
+- **Key rotation**: Regular key rotation
+- **Contract upgrades**: Secure upgrade process
+
+## Monitoring
+
+### Marketplace Metrics
+
+Track marketplace activity:
+- Total listings
+- Active orders
+- Trade volume (24h, 7d, 30d)
+- Unique traders
+- Average sale price
+- Royalty distribution
+
+### Performance
+
+Monitor marketplace performance:
+- Order matching latency
+- Transaction confirmation time
+- API response times
+- Database query performance
+- Indexer sync lag
+
+## Marketplace Operations
+
+### Creating Listings
+
+List items via API:
+
+```typescript
+POST /api/marketplace/listings
+{
+  "tokenAddress": "0x...",
+  "tokenId": "123",
+  "price": "1000000000000000000", // 1 ETH
+  "paymentToken": "0x...",
+  "duration": 86400, // 24 hours
+  "listingType": "fixed"
+}
+```
+
+### Managing Auctions
+
+Create auction:
+
+```typescript
+POST /api/marketplace/auctions
+{
+  "tokenAddress": "0x...",
+  "tokenId": "456",
+  "startingPrice": "500000000000000000", // 0.5 ETH
+  "reservePrice": "1000000000000000000", // 1 ETH
+  "duration": 86400,
+  "auctionType": "english"
+}
+```
+
+### Order Book
+
+View order book:
+
+```bash
+# Get all listings
+curl https://api.castquest.io/api/marketplace/listings
+
+# Get specific item
+curl https://api.castquest.io/api/marketplace/items/0x.../123
+
+# Get user orders
+curl https://api.castquest.io/api/marketplace/users/0x.../orders
+```
+
+## Troubleshooting
+
+**"Listing creation failed"**
+- Verify user owns asset
+- Check asset is approved for marketplace
+- Ensure price is valid
+- Review gas limits
+
+**"Purchase failed"**
+- Check buyer has sufficient balance
+- Verify listing is active
+- Check payment token is approved
+- Review marketplace contract state
+
+**"Auction bid rejected"**
+- Verify bid meets minimum increment
+- Check auction is active
+- Ensure user has sufficient balance
+- Review previous bid amount
+
+**"Royalty distribution failed"**
+- Verify royalty registry is configured
+- Check recipient addresses are valid
+- Ensure sufficient payment for royalties
+- Review royalty percentage
+
+## Next Steps
+
+- [Marketplace Listings](/marketplace/listings) - Listing management
+- [Auctions](/marketplace/auctions) - Auction mechanisms
+- [Royalties](/marketplace/royalties) - Royalty configuration
+- [Marketplace API](/reference/api-reference#marketplace) - API docs
+
+## Support
+
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io/marketplace
+- **Discord**: https://discord.gg/castquest

@@ -160,6 +160,55 @@ After deployment, verify frames work:
 3. Test button interactions
 4. Check error handling
 
+## Deployment
+
+Frames are deployed as part of the web application:
+
+### Frame URL Structure
+
+- Development: `http://localhost:3000/frames/*`
+- Production: `https://castquest.io/frames/*`
+
+### Deployment Steps
+
+1. **Deploy Web App**: Frames deploy with main web application
+   ```bash
+   # Build and deploy
+   pnpm --filter @castquest/web build
+   vercel --prod
+   ```
+
+2. **Verify Frame URLs**: Ensure frame routes are accessible
+   ```bash
+   curl https://castquest.io/frames/quest/1
+   ```
+
+3. **Test in Farcaster**: Post frame URL to verify rendering
+   - Use Warpcast or other Farcaster client
+   - Verify interactive elements work
+   - Test all button actions
+
+4. **Monitor Performance**: Track frame metrics
+   - View counts
+   - Interaction rates
+   - Error rates
+   - Load times
+
+### CDN Configuration
+
+Optimize frame delivery:
+- Enable CDN caching for static assets
+- Set appropriate cache headers
+- Use image optimization
+- Compress responses
+
+### Frame Registry
+
+Register frames in Farcaster:
+1. Submit frame URL to Farcaster registry
+2. Verify ownership
+3. Monitor indexing status
+
 ## Security
 
 ### Signature Verification
@@ -206,6 +255,71 @@ export async function POST(req: NextRequest) {
   // Process request
 }
 ```
+
+### Rate Limiting
+
+Implement rate limiting on frame endpoints:
+
+```typescript
+import { rateLimit } from '@/lib/rate-limit';
+
+export async function POST(req: NextRequest) {
+  const ip = req.ip || 'anonymous';
+  
+  const { success } = await rateLimit.check(ip);
+  if (!success) {
+    return NextResponse.json({ error: 'Rate limited' }, { status: 429 });
+  }
+  
+  // Process request
+}
+```
+
+### Input Sanitization
+
+Sanitize all user inputs in frames:
+
+```typescript
+import { sanitize } from '@/lib/sanitize';
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  
+  // Sanitize inputs
+  const sanitizedInput = sanitize(body.inputText);
+  
+  // Validate
+  if (!isValid(sanitizedInput)) {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+  }
+}
+```
+
+### CORS Configuration
+
+Configure CORS for frame endpoints:
+
+```typescript
+export async function GET(req: NextRequest) {
+  return new NextResponse(html, {
+    headers: {
+      'Content-Type': 'text/html',
+      'Access-Control-Allow-Origin': 'https://warpcast.com',
+      'Access-Control-Allow-Methods': 'GET, POST',
+    }
+  });
+}
+```
+
+### Security Best Practices
+
+- **Always verify signatures**: Never trust unsigned frame actions
+- **Validate all inputs**: Sanitize and validate user inputs
+- **Rate limit endpoints**: Prevent abuse and spam
+- **Log security events**: Monitor for suspicious activity
+- **Use HTTPS**: Always use secure connections
+- **Keep secrets secure**: Never expose mnemonics or keys
+- **Monitor frame abuse**: Track and block malicious frames
 
 ## Monitoring
 
