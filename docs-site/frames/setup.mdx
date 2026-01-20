@@ -145,23 +145,6 @@ pnpm --filter @castquest/web start
 
 ## Deployment
 
-### Frame URLs
-
-Frames are deployed as part of the web app:
-- Development: `http://localhost:3000/frames/*`
-- Production: `https://castquest.io/frames/*`
-
-### Verification
-
-After deployment, verify frames work:
-
-1. Post frame URL in Farcaster
-2. Verify rendering in Warpcast
-3. Test button interactions
-4. Check error handling
-
-## Deployment
-
 Frames are deployed as part of the web application:
 
 ### Frame URL Structure
@@ -236,44 +219,6 @@ export async function POST(req: NextRequest) {
 - Never log or expose mnemonic
 - Use environment variables, not hardcoded values
 - Rotate if compromised
-
-### Rate Limiting
-
-Implement rate limiting on frame endpoints:
-
-```typescript
-import { rateLimit } from '@/lib/rate-limit';
-
-export async function POST(req: NextRequest) {
-  const ip = req.ip || 'anonymous';
-  
-  const { success } = await rateLimit.check(ip);
-  if (!success) {
-    return NextResponse.json({ error: 'Rate limited' }, { status: 429 });
-  }
-  
-  // Process request
-}
-```
-
-### Rate Limiting
-
-Implement rate limiting on frame endpoints:
-
-```typescript
-import { rateLimit } from '@/lib/rate-limit';
-
-export async function POST(req: NextRequest) {
-  const ip = req.ip || 'anonymous';
-  
-  const { success } = await rateLimit.check(ip);
-  if (!success) {
-    return NextResponse.json({ error: 'Rate limited' }, { status: 429 });
-  }
-  
-  // Process request
-}
-```
 
 ### Input Sanitization
 
