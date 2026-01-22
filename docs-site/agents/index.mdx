@@ -1,60 +1,391 @@
-﻿---
-
-title: "Agents"
+---
+title: "Agents Overview"
 section: "agents"
 slug: "index"
-
-tags: ["agents"]
+tags: ["agents", "ai", "automation"]
 weight: 0
 navOrder: 0
 ---
 
-# Agents
+# AI Agents
 
-> CASTQUEST V3 — agents /  $args[0].Value.ToUpper() gents
+> CASTQUEST V3 — Autonomous AI Agents for Protocol Operations
 
 ## Purpose
 
-Describe the purpose of this page in the CASTQUEST V3 protocol, including how it connects to:
-- Multi-chain protocol flows
-- Tokenized profiles and marketplace
-- Frames, quests, mints, and workers
-- Governance, buyback, and risk controls
+CASTQUEST V3 AI Agents are autonomous services that perform intelligent operations across the protocol:
+
+- **Content Creation**: Generate creative assets using AI models
+- **Market Intelligence**: Analyze trends and provide pricing insights
+- **Fraud Detection**: Identify and prevent malicious activity
+- **Curation**: Discover and rank high-quality content
+- **Automation**: Execute complex multi-step workflows
+- **Cross-chain Sync**: Maintain consistency across chains
+
+The agents participate in protocol revenue and operate with configurable autonomy levels.
+
+**Code Path:** `packages/agents/`
 
 ## Architecture
 
-Explain the core architecture for this topic:
-- Key contracts, agents, or services
-- Data flows and state transitions
-- Integration points (Farcaster, L3, external chains)
+### Agent Types
 
-## Flows
+CASTQUEST implements 11 specialized agents (see `packages/agents/index.ts`):
 
-Describe the primary flows:
-- Actors
-- Inputs
-- Outputs
-- Failure modes and safeguards
+```
+@castquest/agents
+├── CreationAgent.ts        - Content generation (text, images, frames)
+├── PricingAgent.ts         - Dynamic pricing & market analysis
+├── CurationAgent.ts        - Content discovery & ranking
+├── FraudAgent.ts           - Fraud detection & risk scoring
+├── AuctionAgent.ts         - Automated bidding strategies
+├── FrameAgent.ts           - Farcaster frame generation
+├── GameAgent.ts            - Game asset generation
+├── SyncAgent.ts            - Cross-chain synchronization
+├── UiAgent.ts              - UI component generation
+├── PortfolioAgent.ts       - Portfolio analysis
+└── SocialAutomationAgent.ts - Social media automation
+```
+
+### Technology Stack
+
+- **Runtime**: Node.js 18+, TypeScript
+- **AI Models**: OpenAI GPT-4, Anthropic Claude, Replicate
+- **Queue**: Redis for job management
+- **Storage**: PostgreSQL for agent state
+- **Build**: TypeScript Compiler (tsc)
+
+### System Design
+
+```
+┌─────────────┐
+│   Trigger   │ (Event, Schedule, Manual)
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Job Queue   │ (Redis)
+│ (Priority)  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Agent Pool  │ (Workers with concurrency limits)
+│ (5 workers) │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ AI Services │ (OpenAI, Anthropic, Replicate)
+│ (External)  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Results   │ (Stored in DB, emitted as events)
+└─────────────┘
+```
+
+### Integration Points
+
+1. **Protocol Events**: Agents listen to smart contract events
+2. **Marketplace**: Pricing and curation for listings
+3. **Frames**: Generate and validate Farcaster frames
+4. **Quests**: Automate quest verification
+5. **Governance**: Participate in DAO voting
+6. **External APIs**: Farcaster, OpenAI, social platforms
+
+## Key Flows
+
+### 1. Content Creation Flow
+
+**Actors**: User, CreationAgent, AI Service, IPFS
+**Trigger**: User requests content generation
+
+```typescript
+// User initiates creation
+const job = await agents.creation.generate({
+  type: 'image',
+  prompt: 'Cyberpunk city with neon lights',
+  style: 'digital-art'
+});
+
+// Agent processes
+// 1. Validates input
+// 2. Calls AI service (Replicate)
+// 3. Stores result in IPFS
+// 4. Returns metadata
+```
+
+**Outputs**: IPFS hash, metadata, quality score
+**Failure Modes**: 
+- AI service timeout → Retry with exponential backoff
+- Content policy violation → Reject with explanation
+- Storage failure → Cache locally, retry upload
+
+### 2. Fraud Detection Flow
+
+**Actors**: FraudAgent, Transaction Monitor, Risk Database
+**Trigger**: Suspicious activity detected
+
+```typescript
+// Continuous monitoring
+agents.fraud.monitor({
+  transactionHash: '0x...',
+  walletAddress: '0x...',
+  amount: '1000000000000000000'
+});
+
+// Agent analyzes
+// 1. Historical patterns
+// 2. Risk indicators
+// 3. ML model scoring
+// 4. Issues alerts if needed
+```
+
+**Outputs**: Risk score (0-100), alert level, recommended action
+**Safeguards**:
+- Human review for high-risk (score > 80)
+- Automated pause for critical risk (score > 95)
+- Appeal process for false positives
+
+### 3. Dynamic Pricing Flow
+
+**Actors**: PricingAgent, Market Data, Marketplace
+**Trigger**: New listing or price update request
+
+```typescript
+// Automatic pricing
+const price = await agents.pricing.calculate({
+  itemId: 'frame-123',
+  category: 'frames',
+  attributes: { rarity: 'legendary', creator: '0x...' }
+});
+
+// Agent considers
+// 1. Historical sales
+// 2. Similar items
+// 3. Market trends
+// 4. Supply/demand
+```
+
+**Outputs**: Recommended price, confidence score, price range
+**Failure Modes**:
+- Insufficient data → Use category average
+- Market volatility → Widen price range
+- Data staleness → Refresh and recalculate
+
+## Build & Runtime
+
+### Build Commands
+
+```bash
+# Build agents service
+pnpm --filter @castquest/agents build
+
+# Type check
+pnpm --filter @castquest/agents typecheck
+
+# Lint
+pnpm --filter @castquest/agents lint
+
+# Test
+pnpm --filter @castquest/agents test
+```
+
+### Runtime Commands
+
+```bash
+# Development mode (watch)
+pnpm --filter @castquest/agents dev
+
+# Production mode
+pnpm --filter @castquest/agents start
+
+# With PM2 (recommended for production)
+pm2 start packages/agents/dist/index.js --name agents
+```
+
+### Environment Requirements
+
+- Node.js >= 18.18.0
+- PostgreSQL >= 13 (for state storage)
+- Redis >= 6 (for job queue)
+- OpenAI API key (required)
+- Anthropic API key (recommended)
+- Replicate API key (for image generation)
+
+### Resource Requirements
+
+- **CPU**: 2+ cores (4+ recommended)
+- **Memory**: 2GB minimum (4GB recommended)
+- **Storage**: 10GB minimum (logs, cache)
+- **Network**: Stable internet (AI API calls)
+
+## Deployment
+
+### Docker Deployment
+
+```bash
+# Build image
+docker build -t castquest/agents:3.0.0 -f infra/docker/Dockerfile.agents .
+
+# Run container
+docker run -d \
+  --name castquest-agents \
+  -p 3001:3001 \
+  --env-file .env \
+  castquest/agents:3.0.0
+```
+
+### Kubernetes Deployment
+
+```bash
+# Deploy to staging
+kubectl apply -f infra/k8s/staging/agents-deployment.yaml
+
+# Deploy to production
+kubectl apply -f infra/k8s/production/agents-deployment.yaml
+
+# Check status
+kubectl get pods -l app=castquest-agents
+```
+
+### Health Checks
+
+Agents expose health endpoints:
+- `GET /health` - Overall health status
+- `GET /health/live` - Liveness probe
+- `GET /health/ready` - Readiness probe
+
+### Scaling
+
+Horizontal scaling via Kubernetes HPA:
+- Min replicas: 2
+- Max replicas: 10
+- Target CPU: 70%
+- Target Memory: 80%
+
+## Security
+
+### API Key Management
+
+- **Storage**: Use secrets manager (AWS Secrets Manager, Vault)
+- **Rotation**: Rotate keys every 90 days
+- **Monitoring**: Track API usage for anomalies
+- **Least Privilege**: Each agent has minimum required permissions
+
+### Rate Limiting
+
+Agents implement intelligent rate limiting:
+- Respect AI service rate limits
+- Queue requests during high load
+- Exponential backoff on errors
+- Fair distribution across agent types
+
+### Input Validation
+
+All agent inputs are validated:
+- Content length limits (max 10,000 chars)
+- Sanitization of user input (XSS prevention)
+- Schema validation (JSON Schema)
+- Timeout enforcement (5 min max)
+
+### Network Security
+
+- HTTPS for all external API calls
+- TLS 1.2+ required
+- Certificate validation enabled
+- VPC isolation in production
+- Firewall rules (restrict outbound)
+
+### Audit Logging
+
+All agent actions are logged:
+- Timestamp, agent type, job ID
+- Input parameters (sanitized)
+- Output/result
+- Execution time
+- Success/failure status
 
 ## Metrics & Observability
 
-List the key metrics, dashboards, and alerts relevant to this topic.
+### Key Metrics
+
+Monitor these metrics in production:
+
+- **Throughput**: Jobs processed per minute
+- **Latency**: p50, p95, p99 execution time
+- **Success Rate**: % of successful executions
+- **Error Rate**: % of failed executions
+- **Queue Depth**: Number of pending jobs
+- **API Usage**: Calls per service (OpenAI, Anthropic)
+- **Cost**: API costs per agent type
+
+### Dashboards
+
+Agents expose Prometheus metrics at `/metrics`:
+
+```
+# Agent execution time (histogram)
+agent_execution_duration_seconds{agent="pricing"}
+
+# Job success/failure (counter)
+agent_jobs_total{agent="fraud",status="success"}
+
+# Queue depth (gauge)
+agent_queue_depth{priority="high"}
+
+# API rate limits (gauge)
+agent_api_limit_remaining{service="openai"}
+```
+
+### Alerts
+
+Recommended alerts:
+- High error rate (>5% for 5min)
+- API rate limit approaching (>80%)
+- Queue depth high (>1000 jobs)
+- Slow execution (>2x baseline)
+- Database connection failures
+- Memory usage high (>85%)
 
 ## Implementation Notes
 
-Add implementation details, edge cases, and migration notes.
+### Agent State Machine
+
+Each agent follows a state machine:
+1. **IDLE**: Waiting for jobs
+2. **PROCESSING**: Executing job
+3. **SUCCESS**: Completed successfully
+4. **FAILED**: Execution failed
+5. **RETRY**: Retrying after failure
+
+### Retry Logic
+
+- Max retries: 3
+- Backoff: Exponential (1s, 2s, 4s)
+- Retry on: Timeout, rate limit, service error
+- No retry on: Invalid input, policy violation
+
+### Cost Management
+
+AI service calls can be expensive:
+- Cache common requests (Redis, 1 hour TTL)
+- Batch similar requests when possible
+- Use cheaper models for simple tasks
+- Set monthly budget limits
+- Monitor per-agent costs
 
 ## Next Steps
 
-Link to:
-- Related protocol pages
-- Builder guides
-- SDK references
-- Admin dashboard views
+- [Setup & Configuration](/agents/setup) - Environment setup
+- [Custom Agents](/agents/custom) - Build custom agents
+- [API Reference](/agents/api-reference) - Agent API docs
+- [Monitoring](/agents/monitoring) - Production monitoring
 
+## Support
 
-
-
-## Diagram
-
-Describe or embed the key architecture or flow diagram for this topic here.
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io/agents
+- **Discord**: https://discord.gg/castquest

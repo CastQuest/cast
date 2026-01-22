@@ -1,0 +1,304 @@
+---
+title: "Quests Setup & Configuration"
+section: "quests"
+slug: "setup"
+tags: ["quests", "setup", "gamification"]
+weight: 1
+navOrder: 1
+---
+
+# Quests Setup & Configuration
+
+> CASTQUEST V3 — Quest System Configuration Guide
+
+## Overview
+
+Quests are gamified challenges that users complete to earn rewards. The quest system is integrated into the web application and supports various quest types, verification methods, and reward mechanisms.
+
+**Code Path:** `apps/web/app/quests/` (part of web application)
+
+## Architecture
+
+### Quest System Components
+
+- **Quest Engine**: Core logic for quest lifecycle
+- **Verification**: On-chain and off-chain verification
+- **Rewards**: Token distribution and NFT minting
+- **Tracking**: Progress monitoring and analytics
+
+### Quest Types
+
+- **Social Quests**: Follow, share, engage on social platforms
+- **On-chain Quests**: Complete blockchain transactions
+- **Content Quests**: Create and submit content
+- **Engagement Quests**: Platform interaction milestones
+- **Custom Quests**: Developer-defined challenges
+
+## Prerequisites
+
+- Web application setup (see Web App Setup)
+- Smart contracts deployed (for on-chain quests)
+- Database configured (for quest state)
+- Redis configured (for caching)
+
+## Environment Variables
+
+Quests use the same environment configuration as the web application. No additional quest-specific environment variables are required.
+
+### Relevant Variables
+
+From web app configuration:
+
+- **`DATABASE_URL`**: For quest state and progress
+- **`REDIS_URL`**: For caching quest data
+- **`NEXT_PUBLIC_QUEST_TOKEN_ADDRESS`**: Quest token contract address
+- **`NEXT_PUBLIC_DEFAULT_CHAIN_ID`**: Chain for on-chain verification
+
+## Setup Steps
+
+### 1. Database Schema
+
+Initialize quest tables (run migrations from web app):
+
+```bash
+# Run database migrations
+pnpm --filter @castquest/web run migrate
+```
+
+Quest tables:
+- `quests` - Quest definitions
+- `quest_progress` - User progress tracking
+- `quest_completions` - Completed quests
+- `quest_rewards` - Reward distribution
+
+### 2. Configure Quest Types
+
+Quest types are configured in the web app:
+
+```typescript
+// apps/web/app/quests/config.ts
+export const QUEST_TYPES = {
+  SOCIAL: {
+    name: 'Social Quest',
+    verificationMethod: 'api',
+    rewardType: 'token'
+  },
+  ONCHAIN: {
+    name: 'On-chain Quest',
+    verificationMethod: 'blockchain',
+    rewardType: 'nft'
+  },
+  // ... more types
+};
+```
+
+### 3. Set Up Verification
+
+Configure verification services:
+
+```typescript
+// Social verification (Twitter, Farcaster)
+TWITTER_API_KEY=your_twitter_api_key
+FARCASTER_API_KEY=your_farcaster_api_key
+
+// On-chain verification (via indexer)
+INDEXER_URL=http://localhost:8080
+```
+
+## Build & Development
+
+Quests are part of the web application:
+
+```bash
+# Development
+pnpm --filter @castquest/web dev
+
+# Build
+pnpm --filter @castquest/web build
+
+# Test quest routes
+curl http://localhost:3000/api/quests
+```
+
+## Security
+
+### Verification Security
+
+- **Prevent Fraud**: Multiple verification checks
+- **Rate Limiting**: Limit verification attempts
+- **Spam Prevention**: Cooldown periods between completions
+- **Reward Validation**: Verify reward availability before distribution
+
+## Deployment Process
+
+Quests are deployed as part of the web application:
+
+### Steps
+
+1. **Deploy Web App**: Quests deploy with main application
+   ```bash
+   pnpm --filter @castquest/web build
+   pnpm --filter @castquest/web start
+   ```
+
+2. **Initialize Quest Database**: Run migrations
+   ```bash
+   pnpm run db:migrate
+   ```
+
+3. **Configure Quest Rewards**: Set up reward pools
+   ```bash
+   pnpm run quest:fund-pool --amount 10000
+   ```
+
+4. **Activate Quests**: Publish quests to users
+   ```bash
+   pnpm run quest:publish --ids 1,2,3
+   ```
+
+### Production Considerations
+
+- **Reward Pool Monitoring**: Ensure sufficient balance for rewards
+- **Verification Services**: High availability for verification APIs
+- **Database Performance**: Index quest tables for fast queries
+- **Caching**: Cache quest data for better performance
+
+## Security
+
+### Verification Security
+
+- **Prevent Fraud**: Multiple verification checks
+- **Rate Limiting**: Limit verification attempts per user
+- **Spam Prevention**: Cooldown periods between completions
+- **Reward Validation**: Verify reward availability before distribution
+- **Double-claim Prevention**: Check for existing completions
+
+### Quest Creation Security
+
+```typescript
+// Only admins can create quests
+export async function POST(req: NextRequest) {
+  const session = await getServerSession();
+  
+  if (!session?.user?.isAdmin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+  
+  // Create quest
+}
+```
+
+### Reward Security
+
+- **Authorization**: Only authorized addresses distribute rewards
+- **Balance Checks**: Verify sufficient balance before rewards
+- **Transaction Monitoring**: Track all reward distributions
+- **Audit Trail**: Log all quest completions and rewards
+- **Fraud Detection**: Monitor for suspicious patterns
+
+### Best Practices
+
+- **Validate quest criteria**: Ensure criteria are achievable
+- **Test verification**: Test all verification methods
+- **Monitor completion rates**: Track success/failure rates
+- **Set cooldown periods**: Prevent quest farming
+- **Implement fraud detection**: Monitor for suspicious activity
+- **Audit regularly**: Review quest completions and rewards
+- **Use secure APIs**: Only use trusted verification APIs
+
+## Monitoring
+
+### Quest Metrics
+
+Track key metrics:
+- Quest start rate
+- Completion rate
+- Average completion time
+- Reward distribution
+- Failed verifications
+
+### Performance
+
+Monitor quest system performance:
+- Verification latency
+- Database query performance
+- Reward transaction success rate
+- API response times
+
+## Quest Operations
+
+### Creating Quests
+
+Create quests via admin API:
+
+```typescript
+POST /api/admin/quests
+{
+  "name": "Complete Your First Trade",
+  "description": "Make a trade on the marketplace",
+  "type": "ONCHAIN",
+  "verificationCriteria": {
+    "contractAddress": "0x...",
+    "eventName": "TradeCompleted"
+  },
+  "reward": {
+    "type": "token",
+    "amount": "100"
+  }
+}
+```
+
+### Verifying Completions
+
+Verification flow:
+
+1. User claims quest completion
+2. System checks verification criteria
+3. If valid, marks as complete
+4. Distributes reward
+5. Emits completion event
+
+### Managing Rewards
+
+Configure reward pools:
+
+```bash
+# Fund reward pool
+pnpm run quest:fund-pool --amount 10000
+
+# Check pool balance
+pnpm run quest:pool-balance
+```
+
+## Troubleshooting
+
+**"Verification failed"**
+- Check verification service connectivity
+- Verify user actually completed action
+- Check for API rate limits
+- Review verification logs
+
+**"Reward distribution failed"**
+- Ensure reward pool has sufficient balance
+- Check user wallet is valid
+- Verify transaction gas limits
+- Review blockchain network status
+
+**"Quest not visible"**
+- Check quest is published
+- Verify eligibility criteria
+- Check database connectivity
+- Review user permissions
+
+## Next Steps
+
+- [Quest Types](/quests/quest-types) - Available quest types
+- [Quest Verification](/quests/quest-verification) - Verification methods
+- [Quest Rewards](/quests/quest-rewards) - Reward configuration
+- [Quest API](/reference/api-reference#quests) - API documentation
+
+## Support
+
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io/quests
+- **Discord**: https://discord.gg/castquest

@@ -1,0 +1,542 @@
+---
+title: "Indexer Setup & Configuration"
+section: "overview"
+slug: "indexer-setup"
+tags: ["indexer", "setup", "blockchain"]
+weight: 20
+navOrder: 20
+---
+
+# Indexer Setup & Configuration
+
+> CASTQUEST V3 — Blockchain Indexer Service
+
+## Overview
+
+The CASTQUEST Indexer (`@castquest/indexer`) is a blockchain indexing service that monitors on-chain events, indexes transaction data, and maintains a queryable database of protocol activity across multiple chains.
+
+**Code Path:** `packages/indexer/`
+
+## Purpose
+
+The indexer provides:
+- **Real-time Event Monitoring**: Tracks smart contract events across chains
+- **Historical Data**: Maintains complete transaction history
+- **Query Interface**: Fast access to on-chain data via REST API
+- **Cross-chain Synchronization**: Unified view of multi-chain activity
+- **Data Analytics**: Aggregated metrics and statistics
+
+### Components
+
+The indexer consists of three main modules (see `packages/indexer/`):
+
+1. **`buyback-indexer.ts`**: Indexes buyback transactions and treasury operations
+2. **`mc-indexer.ts`**: Multi-chain indexer for cross-chain tracking
+3. **`social-indexer.ts`**: Indexes social interactions (Farcaster frames, user activity)
+
+## Prerequisites
+
+- **Node.js**: >= 18.18.0
+- **PostgreSQL**: >= 13 (for data storage)
+- **Redis**: >= 6 (for caching and rate limiting)
+- **RPC Access**: Reliable RPC endpoints for each chain
+
+## Installation
+
+### From Repository Root
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build indexer
+pnpm --filter @castquest/indexer build
+```
+
+### From Indexer Directory
+
+```bash
+cd packages/indexer
+pnpm install
+pnpm run build
+```
+
+## Environment Variables
+
+### Required Variables
+
+#### Database Configuration
+
+- **`DATABASE_URL`**: PostgreSQL connection string
+  - Format: `postgresql://user:password@host:5432/database`
+  - Example: `postgresql://castquest:secret@db.example.com:5432/castquest_indexer`
+  - Required for: Storing indexed data, transaction history
+
+- **`REDIS_URL`**: Redis connection string
+  - Format: `redis://host:port` or `redis://user:password@host:port`
+  - Example: `redis://localhost:6379`
+  - Required for: Caching, rate limiting, job queue
+
+#### RPC Endpoints
+
+- **`BASE_RPC_URL`**: Base network RPC endpoint
+  - Example: `https://mainnet.base.org`
+  - Required: Yes (primary chain)
+  - Rate limit consideration: 10 requests/second recommended
+
+- **`ETHEREUM_RPC_URL`**: Ethereum mainnet RPC endpoint
+  - Example: `https://eth-mainnet.g.alchemy.com/v2/YOUR-API-KEY`
+  - Required: For cross-chain operations
+  - Provider options: Alchemy, Infura, QuickNode
+
+- **`ARBITRUM_RPC_URL`**: Arbitrum RPC endpoint (optional)
+  - Example: `https://arb-mainnet.g.alchemy.com/v2/YOUR-API-KEY`
+  - Required: If indexing Arbitrum chain
+
+- **`OPTIMISM_RPC_URL`**: Optimism RPC endpoint (optional)
+  - Example: `https://opt-mainnet.g.alchemy.com/v2/YOUR-API-KEY`
+  - Required: If indexing Optimism chain
+
+- **`POLYGON_RPC_URL`**: Polygon RPC endpoint (optional)
+  - Example: `https://polygon-mainnet.g.alchemy.com/v2/YOUR-API-KEY`
+  - Required: If indexing Polygon chain
+
+### Optional Variables
+
+- **`INDEXER_PORT`**: HTTP API port (default: 8080)
+- **`INDEXER_START_BLOCK`**: Block number to start indexing from
+  - Default: Latest block
+  - Set to specific block for re-indexing
+
+- **`INDEXER_BATCH_SIZE`**: Number of blocks to process per batch (default: 100)
+- **`INDEXER_CONCURRENCY`**: Concurrent indexing tasks (default: 5)
+- **`INDEXER_LOG_LEVEL`**: Logging verbosity
+  - Options: 'debug', 'info', 'warn', 'error'
+  - Default: 'info'
+
+- **`INDEXER_ENABLE_METRICS`**: Enable Prometheus metrics (default: true)
+- **`INDEXER_METRICS_PORT`**: Metrics endpoint port (default: 9090)
+
+### Example `.env` file
+
+```bash
+# Database
+DATABASE_URL=postgresql://castquest:password@localhost:5432/castquest_indexer
+REDIS_URL=redis://localhost:6379
+
+# RPC Endpoints (Required)
+BASE_RPC_URL=https://mainnet.base.org
+ETHEREUM_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/YOUR-API-KEY
+
+# RPC Endpoints (Optional - for multi-chain)
+ARBITRUM_RPC_URL=https://arb-mainnet.g.alchemy.com/v2/YOUR-API-KEY
+OPTIMISM_RPC_URL=https://opt-mainnet.g.alchemy.com/v2/YOUR-API-KEY
+POLYGON_RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/YOUR-API-KEY
+
+# Indexer Configuration
+INDEXER_PORT=8080
+INDEXER_START_BLOCK=latest
+INDEXER_BATCH_SIZE=100
+INDEXER_CONCURRENCY=5
+INDEXER_LOG_LEVEL=info
+INDEXER_ENABLE_METRICS=true
+INDEXER_METRICS_PORT=9090
+```
+
+## Database Setup
+
+### PostgreSQL Schema
+
+Initialize the database schema:
+
+```bash
+# Connect to PostgreSQL
+psql $DATABASE_URL
+
+# Create database (if not exists)
+CREATE DATABASE castquest_indexer;
+
+# Run migrations (from repository root)
+pnpm --filter @castquest/indexer run migrate
+```
+
+### Schema Tables
+
+The indexer creates the following tables:
+
+- **`blocks`**: Indexed block data
+- **`transactions`**: Transaction records
+- **`events`**: Smart contract events
+- **`buybacks`**: Buyback operations
+- **`social_activity`**: Social interactions
+- **`sync_status`**: Indexing progress per chain
+
+### Database Indexes
+
+Ensure proper indexes for performance:
+
+```sql
+CREATE INDEX idx_events_block_number ON events(block_number);
+CREATE INDEX idx_events_contract ON events(contract_address);
+CREATE INDEX idx_events_timestamp ON events(timestamp);
+CREATE INDEX idx_transactions_hash ON transactions(transaction_hash);
+```
+
+## Build & Development
+
+### Building
+
+```bash
+# From repository root
+pnpm --filter @castquest/indexer build
+
+# From indexer directory
+pnpm run build
+```
+
+**Build Output:** `packages/indexer/dist/` (compiled JavaScript)
+
+### Running in Development
+
+```bash
+# Watch mode with auto-reload
+pnpm --filter @castquest/indexer dev
+
+# Or from indexer directory
+pnpm run dev
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+pnpm --filter @castquest/indexer test
+
+# Type check
+pnpm --filter @castquest/indexer typecheck
+```
+
+### Running in Production
+
+```bash
+# Start indexer
+pnpm --filter @castquest/indexer start
+
+# Or directly
+node packages/indexer/dist/index.js
+```
+
+## Deployment
+
+### Docker Deployment
+
+Build and run with Docker:
+
+```dockerfile
+# infra/docker/Dockerfile.indexer
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY packages/indexer/package.json ./
+COPY packages/indexer/dist ./dist
+
+RUN npm install --production
+
+EXPOSE 8080 9090
+
+CMD ["node", "dist/index.js"]
+```
+
+```bash
+# Build
+docker build -t castquest-indexer:3.0.0 -f infra/docker/Dockerfile.indexer .
+
+# Run
+docker run -d \
+  --name castquest-indexer \
+  -p 8080:8080 \
+  -p 9090:9090 \
+  --env-file .env \
+  castquest-indexer:3.0.0
+```
+
+### Docker Compose
+
+Run indexer with dependencies:
+
+```yaml
+# infra/docker-compose.yml
+services:
+  indexer:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.indexer
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/castquest
+      - REDIS_URL=redis://redis:6379
+      - BASE_RPC_URL=${BASE_RPC_URL}
+    depends_on:
+      - postgres
+      - redis
+  
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: castquest
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+```
+
+### Kubernetes Deployment
+
+```bash
+# Deploy to staging
+kubectl apply -f infra/k8s/staging/indexer-deployment.yaml
+
+# Deploy to production
+kubectl apply -f infra/k8s/production/indexer-deployment.yaml
+
+# Check status
+kubectl get pods -l app=castquest-indexer
+kubectl logs -f deployment/castquest-indexer
+```
+
+### Health Checks
+
+The indexer exposes health endpoints:
+
+```bash
+# Overall health
+curl http://localhost:8080/health
+
+# Liveness probe
+curl http://localhost:8080/health/live
+
+# Readiness probe (checks DB and RPC)
+curl http://localhost:8080/health/ready
+```
+
+Response example:
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "redis": "connected",
+  "chains": {
+    "base": {
+      "status": "synced",
+      "lastBlock": 12345678,
+      "lag": 2
+    },
+    "ethereum": {
+      "status": "syncing",
+      "lastBlock": 18900000,
+      "lag": 145
+    }
+  }
+}
+```
+
+## Runtime Operations
+
+### Starting from Specific Block
+
+To re-index from a specific block:
+
+```bash
+INDEXER_START_BLOCK=10000000 pnpm --filter @castquest/indexer start
+```
+
+### Indexing Status
+
+Check indexing progress:
+
+```bash
+curl http://localhost:8080/api/v1/status
+```
+
+Response:
+```json
+{
+  "chains": {
+    "base": {
+      "latestBlock": 12345678,
+      "indexedBlock": 12345676,
+      "blocksPerSecond": 5.2,
+      "estimatedCompletion": "2026-01-20T10:00:00Z"
+    }
+  }
+}
+```
+
+### Backfilling Data
+
+To backfill missing blocks:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/backfill \
+  -H "Content-Type: application/json" \
+  -d '{"chain": "base", "fromBlock": 10000000, "toBlock": 10001000}'
+```
+
+## Security
+
+### RPC Security
+
+- **Never expose RPC URLs** in public repositories
+- Use environment variables or secrets manager
+- Rotate API keys quarterly
+- Monitor RPC usage and rate limits
+- Use authenticated RPC endpoints
+
+### Database Security
+
+- **Strong passwords**: 16+ characters, mixed case, special chars
+- **SSL/TLS connections**: Add `?sslmode=require` to DATABASE_URL
+- **Restricted access**: Limit database access to indexer IP
+- **Regular backups**: Daily automated backups
+- **Encryption at rest**: Enable PostgreSQL encryption
+
+### API Security
+
+- **Rate limiting**: 100 requests/min per IP (configurable)
+- **API authentication**: Optional API key for sensitive endpoints
+- **CORS**: Restrict origins in production
+- **Input validation**: Sanitize all query parameters
+
+### Network Security
+
+- **Firewall rules**: Allow only necessary ports
+  - 8080 (API) - restricted to application servers
+  - 9090 (Metrics) - restricted to monitoring systems
+  - 5432 (PostgreSQL) - restricted to indexer
+  - 6379 (Redis) - restricted to indexer
+
+- **VPC isolation**: Deploy in private VPC
+- **TLS encryption**: Use HTTPS for API endpoints
+
+## Monitoring & Observability
+
+### Metrics
+
+Prometheus metrics available at `http://localhost:9090/metrics`:
+
+```
+# Indexing progress
+indexer_blocks_processed_total{chain="base"}
+indexer_events_indexed_total{chain="base",event="Transfer"}
+
+# Performance
+indexer_block_processing_duration_seconds{chain="base"}
+indexer_batch_processing_duration_seconds{chain="base"}
+
+# Errors
+indexer_errors_total{chain="base",type="rpc_error"}
+indexer_reorg_detected_total{chain="base"}
+
+# Database
+indexer_db_queries_total
+indexer_db_query_duration_seconds
+
+# RPC
+indexer_rpc_requests_total{chain="base",method="eth_getLogs"}
+indexer_rpc_errors_total{chain="base"}
+```
+
+### Logging
+
+Structured JSON logging:
+
+```json
+{
+  "level": "info",
+  "timestamp": "2026-01-20T06:00:00.000Z",
+  "service": "indexer",
+  "chain": "base",
+  "message": "Block processed",
+  "blockNumber": 12345678,
+  "eventCount": 42,
+  "duration": 1.234
+}
+```
+
+### Alerts
+
+Set up alerts for:
+- Indexing lag > 100 blocks for 10 minutes
+- RPC error rate > 5% for 5 minutes
+- Database connection failures
+- Memory usage > 85%
+- Disk space < 10GB
+
+## Troubleshooting
+
+### Common Issues
+
+**"Cannot connect to database"**
+- Verify DATABASE_URL is correct
+- Check PostgreSQL is running: `pg_isready -h localhost`
+- Ensure firewall allows connection
+- Check credentials
+
+**"RPC request failed"**
+- Verify RPC URL is correct and accessible
+- Check API key is valid
+- Verify rate limits not exceeded
+- Try alternative RPC provider
+
+**"Indexing lag increasing"**
+- Increase INDEXER_CONCURRENCY
+- Increase INDEXER_BATCH_SIZE
+- Use faster RPC endpoint
+- Scale horizontally (multiple indexers)
+
+**"Database full"**
+- Increase storage capacity
+- Archive old data
+- Enable PostgreSQL auto-vacuum
+- Implement data retention policy
+
+**"Memory usage high"**
+- Reduce INDEXER_BATCH_SIZE
+- Reduce INDEXER_CONCURRENCY
+- Increase container memory limit
+- Check for memory leaks
+
+### Performance Tuning
+
+For high-throughput scenarios:
+
+```bash
+# Increase batch size
+INDEXER_BATCH_SIZE=500
+
+# Increase concurrency
+INDEXER_CONCURRENCY=10
+
+# Use connection pooling
+DATABASE_POOL_SIZE=20
+```
+
+## Next Steps
+
+- [Indexer Architecture](/overview/architecture#indexer) - Deep dive
+- [Data Model](/overview/data-model) - Database schema
+- [API Reference](/reference/api-reference#indexer) - API documentation
+- [Multi-chain Architecture](/overview/multi-chain-architecture) - Cross-chain indexing
+
+## Support
+
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io
+- **Discord**: https://discord.gg/castquest

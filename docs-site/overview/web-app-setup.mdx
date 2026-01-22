@@ -1,0 +1,579 @@
+---
+title: "Web Application Setup & Deployment"
+section: "overview"
+slug: "web-app-setup"
+tags: ["web", "setup", "nextjs", "deployment"]
+weight: 15
+navOrder: 15
+---
+
+# Web Application Setup & Deployment
+
+> CASTQUEST V3 — Next.js Web Application Configuration Guide
+
+## Overview
+
+The CASTQUEST web application (`@castquest/web`) is a Next.js-based frontend that provides the user interface for interacting with the CASTQUEST protocol, including frames, quests, mints, marketplace, and profile management.
+
+**Code Path:** `apps/web/`
+
+## Architecture
+
+### Technology Stack
+
+- **Framework**: Next.js 14.0.0 (App Router)
+- **React**: 18.2.0
+- **TypeScript**: 5.0+
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **State Management**: React Context + Hooks
+- **Web3**: ethers.js, viem, WalletConnect
+
+### Application Structure
+
+```
+apps/web/
+├── app/              - Next.js app router pages
+│   ├── api/          - API routes
+│   ├── frames/       - Farcaster frames
+│   ├── quests/       - Quest management
+│   ├── marketplace/  - Marketplace UI
+│   └── profile/      - User profiles
+├── components/       - React components
+├── public/           - Static assets
+├── next.config.mjs   - Next.js configuration
+└── package.json      - Dependencies
+```
+
+## Prerequisites
+
+- **Node.js**: >= 18.18.0
+- **pnpm**: >= 8.0.0 (package manager)
+- **PostgreSQL**: >= 13 (for session/user data)
+- **Redis**: >= 6 (for caching)
+
+## Installation
+
+### From Repository Root
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build web app
+pnpm --filter @castquest/web build
+```
+
+### From Web Directory
+
+```bash
+cd apps/web
+pnpm install
+pnpm run build
+```
+
+## Environment Variables
+
+### Required Variables
+
+#### Application URLs
+
+- **`NEXT_PUBLIC_APP_URL`**: Public-facing application URL
+  - Example: `https://castquest.io` (production)
+  - Example: `http://localhost:3000` (development)
+  - Used for: OAuth callbacks, canonical URLs
+
+- **`NEXT_PUBLIC_API_URL`**: Backend API endpoint
+  - Example: `https://api.castquest.io`
+  - Used for: API requests from client-side code
+
+- **`NEXT_PUBLIC_WS_URL`**: WebSocket URL for real-time updates
+  - Example: `wss://ws.castquest.io`
+  - Used for: Live notifications, chat
+
+#### Database
+
+- **`DATABASE_URL`**: PostgreSQL connection string
+  - Format: `postgresql://user:password@host:5432/database`
+  - Example: `postgresql://castquest:secret@localhost:5432/castquest_web`
+  - Used for: User sessions, preferences, cached data
+
+- **`DATABASE_POOL_SIZE`**: Connection pool size (default: 20)
+- **`DATABASE_SSL`**: Enable SSL (default: true in production)
+
+#### Session & Authentication
+
+- **`SESSION_SECRET`**: Secret for session encryption
+  - Generate: `openssl rand -base64 32`
+  - Example: `your-session-secret-replace-in-production`
+  - CRITICAL: Keep secret, rotate regularly
+
+- **`NEXTAUTH_URL`**: NextAuth canonical URL
+  - Should match `NEXT_PUBLIC_APP_URL`
+  - Example: `https://castquest.io`
+
+- **`NEXTAUTH_SECRET`**: NextAuth encryption secret
+  - Generate: `openssl rand -base64 32`
+  - Used for: JWT signing, session encryption
+
+- **`JWT_SECRET`**: JWT token secret
+  - Generate: `openssl rand -base64 32`
+  - Used for: API authentication tokens
+
+- **`JWT_EXPIRY`**: JWT token expiry (default: 7d)
+
+#### Blockchain Configuration
+
+- **`NEXT_PUBLIC_DEFAULT_CHAIN_ID`**: Default chain ID
+  - Example: `8453` (Base mainnet)
+  - Options: 1 (Ethereum), 8453 (Base), 42161 (Arbitrum)
+
+- **`NEXT_PUBLIC_SUPPORTED_CHAINS`**: Supported chain IDs (comma-separated)
+  - Example: `1,8453,42161,10,137`
+
+#### Contract Addresses
+
+- **`NEXT_PUBLIC_CAST_TOKEN_ADDRESS`**: CAST token contract
+- **`NEXT_PUBLIC_QUEST_TOKEN_ADDRESS`**: QUEST token contract
+- **`NEXT_PUBLIC_MARKETPLACE_ADDRESS`**: Marketplace contract
+- **`NEXT_PUBLIC_AUCTION_HOUSE_ADDRESS`**: Auction contract
+
+Update these after contract deployment (see Contracts Setup).
+
+#### External Services
+
+- **`WALLETCONNECT_PROJECT_ID`**: WalletConnect project ID
+  - Obtain from: https://cloud.walletconnect.com/
+  - Required for: Wallet connection UI
+
+- **`FARCASTER_API_KEY`**: Farcaster API key
+  - Required for: Frame integration
+  - Obtain from: https://www.farcaster.xyz/
+
+- **`FARCASTER_HUB_URL`**: Farcaster hub URL
+  - Default: `https://hub.farcaster.xyz`
+
+### Optional Variables
+
+#### Storage
+
+- **`AWS_REGION`**: AWS region (default: us-east-1)
+- **`AWS_ACCESS_KEY_ID`**: AWS access key
+- **`AWS_SECRET_ACCESS_KEY`**: AWS secret key
+- **`AWS_S3_BUCKET_NAME`**: S3 bucket for uploads
+- **`AWS_CLOUDFRONT_DISTRIBUTION_ID`**: CloudFront distribution
+
+#### IPFS
+
+- **`PINATA_API_KEY`**: Pinata API key
+- **`PINATA_SECRET_KEY`**: Pinata secret
+- **`IPFS_GATEWAY_URL`**: IPFS gateway URL
+
+#### Monitoring
+
+- **`SENTRY_DSN`**: Sentry error tracking DSN
+- **`SENTRY_ENV`**: Environment name (production, staging)
+- **`SENTRY_TRACES_SAMPLE_RATE`**: Sample rate (0.0-1.0)
+
+#### Performance
+
+- **`NODE_ENV`**: Environment (production, development)
+- **`LOG_LEVEL`**: Logging level (debug, info, warn, error)
+- **`CACHE_TTL`**: Cache TTL in seconds (default: 3600)
+
+### Example `.env.local` (Development)
+
+```bash
+# Application
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_WS_URL=ws://localhost:3000
+
+# Database
+DATABASE_URL=postgresql://postgres:password@localhost:5432/castquest_dev
+DATABASE_SSL=false
+
+# Authentication
+SESSION_SECRET=your-session-secret-replace-in-production
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret-replace-in-production
+JWT_SECRET=your-jwt-secret-replace-in-production
+
+# Blockchain
+NEXT_PUBLIC_DEFAULT_CHAIN_ID=8453
+NEXT_PUBLIC_SUPPORTED_CHAINS=1,8453
+
+# WalletConnect
+WALLETCONNECT_PROJECT_ID=your_project_id_here
+
+# Farcaster
+FARCASTER_API_KEY=your_farcaster_key_here
+FARCASTER_HUB_URL=https://hub.farcaster.xyz
+```
+
+### Example `.env.production`
+
+See `.env.production.template` in repository root for complete production configuration.
+
+## Build & Development
+
+### Development Mode
+
+Start development server with hot reload:
+
+```bash
+# From repository root
+pnpm --filter @castquest/web dev
+
+# From web directory
+pnpm run dev
+
+# Access at http://localhost:3000
+```
+
+Features in development mode:
+- Hot module replacement (HMR)
+- Fast refresh
+- Detailed error messages
+- Source maps enabled
+
+### Production Build
+
+Build optimized production bundle:
+
+```bash
+# From repository root
+pnpm --filter @castquest/web build
+
+# From web directory
+pnpm run build
+```
+
+Build output:
+- `.next/` - Compiled application
+- `.next/static/` - Static assets (CSS, JS)
+- `.next/server/` - Server-side code
+
+Build configuration (`next.config.mjs`):
+- Output: Standalone (for Docker)
+- Image optimization: Enabled
+- Compression: Enabled
+- Bundle analyzer: Available via `ANALYZE=true`
+
+### Type Checking
+
+Run TypeScript type checks:
+
+```bash
+pnpm --filter @castquest/web typecheck
+```
+
+### Linting
+
+Run ESLint checks:
+
+```bash
+pnpm --filter @castquest/web lint
+```
+
+### Testing
+
+```bash
+# Run tests (when available)
+pnpm --filter @castquest/web test
+```
+
+## Deployment
+
+### Vercel Deployment (Recommended)
+
+The easiest deployment option for Next.js:
+
+1. **Connect Repository**: Link GitHub repo to Vercel
+2. **Configure Environment**: Add environment variables in Vercel dashboard
+3. **Deploy**: Automatic deployments on push to main
+
+```bash
+# Deploy via Vercel CLI
+vercel --prod
+
+# Set environment variables
+vercel env add NEXT_PUBLIC_APP_URL
+vercel env add DATABASE_URL
+```
+
+### Docker Deployment
+
+Build and run with Docker:
+
+```dockerfile
+# infra/docker/Dockerfile.web
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+COPY . .
+RUN corepack enable && pnpm install
+RUN pnpm --filter @castquest/web build
+
+FROM node:18-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
+
+EXPOSE 3000
+CMD ["node", "apps/web/server.js"]
+```
+
+Build and run:
+
+```bash
+# Build image
+docker build -t castquest-web:3.0.0 -f infra/docker/Dockerfile.web .
+
+# Run container
+docker run -d \
+  --name castquest-web \
+  -p 3000:3000 \
+  --env-file .env.production \
+  castquest-web:3.0.0
+```
+
+### Kubernetes Deployment
+
+Deploy to Kubernetes:
+
+```bash
+# Apply staging deployment
+kubectl apply -f infra/k8s/staging/web-deployment.yaml
+
+# Apply production deployment
+kubectl apply -f infra/k8s/production/web-deployment.yaml
+
+# Check status
+kubectl get pods -l app=castquest-web
+kubectl logs -f deployment/castquest-web
+```
+
+### Static Export (Optional)
+
+For static hosting (CloudFront, Netlify):
+
+```bash
+# Configure static export in next.config.mjs
+# output: 'export'
+
+# Build static files
+pnpm run build
+
+# Output in: apps/web/out/
+```
+
+**Note**: Static export has limitations (no API routes, no SSR).
+
+## Performance Optimization
+
+### Image Optimization
+
+Next.js Image component:
+```typescript
+import Image from 'next/image';
+
+<Image
+  src="/logo.png"
+  width={200}
+  height={200}
+  alt="Logo"
+  priority
+/>
+```
+
+### Code Splitting
+
+Automatic code splitting by Next.js. Lazy load heavy components:
+
+```typescript
+import dynamic from 'next/dynamic';
+
+const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <p>Loading...</p>,
+});
+```
+
+### Caching Strategy
+
+Configure caching in `next.config.mjs`:
+```javascript
+export default {
+  cacheHandler: './cache-handler.js',
+  cacheMaxMemorySize: 50 * 1024 * 1024, // 50MB
+};
+```
+
+### Bundle Analysis
+
+Analyze bundle size:
+
+```bash
+ANALYZE=true pnpm run build
+```
+
+Opens interactive bundle analyzer in browser.
+
+## Security
+
+### Environment Variables
+
+- **Never commit** `.env.local` or `.env.production`
+- Use **NEXT_PUBLIC_** prefix only for client-safe variables
+- Store secrets in **secrets manager** (AWS Secrets Manager, Vercel)
+- Rotate secrets every 90 days
+
+### Authentication
+
+- Use **NextAuth.js** for authentication
+- Enable **CSRF protection** (enabled by default)
+- Implement **rate limiting** on API routes
+- Use **httpOnly cookies** for session tokens
+
+### API Routes
+
+Secure API routes:
+
+```typescript
+// apps/web/app/api/example/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+
+export async function GET(req: NextRequest) {
+  // Verify authentication
+  const session = await getServerSession();
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  
+  // Rate limiting (implement with redis)
+  // Input validation
+  // ...
+}
+```
+
+### Content Security Policy
+
+Configure CSP headers in `next.config.mjs`:
+
+```javascript
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value: "default-src 'self'; script-src 'self' 'unsafe-eval'; ..."
+  }
+];
+```
+
+### HTTPS
+
+Always use HTTPS in production:
+- Redirect HTTP to HTTPS
+- Set secure cookie flags
+- Enable HSTS headers
+
+## Monitoring
+
+### Health Checks
+
+Health endpoint: `apps/web/app/api/health/route.ts`
+
+```bash
+curl https://castquest.io/api/health
+```
+
+Response:
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "redis": "connected",
+  "uptime": 86400
+}
+```
+
+### Error Tracking
+
+Configure Sentry:
+
+```typescript
+// apps/web/instrumentation.ts
+import * as Sentry from '@sentry/nextjs';
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.SENTRY_ENV,
+  tracesSampleRate: 0.1,
+});
+```
+
+### Performance Monitoring
+
+- **Core Web Vitals**: Monitored by default
+- **Vercel Analytics**: Enable in Vercel dashboard
+- **Custom metrics**: Use `performance.measure()`
+
+### Logging
+
+Structured logging:
+
+```typescript
+const logger = {
+  info: (msg: string, meta?: object) => {
+    console.log(JSON.stringify({ level: 'info', message: msg, ...meta }));
+  },
+  error: (msg: string, error?: Error) => {
+    console.error(JSON.stringify({ level: 'error', message: msg, error }));
+  }
+};
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**"Error: Cannot find module"**
+- Run `pnpm install`
+- Delete `.next` folder: `rm -rf .next`
+- Rebuild: `pnpm run build`
+
+**"Database connection failed"**
+- Verify `DATABASE_URL` is correct
+- Check PostgreSQL is running
+- Ensure firewall allows connection
+
+**"NEXTAUTH_URL mismatch"**
+- Ensure `NEXTAUTH_URL` matches actual domain
+- Include protocol (https://)
+- No trailing slash
+
+**"Out of memory during build"**
+- Increase Node.js memory: `NODE_OPTIONS=--max-old-space-size=4096`
+- Reduce concurrent workers
+- Use swap space
+
+**"Static export failed"**
+- Remove dynamic features (API routes, ISR)
+- Or use server deployment instead
+
+## Next Steps
+
+- [Frames Setup](/frames/setup) - Farcaster frame integration
+- [Quests Setup](/quests/setup) - Quest configuration
+- [Marketplace](/marketplace/) - Marketplace features
+- [API Reference](/reference/api-reference) - API documentation
+
+## Support
+
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io
+- **Discord**: https://discord.gg/castquest

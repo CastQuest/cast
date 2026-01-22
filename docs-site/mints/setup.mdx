@@ -1,0 +1,284 @@
+---
+title: "Mints Setup & Configuration"
+section: "mints"
+slug: "setup"
+tags: ["mints", "nft", "setup"]
+weight: 1
+navOrder: 1
+---
+
+# Mints Setup & Configuration
+
+> CASTQUEST V3 — NFT Minting System Configuration Guide
+
+## Overview
+
+The minting system allows users to mint NFTs, tokens, and other digital assets. It supports various mint types, pricing models, and eligibility criteria.
+
+**Code Path:** `apps/web/app/mints/` (part of web application)
+
+## Architecture
+
+### Mint System Components
+
+- **Mint Engine**: Core minting logic and smart contract interaction
+- **Eligibility**: Whitelist, allowlist, and criteria checking
+- **Pricing**: Dynamic pricing, auctions, and free mints
+- **Metadata**: IPFS storage and on-chain metadata
+- **Analytics**: Mint tracking and reporting
+
+### Mint Types
+
+- **Open Mints**: Public minting with no restrictions
+- **Whitelist Mints**: Restricted to approved addresses
+- **Tiered Mints**: Different prices for different tiers
+- **Auction Mints**: Dutch auctions or English auctions
+- **Free Mints**: No cost minting (gas only)
+
+## Prerequisites
+
+- Web application setup (see Web App Setup)
+- Smart contracts deployed (minting contracts)
+- IPFS/Pinata configured (for metadata)
+- Database configured (for mint state)
+
+## Environment Variables
+
+Mints use web app environment variables plus:
+
+### Storage Configuration
+
+- **`PINATA_API_KEY`**: Pinata API key for IPFS
+- **`PINATA_SECRET_KEY`**: Pinata secret key
+- **`IPFS_GATEWAY_URL`**: IPFS gateway URL
+  - Example: `https://gateway.pinata.cloud`
+
+### Contract Addresses
+
+- **`NEXT_PUBLIC_MINT_FACTORY_ADDRESS`**: Mint factory contract
+- **`NEXT_PUBLIC_NFT_ADDRESS`**: NFT contract address
+
+## Setup Steps
+
+### 1. Configure IPFS Storage
+
+Set up Pinata for metadata storage:
+
+```bash
+# Add to .env.production
+PINATA_API_KEY=your_pinata_api_key
+PINATA_SECRET_KEY=your_pinata_secret_key
+IPFS_GATEWAY_URL=https://gateway.pinata.cloud
+```
+
+### 2. Deploy Minting Contracts
+
+Deploy NFT and minting contracts:
+
+```bash
+# Deploy contracts
+pnpm --filter @castquest/contracts deploy:base
+
+# Note contract addresses
+# Update environment variables
+```
+
+### 3. Initialize Mint Factory
+
+Configure mint factory:
+
+```typescript
+// Initialize mint settings
+await mintFactory.initialize({
+  maxSupply: 10000,
+  basePrice: ethers.parseEther("0.01"),
+  royaltyBps: 500 // 5%
+});
+```
+
+## Build & Development
+
+Mints are part of the web application:
+
+```bash
+# Development
+pnpm --filter @castquest/web dev
+
+# Build
+pnpm --filter @castquest/web build
+
+# Test mint routes
+curl http://localhost:3000/api/mints
+```
+
+## Deployment
+
+### Mint Configuration
+
+Deploy mint campaigns:
+
+1. **Create Mint Collection**: Define NFT collection
+2. **Set Pricing**: Configure mint price and tiers
+3. **Upload Metadata**: Upload to IPFS
+4. **Set Eligibility**: Configure whitelist or criteria
+5. **Launch**: Publish mint to users
+
+### Metadata Upload
+
+Upload metadata to IPFS:
+
+```bash
+# Upload metadata
+pnpm run mint:upload-metadata --collection my-collection
+
+# Returns IPFS hash
+# Update contract with base URI
+```
+
+## Minting and Metadata Security
+
+### Minting Security
+
+- **Reentrancy Protection**: All mint functions protected
+- **Supply Limits**: Enforce maximum supply
+- **Price Validation**: Verify payment amounts
+- **Signature Verification**: Validate whitelist signatures
+
+### Metadata Security
+
+- **IPFS Pinning**: Ensure metadata persistence
+- **Content Validation**: Verify uploaded content
+- **Duplicate Prevention**: Check for duplicate uploads
+- **Access Control**: Restrict metadata updates
+
+## Security Best Practices
+
+### Post-Deployment Security
+
+After deploying mints:
+
+- **Monitor mints**: Track all mint transactions
+- **Verify metadata**: Ensure IPFS content is correct
+- **Check contract state**: Verify supply and pricing
+- **Review access control**: Ensure proper permissions
+- **Test emergency pause**: Verify pause mechanism works
+
+### Security Audit Checklist
+
+Before launching mints:
+
+- [ ] Smart contracts audited
+- [ ] Metadata uploaded and pinned to IPFS
+- [ ] Supply limits configured
+- [ ] Pricing validated
+- [ ] Whitelist tested
+- [ ] Refund mechanism tested
+- [ ] Emergency pause tested
+- [ ] Gas limits configured
+- [ ] Access control verified
+- [ ] Monitoring configured
+
+## Monitoring
+
+### Mint Metrics
+
+Track mint performance:
+- Total mints
+- Mint success rate
+- Average mint price
+- Revenue generated
+- Failed mint reasons
+
+### Performance
+
+Monitor minting performance:
+- Transaction confirmation time
+- Metadata upload latency
+- IPFS gateway response time
+- Contract call success rate
+
+## Mint Operations
+
+### Creating Mint Campaigns
+
+Create via admin API:
+
+```typescript
+POST /api/admin/mints
+{
+  "name": "Genesis Collection",
+  "supply": 10000,
+  "price": "0.01",
+  "startDate": "2026-02-01T00:00:00Z",
+  "endDate": "2026-03-01T00:00:00Z",
+  "metadata": {
+    "baseURI": "ipfs://QmXXXXXX/"
+  }
+}
+```
+
+### Managing Whitelist
+
+Configure whitelist:
+
+```bash
+# Add to whitelist
+pnpm run mint:whitelist-add --addresses 0x...,0x...,0x...
+
+# Remove from whitelist
+pnpm run mint:whitelist-remove --addresses 0x...
+
+# Export whitelist
+pnpm run mint:whitelist-export
+```
+
+### Mint Analytics
+
+View mint analytics:
+
+```bash
+# Get mint stats
+curl https://api.castquest.io/api/mints/stats
+
+# Get collection stats
+curl https://api.castquest.io/api/mints/collection/123/stats
+```
+
+## Troubleshooting
+
+**"Mint failed"**
+- Check user has sufficient balance
+- Verify contract has remaining supply
+- Check mint is active
+- Review gas limits
+
+**"Metadata not found"**
+- Verify IPFS hash is correct
+- Check IPFS gateway is accessible
+- Ensure metadata is pinned
+- Try alternative gateway
+
+**"Not whitelisted"**
+- Verify address is on whitelist
+- Check signature is valid
+- Verify mint type allows whitelist
+- Review eligibility criteria
+
+**"Price mismatch"**
+- Check current mint price
+- Verify payment amount
+- Check for price tiers
+- Review transaction value
+
+## Next Steps
+
+- [Mint Types](/mints/mint-types) - Available mint types
+- [Mint Pricing](/mints/mint-pricing) - Pricing strategies
+- [Mint Eligibility](/mints/mint-eligibility) - Eligibility criteria
+- [Mint API](/reference/api-reference#mints) - API documentation
+
+## Support
+
+- **GitHub**: https://github.com/CastQuest/cast/issues
+- **Docs**: https://docs.castquest.io/mints
+- **Discord**: https://discord.gg/castquest

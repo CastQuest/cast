@@ -1,0 +1,398 @@
+---
+title: "Documentation Validation"
+section: "reference"
+slug: "docs-validation"
+tags: ["documentation", "validation", "scripts"]
+weight: 100
+navOrder: 100
+---
+
+# Documentation Validation
+
+> Tools and processes for ensuring documentation completeness
+
+## Overview
+
+CASTQUEST includes automated documentation validation to ensure all features are properly documented with required sections including architecture, setup, environment variables, build & runtime, deployment, and security.
+
+**Code Path:** `infra/scripts/validate-docs.js`
+
+## Purpose
+
+The documentation validation system:
+- **Validates Completeness**: Checks that all features have complete documentation
+- **Enforces Standards**: Ensures consistent documentation structure
+- **Identifies Gaps**: Highlights missing or incomplete sections
+- **Generates Reports**: Creates actionable reports for documentation improvements
+- **CI Integration**: Can be integrated into CI/CD pipelines
+
+## Validation Script
+
+### Location
+
+**Script Path:** `infra/scripts/validate-docs.js`
+
+The validation script is a Node.js script that scans the documentation directory and generates a comprehensive report.
+
+### Usage
+
+#### Running Validation
+
+```bash
+# From repository root
+pnpm validate:docs
+
+# Or directly with node
+node infra/scripts/validate-docs.js
+```
+
+**Output:**
+- Console output with summary
+- `DOCS_VALIDATION_REPORT.md` file in repository root
+
+#### Example Output
+
+```
+✅ Documentation validation complete
+📄 Report generated: /path/to/cast/DOCS_VALIDATION_REPORT.md
+
+Run: cat DOCS_VALIDATION_REPORT.md to view the report
+```
+
+### Validation Criteria
+
+The script checks each feature for the following required sections:
+
+1. **Architecture**: System design, components, integration points
+2. **Setup**: Installation, prerequisites, dependencies
+3. **Environment Variables**: Required and optional configuration
+4. **Build**: Build commands, compilation, bundling
+5. **Deployment**: Deployment procedures, platforms, strategies
+6. **Security**: Security best practices, key management, monitoring
+
+### Status Levels
+
+Documentation sections are categorized:
+
+- **✅ COMPLETE**: Section exists with substantial content (>50 characters, not template)
+- **⚠️ PARTIAL**: Section exists but has template text or minimal content
+- **❌ MISSING**: Section not found in documentation
+
+Overall feature status:
+- **COMPLETE**: All required sections are complete
+- **PARTIAL**: Some sections complete, others partial/missing
+- **INCOMPLETE**: Most sections missing or partial
+- **MISSING**: Documentation directory or files don't exist
+
+## Validated Features
+
+The script validates documentation for:
+
+### 1. SDK (`packages/sdk/`)
+- Docs: `docs-site/sdk/`
+- Key sections: Setup, API reference, examples
+
+### 2. Agents (`packages/agents/`)
+- Docs: `docs-site/agents/`
+- Key sections: Agent types, configuration, monitoring
+
+### 3. Indexer (`packages/indexer/`)
+- Docs: `docs-site/overview/indexer-setup.mdx`
+- Key sections: Database setup, RPC configuration, runtime
+
+### 4. Contracts (`packages/contracts/`)
+- Docs: `docs-site/protocol/`
+- Key sections: Deployment, verification, security
+
+### 5. Web App (`apps/web/`)
+- Docs: `docs-site/overview/web-app-setup.mdx`
+- Key sections: Environment setup, build process, deployment
+
+### 6. Frames
+- Code: `apps/web/` (frames feature)
+- Docs: `docs-site/frames/`
+- Key sections: Farcaster integration, frame types
+
+### 7. Quests
+- Code: `apps/web/` (quests feature)
+- Docs: `docs-site/quests/`
+- Key sections: Quest types, verification, rewards
+
+### 8. Mints
+- Code: `apps/web/` (mints feature)
+- Docs: `docs-site/mints/`
+- Key sections: Mint types, eligibility, pricing
+
+### 9. Marketplace
+- Code: `apps/web/` (marketplace feature)
+- Docs: `docs-site/marketplace/`
+- Key sections: Listings, auctions, royalties
+
+## Validation Report
+
+### Report Structure
+
+The generated `DOCS_VALIDATION_REPORT.md` contains:
+
+1. **Summary**: Overview of documentation completeness
+   - Count of complete, partial, incomplete, missing features
+   - Quick status at a glance
+
+2. **Feature Details**: Detailed breakdown per feature
+   - Feature name and status
+   - Code path reference
+   - Documentation path reference
+   - Environment variables list
+   - Build and test commands
+   - Section-by-section coverage
+
+3. **Recommended Actions**: Prioritized action items
+   - Complete missing sections
+   - Expand partial sections
+   - Add cross-references
+   - Validate commands and variables
+
+4. **Validation Script Info**: How to run validation
+
+### Example Report Section
+
+```markdown
+### ❌ SDK
+
+**Status:** INCOMPLETE
+
+**Code Path:** `packages/sdk/`
+
+**Docs Path:** `docs-site/sdk/`
+
+**Environment Variables:**
+- `CASTQUEST_API_KEY`
+- `CASTQUEST_NETWORK`
+
+**Build Command:** `pnpm --filter @castquest/sdk build`
+
+**Test Command:** `pnpm --filter @castquest/sdk test`
+
+**Section Coverage:**
+
+- ⚠️ architecture: PARTIAL
+- ❌ setup: MISSING
+- ❌ environment variables: MISSING
+- ❌ build: MISSING
+- ❌ deployment: MISSING
+- ❌ security: MISSING
+```
+
+## Adding New Features
+
+To add validation for new features:
+
+1. **Edit Validation Script**: `infra/scripts/validate-docs.js`
+
+2. **Add Feature Entry** to the `FEATURES` array:
+
+```javascript
+{
+  name: 'New Feature',
+  codePath: 'packages/new-feature/',
+  docsPath: 'docs-site/new-feature/',
+  envVars: ['REQUIRED_VAR_1', 'REQUIRED_VAR_2'],
+  buildCommand: 'pnpm --filter @castquest/new-feature build',
+  testCommand: 'pnpm --filter @castquest/new-feature test'
+}
+```
+
+3. **Run Validation** to verify:
+
+```bash
+pnpm validate:docs
+```
+
+## CI Integration
+
+### GitHub Actions
+
+Add to CI workflow (`.github/workflows/ci.yml`):
+
+```yaml
+jobs:
+  validate-docs:
+    name: Validate Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Run Documentation Validation
+        run: pnpm validate:docs
+      
+      - name: Upload Validation Report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs-validation-report
+          path: DOCS_VALIDATION_REPORT.md
+```
+
+### Pre-commit Hook
+
+Add to `.git/hooks/pre-commit`:
+
+```bash
+#!/bin/bash
+
+# Run docs validation
+echo "Validating documentation..."
+pnpm validate:docs
+
+if [ $? -ne 0 ]; then
+  echo "❌ Documentation validation failed"
+  echo "📄 Review DOCS_VALIDATION_REPORT.md for details"
+  exit 1
+fi
+
+echo "✅ Documentation validation passed"
+```
+
+Make executable:
+```bash
+chmod +x .git/hooks/pre-commit
+```
+
+## Validation Script Implementation
+
+### Script Structure
+
+The validation script (`infra/scripts/validate-docs.js`):
+
+1. **Feature Configuration**: Array of features to validate
+2. **Section Detection**: Searches for required sections in markdown
+3. **Content Analysis**: Checks if sections have real content (not templates)
+4. **Report Generation**: Creates formatted markdown report
+5. **File Output**: Writes report to `DOCS_VALIDATION_REPORT.md`
+
+### Key Functions
+
+**`hasSectionContent(content, sectionKeywords)`**
+- Searches for section headers
+- Validates content is not template text
+- Returns: COMPLETE, PARTIAL, or MISSING
+
+**`validateFeature(feature)`**
+- Reads all docs for a feature
+- Checks each required section
+- Returns validation results object
+
+**`generateReport()`**
+- Aggregates validation results
+- Formats markdown report
+- Includes recommendations
+
+## Best Practices
+
+### Documentation Standards
+
+When writing documentation:
+
+1. **Include All Required Sections**
+   - Architecture
+   - Setup & Installation
+   - Environment Variables
+   - Build & Development
+   - Deployment
+   - Security
+
+2. **Provide Real Content**
+   - No placeholder text ("Describe the...")
+   - No template variables ($args)
+   - Minimum 50 characters per section
+
+3. **Add Code References**
+   - Specify exact file paths
+   - Link to code examples
+   - Reference specific functions/classes
+
+4. **Validate Commands**
+   - Test all commands before documenting
+   - Include expected output
+   - Note common errors
+
+5. **Document Environment Variables**
+   - List all required variables
+   - Provide example values
+   - Explain where to obtain keys
+
+### Maintaining Documentation
+
+1. **Run Validation Regularly**
+   ```bash
+   pnpm validate:docs
+   ```
+
+2. **Review Reports**
+   - Check DOCS_VALIDATION_REPORT.md
+   - Prioritize MISSING sections
+   - Improve PARTIAL sections
+
+3. **Update After Code Changes**
+   - New features → new docs
+   - API changes → update docs
+   - Deprecations → mark in docs
+
+4. **Peer Review**
+   - Have team members review
+   - Test setup instructions
+   - Verify commands work
+
+## Troubleshooting
+
+### Script Errors
+
+**"Cannot find module"**
+- Run from repository root
+- Ensure Node.js is installed
+
+**"Permission denied"**
+- Make script executable: `chmod +x infra/scripts/validate-docs.js`
+- Or run with node: `node infra/scripts/validate-docs.js`
+
+**"Report not generated"**
+- Check write permissions in repository root
+- Verify disk space available
+
+### False Positives
+
+If a section is marked MISSING but exists:
+
+1. Check section header format (should be `## Section Name` or `### Section Name`)
+2. Ensure section keywords match (see script's `sectionKeywords` mapping)
+3. Verify content is substantial (>50 chars, not template text)
+
+### Customizing Validation
+
+Edit `infra/scripts/validate-docs.js`:
+
+1. Modify `REQUIRED_SECTIONS` array to add/remove sections
+2. Update `sectionKeywords` mapping for section detection
+3. Adjust content validation rules in `hasSectionContent()`
+
+## Related Documentation
+
+- [Contributing Guidelines](https://github.com/CastQuest/cast/blob/main/CONTRIBUTING.md)
+- [Documentation Style Guide](#) (coming soon)
+- [API Documentation Standards](#) (coming soon)
+
+## Support
+
+- **GitHub Issues**: https://github.com/CastQuest/cast/issues
+- **Documentation**: https://docs.castquest.io
+- **Discord**: https://discord.gg/castquest
