@@ -12,6 +12,6 @@
     "outDir": "typechain-types",
     "declaration": true
   },
-  "include": ["scripts/**/*", "test/**/*"],
+  "include": ["hardhat.config.ts", "scripts/**/*", "test/**/*"],
   "exclude": ["node_modules"]
 }

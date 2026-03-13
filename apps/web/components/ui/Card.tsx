@@ -11,7 +11,7 @@ export function Card({
 }) {
   return (
     <section
-      className={cq-card rounded-xl border border-slate-800 bg-slate-950/60 p-4 }
+      className={`cq-card rounded-xl border border-slate-800 bg-slate-950/60 p-4 ${className}`}
     >
       {title && (
         <h2 className="mb-2 text-sm font-semibold tracking-tight text-slate-100">
