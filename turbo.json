@@ -1,6 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID",
+    "NEXT_PUBLIC_ALCHEMY_API_KEY",
+    "NEXT_PUBLIC_CHAIN_ID",
+    "TURBO_TOKEN",
+    "TURBO_TEAM"
+  ],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
