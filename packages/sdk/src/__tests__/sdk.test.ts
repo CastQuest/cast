@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { describe as describePlugin } from 'vitest';
 
 describe('@castquest/sdk', () => {
   it('exports a valid module', async () => {
@@ -18,7 +17,7 @@ describe('@castquest/sdk', () => {
   });
 });
 
-describePlugin('Plugin system', () => {
+describe('Plugin system', () => {
   it('Registry can register and list plugins', async () => {
     const { Registry, AnalyticsPlugin } = await import('../plugins/index');
     const registry = new Registry();

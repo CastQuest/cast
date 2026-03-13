@@ -14,6 +14,9 @@ interface UseWasmResult {
 
 /**
  * Hook to dynamically load a WebAssembly module.
+ * The loader function is called once on mount. For dynamic loaders, wrap in useCallback
+ * to control when the WASM module is reloaded.
+ *
  * Usage: const { module, loading, error } = useWasm(() => import('../lib/wasm/my-module.wasm'));
  */
 export function useWasm(loader: () => Promise<WasmModule>): UseWasmResult {
@@ -41,7 +44,10 @@ export function useWasm(loader: () => Promise<WasmModule>): UseWasmResult {
     return () => {
       cancelled = true;
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // loader is intentionally excluded: WASM modules are loaded once on mount.
+    // Pass a stable reference (e.g., a module-level const or useCallback) if reload is needed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { module, loading, error };
 }
