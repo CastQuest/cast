@@ -22,7 +22,7 @@ describe('Plugin system', () => {
     const { Registry, AnalyticsPlugin } = await import('../plugins/index');
     const registry = new Registry();
     const analytics = new AnalyticsPlugin();
-    registry.register(analytics);
+    await registry.register(analytics);
     expect(registry.listPlugins()).toHaveLength(1);
     expect(registry.getPlugin('analytics')).toBe(analytics);
   });
@@ -31,8 +31,7 @@ describe('Plugin system', () => {
     const { Registry, AnalyticsPlugin } = await import('../plugins/index');
     const registry = new Registry();
     const analytics = new AnalyticsPlugin();
-    await analytics.init(registry);
-    registry.register(analytics);
+    await registry.register(analytics); // register() calls init() automatically
     await registry.emit('onMint', { tokenId: 1, contract: '0x0', to: '0xabc' });
     expect(analytics.getEventCount()).toBe(1);
   });
@@ -41,12 +40,27 @@ describe('Plugin system', () => {
     const { Registry, NotificationPlugin } = await import('../plugins/index');
     const registry = new Registry();
     const notifications = new NotificationPlugin();
-    await notifications.init(registry);
-    registry.register(notifications);
+    await registry.register(notifications); // register() calls init() automatically
     await registry.emit('onMint', { tokenId: 42, contract: '0x0', to: '0xabc' });
     const queue = notifications.getQueue();
     expect(queue).toHaveLength(1);
     expect(queue[0].type).toBe('mint');
+  });
+
+  it('Registry unregister awaits destroy and removes plugin', async () => {
+    const { Registry, AnalyticsPlugin } = await import('../plugins/index');
+    const registry = new Registry();
+    const analytics = new AnalyticsPlugin();
+    await registry.register(analytics);
+    await registry.unregister('analytics');
+    expect(registry.listPlugins()).toHaveLength(0);
+  });
+
+  it('Registry throws when registering a duplicate plugin name', async () => {
+    const { Registry, AnalyticsPlugin } = await import('../plugins/index');
+    const registry = new Registry();
+    await registry.register(new AnalyticsPlugin());
+    await expect(registry.register(new AnalyticsPlugin())).rejects.toThrow('already registered');
   });
 });
 

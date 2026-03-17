@@ -16,17 +16,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
   themeColor: '#22d3ee',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en' className='dark'>
-      <head>
-        <link rel='manifest' href='/manifest.json' />
-        <meta name='mobile-web-app-capable' content='yes' />
-      </head>
       <body className='bg-cq-bg text-slate-100'>
         <div className='min-h-screen flex flex-col'>
           <header className='h-14 border-b border-slate-800 bg-slate-900/70 backdrop-blur flex items-center justify-between px-4'>

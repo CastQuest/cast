@@ -59,9 +59,15 @@ describe('Swarm orchestrator', () => {
     await swarm.start();
     const task = makeTask('price', { tokenAddress: '0xabc' });
     const result = await swarm.dispatch(task);
-    expect(result).not.toBeNull();
-    expect(result?.success).toBe(true);
+    expect(result.success).toBe(true);
     await swarm.stop();
+  });
+
+  it('returns an error result when no agents are registered', async () => {
+    const task = makeTask('price', {});
+    const result = await swarm.dispatch(task);
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('No agents available');
   });
 
   it('processes a queue of tasks', async () => {

@@ -3,18 +3,19 @@ import type { HookName, PluginRegistry, PluginWithHooks } from './types';
 export class Registry implements PluginRegistry {
   private plugins: Map<string, PluginWithHooks> = new Map();
 
-  register(plugin: PluginWithHooks): void {
+  async register(plugin: PluginWithHooks): Promise<void> {
     if (this.plugins.has(plugin.name)) {
       throw new Error(`Plugin "${plugin.name}" is already registered`);
     }
+    await plugin.init(this);
     this.plugins.set(plugin.name, plugin);
   }
 
-  unregister(name: string): void {
+  async unregister(name: string): Promise<void> {
     const plugin = this.plugins.get(name);
     if (plugin) {
-      plugin.destroy().catch(console.error);
       this.plugins.delete(name);
+      await plugin.destroy();
     }
   }
 

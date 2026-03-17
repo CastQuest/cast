@@ -27,8 +27,8 @@ export interface PluginHooks {
 export type PluginWithHooks = Plugin & PluginHooks;
 
 export interface PluginRegistry {
-  register(_plugin: PluginWithHooks): void;
-  unregister(_name: string): void;
+  register(_plugin: PluginWithHooks): Promise<void>;
+  unregister(_name: string): Promise<void>;
   getPlugin(_name: string): PluginWithHooks | undefined;
   listPlugins(): PluginWithHooks[];
   emit<T>(_hook: HookName, _payload: T): Promise<void>;

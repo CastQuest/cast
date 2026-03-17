@@ -45,10 +45,15 @@ export class Swarm {
     }
   }
 
-  async dispatch(task: Task): Promise<TaskResult | null> {
+  async dispatch(task: Task): Promise<TaskResult> {
     const agent = this.routeTask(task);
     if (!agent) {
-      return null;
+      return {
+        taskId: task.id,
+        success: false,
+        error: 'No agents available to handle the task',
+        completedAt: Date.now(),
+      };
     }
     return agent.execute(task);
   }
@@ -60,14 +65,26 @@ export class Swarm {
 
   async processQueue(): Promise<TaskResult[]> {
     const results: TaskResult[] = [];
-    const maxConcurrency = this.config.maxConcurrency ?? 5;
 
     while (this.taskQueue.length > 0 && this.running) {
-      const batch = this.taskQueue.splice(0, maxConcurrency);
-      const batchResults = await Promise.all(
-        batch.map((task) => this.dispatch(task))
+      // Only dispatch to agents that are currently idle to avoid concurrent tasks on the same agent
+      const idleAgents = Array.from(this.agents.values()).filter(
+        (a) => a.getStatus() === 'idle'
       );
-      results.push(...batchResults.filter((r): r is TaskResult => r !== null));
+      if (idleAgents.length === 0) {
+        // No idle agents; wait briefly and retry
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        continue;
+      }
+
+      const batchSize = Math.min(idleAgents.length, this.taskQueue.length);
+      const batch = this.taskQueue.splice(0, batchSize);
+
+      // Pair each task with a distinct idle agent
+      const batchResults = await Promise.all(
+        batch.map((task, i) => idleAgents[i].execute(task))
+      );
+      results.push(...batchResults);
     }
     return results;
   }
