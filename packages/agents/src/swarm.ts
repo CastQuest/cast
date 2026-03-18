@@ -106,8 +106,6 @@ export class Swarm {
 
   private routeTask(_task: Task): Agent | undefined {
     const agentsList = Array.from(this.agents.values());
-    const available = agentsList.filter((a) => a.getStatus() === 'idle');
-    if (available.length === 0) return agentsList[0];
-    return available[0];
+    return agentsList.find((a) => a.getStatus() === 'idle');
   }
 }

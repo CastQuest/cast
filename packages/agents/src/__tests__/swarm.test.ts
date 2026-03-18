@@ -20,7 +20,7 @@ describe('Swarm orchestrator', () => {
   let monitoringAgent: MonitoringAgent;
 
   beforeEach(() => {
-    swarm = new Swarm({ name: 'test-swarm', agents: [] });
+    swarm = new Swarm({ name: 'test-swarm' });
     pricingAgent = new PricingAgent({ id: 'price-1', name: 'Pricing' });
     monitoringAgent = new MonitoringAgent({ id: 'monitor-1', name: 'Monitor' });
   });
@@ -68,6 +68,18 @@ describe('Swarm orchestrator', () => {
     const result = await swarm.dispatch(task);
     expect(result.success).toBe(false);
     expect(result.error).toContain('No agents available');
+  });
+
+  it('returns an error result when agents are registered but none are idle', async () => {
+    swarm.registerAgent(pricingAgent);
+    await swarm.start();
+    // Force the agent into a non-idle state
+    (pricingAgent as unknown as { status: string }).status = 'running';
+    const task = makeTask('price', {});
+    const result = await swarm.dispatch(task);
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('No agents available');
+    await swarm.stop();
   });
 
   it('processes a queue of tasks', async () => {

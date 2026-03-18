@@ -34,14 +34,6 @@ export interface TaskResult {
 
 export interface SwarmConfig {
   name: string;
-  agents: AgentConfig[];
   maxConcurrency?: number;
   messageBusSize?: number;
-}
-
-export interface Plugin {
-  name: string;
-  version: string;
-  init(_registry: unknown): Promise<void>;
-  destroy(): Promise<void>;
 }
