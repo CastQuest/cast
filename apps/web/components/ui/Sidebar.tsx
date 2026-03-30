@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,7 +31,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={ounded-md px-3 py-2 text-sm }
+              className={`rounded-md px-3 py-2 text-sm ${active ? "bg-slate-800 text-slate-100" : "text-slate-300 hover:bg-slate-800"}`}
             >
               {item.label}
             </Link>

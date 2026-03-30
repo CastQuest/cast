@@ -1,3 +1,7 @@
+## 🚀 CASTQUEST V3 — Autonomous Multi-Chain Creative Economy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FCastQuest%2Fcast&root-directory=apps/web)
+
 ## 📚 Documentation
 
 All documentation lives in the `docs-site/` directory.

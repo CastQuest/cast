@@ -1,9 +1,22 @@
 import './globals.css';
 import type { ReactNode } from 'react';
+import type { Metadata, Viewport } from 'next';
 
-export const metadata = {
-  title: 'CASTQUEST V3',
-  description: 'Autonomous multi-chain creative economy'
+export const metadata: Metadata = {
+  title: 'CastQuest V3',
+  description: 'Autonomous multi-chain creative economy',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'CastQuest',
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#22d3ee',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -22,7 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </div>
           </header>
           <div className='flex flex-1'>
-            <aside className='w-60 border-r border-slate-800 bg-slate-950/80'>
+            <aside className='hidden md:block w-60 border-r border-slate-800 bg-slate-950/80'>
               <nav className='p-3 text-sm space-y-1'>
                 <a href='/dashboard' className='block px-3 py-2 rounded-md bg-slate-800 text-slate-100'>
                   Dashboard

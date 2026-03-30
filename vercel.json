@@ -1,0 +1,17 @@
+{
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm --filter @castquest/web build",
+  "outputDirectory": "apps/web/.next",
+  "env": {
+    "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID": "@walletconnect-project-id",
+    "NEXT_PUBLIC_ALCHEMY_API_KEY": "@alchemy-api-key",
+    "NEXT_PUBLIC_CHAIN_ID": "8453"
+  },
+  "build": {
+    "env": {
+      "TURBO_TOKEN": "@turbo-token",
+      "TURBO_TEAM": "@turbo-team"
+    }
+  }
+}

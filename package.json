@@ -39,6 +39,7 @@
     "orchestrate:v3": "pwsh ./infra/Orchestration.ps1"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^8.57.1",
     "eslint": "^8.55.0",
     "eslint-plugin-security": "^2.1.0",
     "turbo": "^1.11.2",
